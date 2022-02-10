@@ -1,0 +1,8 @@
+
+@font-face {
+  font-family: 'HandyAndy';
+  src: url('HandyAndy.eot?#iefix') format('embedded-opentype'),  url('HandyAndy.otf')  format('opentype'),
+	     url('HandyAndy.woff') format('woff'), url('HandyAndy.ttf')  format('truetype'), url('HandyAndy.svg#HandyAndy') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'NexaRust';
+    src: url('NexaRustSans-Black.woff2') format('woff2'),
+        url('NexaRustSans-Black.woff') format('woff');
+    font-style: normal;
+}
+

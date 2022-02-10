@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Courier';
+    src: url('Courier-Bold.woff2') format('woff2'),
+        url('Courier-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+

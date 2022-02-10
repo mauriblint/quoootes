@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'The Bold Font';
+    src: url('TheBoldFont.woff2') format('woff2'),
+        url('TheBoldFont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

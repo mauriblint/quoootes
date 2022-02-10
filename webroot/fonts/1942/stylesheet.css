@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Type Report';
+    src: url('1942report.woff2') format('woff2'),
+        url('1942report.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

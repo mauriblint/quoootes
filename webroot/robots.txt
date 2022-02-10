@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /
+Disallow: /admins
+
+User-agent: Twitterbot
+Disallow:

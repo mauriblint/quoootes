@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Simplicity';
+    src: url('Simplicity.woff2') format('woff2'),
+        url('Simplicity.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Frenchpress';
+    src: url('Frenchpress.woff2') format('woff2'),
+        url('Frenchpress.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

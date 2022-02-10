@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'ObelixPro';
+    src: url('ObelixPro.woff2') format('woff2'),
+        url('ObelixPro.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

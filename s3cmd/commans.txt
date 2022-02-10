@@ -1,0 +1,3 @@
+s3cmd setcors cors.xml s3://cdn.quoootes.com
+
+s3cmd info s3://cdn.quoootes.com

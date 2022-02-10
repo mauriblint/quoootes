@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Team Spirit';
+    src: url('TeamSpirit.woff2') format('woff2'),
+        url('TeamSpirit.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

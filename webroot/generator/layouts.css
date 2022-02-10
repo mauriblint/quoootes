@@ -1,0 +1,756 @@
+@import url('fonts/PoetsenOne/styles.css');
+@import url('fonts/Chivo/styles.css');
+@import url('fonts/HandyAndy/styles.css');
+
+
+
+#___ov {
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	/*background:rgba(0,0,0,.5);*/
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 999;
+    display: none;
+}
+
+/*+++++ Preset 01
+++++++++++++++++++++++++++++*/
+.preset-0 {
+    font-size: 40px;
+}
+.preset-0 .text {
+	width: 70%;
+	right: 40px;
+	bottom: 50px;
+}
+/* .preset-0 .text.text-xl { font-size: 58px; }
+.preset-0 .text.text-lg { font-size: 48px; }
+.preset-0 .text.text-md { font-size: 40px; }
+.preset-0 .text.text-sm { font-size: 32px; }
+.preset-0 .text.text-xs { font-size: 28px; } */
+
+
+.preset-1 {
+	font-size: 40px;
+    text-transform: uppercase;
+    font-weight: 800;
+    font-style: italic;
+}
+.preset-1 .text {
+    width: 70%;
+}
+
+
+/*+++++ Preset 02
+++++++++++++++++++++++++++++*/
+.preset-2 {
+}
+.preset-2 .text {
+	width: 360px;
+}
+
+
+/*+++++ Preset 03
+++++++++++++++++++++++++++++*/
+.preset-3 {
+
+}
+.preset-3 .text {
+	width: 350px;
+}
+
+/*+++++ Preset 04
+++++++++++++++++++++++++++++*/
+.preset-4 {
+}
+.preset-4 .text {
+	width: 75%;
+	font-size: 30px;
+}
+.preset-4 .text .line {
+	background-color: #333;
+	margin: 5px 0;
+	padding: 10px 15px;
+}
+
+.preset-4 .text .word {
+	background-color: #333;
+	margin: 5px 0;
+	padding: 10px;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+/* .preset-4 .text.text-xl { font-size: 38px; }
+.preset-4 .text.text-lg { font-size: 36px; }
+.preset-4 .text.text-md { font-size: 35px; }
+.preset-4 .text.text-sm { font-size: 22px; }
+.preset-4 .text.text-xs { font-size: 20px; } */
+
+
+/*+++++ Preset 05
+++++++++++++++++++++++++++++*/
+.preset-5 {
+	width: 450px;
+	height: 600px;
+}
+.preset-5 .text {
+	width: 340px;
+	font-size: 40px;
+}
+
+
+/*+++++ Preset 06
+++++++++++++++++++++++++++++*/
+.preset-6 {
+}
+.preset-6 .text {
+	width: 430px;
+	text-align: center;
+	text-transform: uppercase;
+	text-shadow: 3px 3px 0 rgba(0,0,0,.4);
+}
+
+/* .preset-6 .text.text-xl { font-size: 52px; }
+.preset-6 .text.text-lg { font-size: 47px; }
+.preset-6 .text.text-md { font-size: 36px; }
+.preset-6 .text.text-sm { font-size: 29px; }
+.preset-6 .text.text-xs { font-size: 27px; } */
+
+
+/*+++++ Preset 07
+++++++++++++++++++++++++++++*/
+.preset-7 {
+}
+.preset-7 .text {
+	width: 430px;
+}
+
+/*+++++ Preset 08
+++++++++++++++++++++++++++++*/
+.preset-8 {
+}
+.preset-8 .text {
+	width: 70%;
+	margin-top: -70px;
+}
+
+
+/*+++++ Preset 09
+++++++++++++++++++++++++++++*/
+.preset-9 {
+}
+.preset-9 .text {
+	width: 350px;
+	font-size: 35px;
+	font-size: 33px;
+}
+
+
+/*+++++ Preset 10
+++++++++++++++++++++++++++++*/
+.preset-10 {}
+.preset-10 .text {
+	width: 75%;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing:-1px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,.6);
+}
+/*
+
+.preset-10 .text.text-xl { font-size: 52px; }
+.preset-10 .text.text-lg { font-size: 47px; }
+.preset-10 .text.text-md { font-size: 42px; }
+.preset-10 .text.text-sm { font-size: 40px; }
+.preset-10 .text.text-xs { font-size: 30px; } */
+
+/*+++++ Preset 11
+++++++++++++++++++++++++++++*/
+.preset-11 {
+	background-color: #DFE7EA;
+}
+.preset-11 .text {
+	width: 65%;
+	/* font-size: 35px; */
+	text-align: center;
+}
+/* .preset-11 .text.text-xl { font-size: 55px; }
+.preset-11 .text.text-lg { font-size: 42px; }
+.preset-11 .text.text-md { font-size: 35px; }
+.preset-11 .text.text-sm { font-size: 30px; }
+.preset-11 .text.text-xs { font-size: 27px; } */
+
+/*+++++ Preset 12
+++++++++++++++++++++++++++++*/
+.preset-12 {
+}
+.preset-12 .text {
+	width: 70%;
+	text-shadow: 1px 1px 5px rgba(0,0,0,.6);
+	/* font-size: 33px; */
+}
+
+/* .preset-12 .text.text-xl { font-size: 55px; }
+.preset-12 .text.text-lg { font-size: 47px; }
+.preset-12 .text.text-md { font-size: 38px; }
+.preset-12 .text.text-sm { font-size: 32px; }
+.preset-12 .text.text-xs { font-size: 28px; } */
+
+
+
+
+
+
+/*+++++ Preset 13
+++++++++++++++++++++++++++++*/
+.preset-13 {
+}
+.preset-13 .text {
+	width: 400px;
+	/* font-size: 45px; */
+	font-weight: 700;
+	letter-spacing: -1px;
+}
+/* .preset-13 .text.text-xl { font-size: 62px; }
+.preset-13 .text.text-lg { font-size: 50px; }
+.preset-13 .text.text-md { font-size: 42px; }
+.preset-13 .text.text-sm { font-size: 36px; }
+.preset-13 .text.text-xs { font-size: 30px; } */
+
+
+/*+++++ Preset 14
+++++++++++++++++++++++++++++*/
+.preset-14 {}
+.preset-14 .text {
+	width: 460px;
+}
+
+
+/*+++++ Preset 15
+++++++++++++++++++++++++++++*/
+.preset-15 {
+	width: 500px;
+	height: 650px;
+	padding: 70px;
+}
+.preset-15 .text {
+	width: 100%;
+	/* font-size: 37px; */
+}
+/* .preset-15 .text.text-xl { font-size: 55px; }
+.preset-15 .text.text-lg { font-size: 43px; }
+.preset-15 .text.text-md { font-size: 40px; }
+.preset-15 .text.text-sm { font-size: 35px; }
+.preset-15 .text.text-xs { font-size: 31px; } */
+
+
+/*+++++ Preset 16
+++++++++++++++++++++++++++++*/
+.preset-16 {
+}
+.preset-16 .text {
+	width: 70%;
+	line-height: 1.2;
+	letter-spacing: 5px;
+	margin: 50px 0 0 45px;
+}
+/* .preset-16 .text.text-xl { font-size: 55px; }
+.preset-16 .text.text-lg { font-size: 42px; }
+.preset-16 .text.text-md { font-size: 35px; }
+.preset-16 .text.text-sm { font-size: 26px; }
+.preset-16 .text.text-xs { font-size: 23px; } */
+
+
+/*+++++ Preset 17
+++++++++++++++++++++++++++++*/
+.preset-17 {
+	width: 500px;
+	height: 650px;
+}
+.preset-17 .text {
+	text-shadow: 2px 2px 0 rgba(0,0,0,.5);
+	/* font-size: 30px; */
+	padding: 10px;
+	text-transform: uppercase;
+	text-align: center;
+}
+.preset-17 .text .line {
+	background-color: rgba(0,0,0,0.85);
+	margin: -1px auto;
+	padding: 10px;
+	-webkit-transform: rotate(-2deg);
+	-moz-transform: rotate(-2deg);
+	-ms-transform: rotate(-2deg);
+	-o-transform: rotate(-2deg);
+}
+
+/* .preset-17 .text.text-xl { font-size: 32px; }
+.preset-17 .text.text-lg { font-size: 30px; }
+.preset-17 .text.text-md { font-size: 27px; }
+.preset-17 .text.text-sm { font-size: 22px; }
+.preset-17 .text.text-xs { font-size: 15px; } */
+
+
+/*+++++ Preset 18
+++++++++++++++++++++++++++++*/
+.preset-18 {
+}
+.preset-18 .text {
+	width: 70%;
+	text-shadow: 2px 2px 0 rgba(0,0,0,.5);
+	padding: 10px;
+	text-transform: uppercase;
+	text-align: center;
+	white-space: normal;
+}
+.preset-18 .text .word {
+}
+.preset-18 .text .word:first-child, .preset-18 .text .word:last-child {
+    color: #d9fba9 !important;
+}
+.preset-18 .text .word:nth-child(1n) {
+    color: rgb(225,105,44);
+}
+.preset-18 .text .word:nth-child(3n) {
+    color: rgb(216,30,53);
+}
+.preset-18 .text .word:nth-child(2n) {
+    color: rgb(102,193,198);
+}
+/* .preset-18 .text.text-xl { font-size: 47px; }
+.preset-18 .text.text-lg { font-size: 39px; }
+.preset-18 .text.text-md { font-size: 32px; }
+.preset-18 .text.text-sm { font-size: 28px; }
+.preset-18 .text.text-xs { font-size: 25px; } */
+
+/*+++++ Preset 18
+++++++++++++++++++++++++++++*/
+.preset-19 {
+}
+.preset-19 .text {
+	width: 70%;
+	text-shadow: 1px 1px 0 rgba(0,0,0,.2);
+	/* font-size: 35px; */
+	text-transform: uppercase;
+	text-align: center;
+	white-space: normal;
+}
+.preset-19  .text .word {
+}
+.preset-19 .text .word:first-child, .preset-19 .text .word:last-child {
+    color: #accf7a !important;
+}
+.preset-19 .text .word:nth-child(1n) {
+    color: rgb(225,105,44);
+}
+.preset-19 .text .word:nth-child(3n) {
+    color: rgb(216,30,53);
+}
+.preset-19 .text .word:nth-child(2n) {
+    color: rgb(102,193,198);
+}
+
+/* .preset-19 .text.text-xl { font-size: 47px; }
+.preset-19 .text.text-lg { font-size: 39px; }
+.preset-19 .text.text-md { font-size: 32px; }
+.preset-19 .text.text-sm { font-size: 28px; }
+.preset-19 .text.text-xs { font-size: 25px; } */
+
+
+/*+++++ Preset 20
+++++++++++++++++++++++++++++*/
+.preset-20 {
+	width: 550px;
+	height: 550px;
+}
+.preset-20 .text {
+	width: 400px;
+	text-shadow: 1px 1px 0 rgba(0,0,0,.2);
+	/* font-size: 35px; */
+	padding: 10px;
+	white-space: normal;
+}
+/* .preset-20 .text.text-xl { font-size: 47px; }
+.preset-20 .text.text-lg { font-size: 39px; }
+.preset-20 .text.text-md { font-size: 36px; }
+.preset-20 .text.text-sm { font-size: 35px; }
+.preset-20 .text.text-xs { font-size: 31px; } */
+
+/*+++++ Preset 21
+++++++++++++++++++++++++++++*/
+.preset-21 {
+
+}
+.preset-21 .text {
+	width: 70%;
+	text-shadow: 1px 1px 0 rgba(0,0,0,.2);
+	text-transform: uppercase;
+	white-space: normal;
+}
+.preset-21  .text .word {
+	margin-right: 10px;
+	margin-bottom: 10px;
+	padding: 0 10px;
+	padding-top: 10px;
+	display: inline-block;
+	line-height: 1;
+}
+.preset-21 .text .word:first-child, .preset-21 .text .word:last-child {
+    background-color: #accf7a !important;
+}
+.preset-21 .text .word:nth-child(1n) {
+    background-color: rgb(225,105,44);
+}
+.preset-21 .text .word:nth-child(3n) {
+    background-color: rgb(216,30,53);
+}
+.preset-21 .text .word:nth-child(2n) {
+    background-color: rgb(102,193,198);
+}
+
+/* .preset-21 .text.text-xl { font-size: 48px; }
+.preset-21 .text.text-lg { font-size: 37px; }
+.preset-21 .text.text-md { font-size: 23px; }
+.preset-21 .text.text-sm { font-size: 20px; }
+.preset-21 .text.text-xs { font-size: 17px; } */
+
+
+
+
+/*+++++ Preset 22
+++++++++++++++++++++++++++++*/
+.preset-22 {
+	/* padding: 50px; */
+}
+.preset-22 .text {
+    width: 290px;
+	font-weight: 700;
+	padding: 0;
+	white-space: normal;
+	letter-spacing: -3px;
+    top: 60px;
+    left: 60px;
+}
+.preset-22 .text-content {
+    border-left: 6px solid #333;
+    display: inline-block;
+    padding-left: 20px;
+}
+
+
+
+/*+++++ Preset 23
+++++++++++++++++++++++++++++*/
+.preset-23 {
+	width: 500px;
+	height: 650px;
+}
+.preset-23 .text {
+	width: 400px;
+	text-shadow: 2px 2px 0 rgba(0,0,0,.5);
+	text-transform: uppercase;
+	white-space: normal;
+}
+/*
+.preset-23 .text.text-xl { font-size: 34px; }
+.preset-23 .text.text-lg { font-size: 29px; }
+.preset-23 .text.text-md { font-size: 28px; }
+.preset-23 .text.text-sm { font-size: 25px; }
+.preset-23 .text.text-xs { font-size: 21px; } */
+
+
+.preset-23 .text .line:first-child, .preset-23 .text .line:last-child {
+    color: #FFF !important;
+    font-family: 'Permanent Marker';
+    font-size: 130%;
+}
+.preset-23 .text .word:nth-child(1n) {
+    color: rgb(225,105,44);
+}
+.preset-23 .text .word:nth-child(3n) {
+    color: rgb(216,30,53);
+}
+/* .preset-18 .text .word:nth-child(2n) {
+    color: rgb(102,193,198);
+} */
+
+
+/*+++++ Preset 24
+++++++++++++++++++++++++++++*/
+.preset-24 {
+}
+.preset-24 .text {
+	width: 70%;
+	text-transform: uppercase;
+}
+
+/* .preset-24 .text.text-xl { font-size: 52px; }
+.preset-24 .text.text-lg { font-size: 47px; }
+.preset-24 .text.text-md { font-size: 36px; }
+.preset-24 .text.text-sm { font-size: 29px; }
+.preset-24 .text.text-xs { font-size: 27px; } */
+
+
+/*+++++ Preset 25
+++++++++++++++++++++++++++++*/
+.preset-25 {
+}
+.preset-25 .text {
+	width: 68%;
+	white-space: normal;
+}
+
+/* .preset-25 .text.text-xl { font-size: 40px; }
+.preset-25 .text.text-lg { font-size: 35px; }
+.preset-25 .text.text-md { font-size: 30px; }
+.preset-25 .text.text-sm { font-size: 29px; }
+.preset-25 .text.text-xs { font-size: 24px; } */
+
+
+/*+++++ Preset 26
+++++++++++++++++++++++++++++*/
+.preset-26 {}
+.preset-26 .text {
+	width: 320px;
+    right: 40px;
+        bottom: 50px;
+}
+
+
+/*+++++ Preset 27
+++++++++++++++++++++++++++++*/
+.preset-27 {
+	width: 600px;
+	height: 600px;
+	background-color: #333;
+	padding: 70px 0 0 70px;
+}
+.preset-27 .text {
+	width: 350px;
+	font-weight: 800;
+	line-height: 1.6;
+}
+
+
+
+/*+++++ Preset 28
+++++++++++++++++++++++++++++*/
+.preset-28 {
+	padding: 70px 70px 0 0;
+}
+.preset-28 .text {
+	width: 450px;
+	font-weight: 700;
+	/* font-size: 50px; */
+	line-height: 1;
+	float: right;
+}
+/* .preset-28 .text.text-xl { font-size: 65px; }
+.preset-28 .text.text-lg { font-size: 55px; }
+.preset-28 .text.text-md { font-size: 45px; }
+.preset-28 .text.text-sm { font-size: 36px; }
+.preset-28 .text.text-xs { font-size: 32px; } */
+
+
+
+
+/*+++++ Preset 29
+++++++++++++++++++++++++++++*/
+.preset-29 {
+}
+.preset-29 .text {
+	width: 280px;
+	font-weight: 700;
+	line-height: 1.1;
+	top: 60px;
+    left: 120px;
+}
+.preset-29 .word:nth-child(even) {
+    color: rgb(111, 72, 53);
+}
+.preset-29 .word:nth-child(odd) {
+    color: rgb(225,105,44);
+}
+.preset-29 .text-content {
+
+}
+
+/* .preset-29 .text.text-xl { font-size: 55px; }
+.preset-29 .text.text-lg { font-size: 46px; }
+.preset-29 .text.text-md { font-size: 38px; }
+.preset-29 .text.text-sm { font-size: 32px; }
+.preset-29 .text.text-xs { font-size: 28px; } */
+
+
+
+/*+++++ Preset 30
+++++++++++++++++++++++++++++*/
+.preset-30 {
+	width: 650px;
+	height: 450px;
+	padding: 70px 100px;
+}
+.preset-30 .text {
+	width: 100%;
+	text-transform: uppercase;
+	font-weight: normal;
+	text-align: center;
+	line-height: 1.5;
+}
+
+/* .preset-30 .text.text-xl { font-size: 32px; }
+.preset-30 .text.text-lg { font-size: 30px; }
+.preset-30 .text.text-md { font-size: 27px; }
+.preset-30 .text.text-sm { font-size: 23px; }
+.preset-30 .text.text-xs { font-size: 20px; } */
+
+
+
+/*+++++ Preset 31
+++++++++++++++++++++++++++++*/
+.preset-31 {
+}
+.preset-31 .text {
+	width: 75%;
+    letter-spacing: -1px;
+    margin-left: auto;
+    margin-right: 37px;
+    margin-top: 50px;
+}
+.preset-31 .text .word:last-child {
+	display: inline-block;
+	background-color: #47D9E2;
+    padding: 6px 13px;
+    position: relative;
+    top: 10px;
+}
+/* .preset-31 .text.text-xl { font-size: 63px; }
+.preset-31 .text.text-lg { font-size: 55px; }
+.preset-31 .text.text-md { font-size: 45px; }
+.preset-31 .text.text-sm { font-size: 36px; }
+.preset-31 .text.text-xs { font-size: 30px; } */
+
+
+
+/*+++++ Preset 31
+++++++++++++++++++++++++++++*/
+.preset-32 {
+
+}
+.preset-32 .text {
+	width: 70%;
+}
+/* .preset-32 .text.text-xl { font-size: 68px; }
+.preset-32 .text.text-lg { font-size: 57px; }
+.preset-32 .text.text-md { font-size: 51px; }
+.preset-32 .text.text-sm { font-size: 43px; }
+.preset-32 .text.text-xs { font-size: 37px; } */
+
+.preset-33 {
+}
+.preset-33 .text {
+	width: 80%;
+}
+.preset-33 .word {
+    background-color: #000c;
+    padding: 5px 17px;
+    margin-right: 10px;
+    margin-bottom: 7px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
+/* .preset-33 .text.text-xl { font-size: 45px; }
+.preset-33 .text.text-lg { font-size: 40px; }
+.preset-33 .text.text-md { font-size: 35px; }
+.preset-33 .text.text-sm { font-size: 28px; }
+.preset-33 .text.text-xs { font-size: 27px; width: 85%; } */
+
+.preset-34 {
+}
+.preset-34 .text {
+	width: 70%;
+}
+.preset-34 .word {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px 17px;
+    margin-right: 10px;
+    margin-bottom: 7px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+/* .preset-34 .text.text-xl { font-size: 58px; }
+.preset-34 .text.text-lg { font-size: 45px; }
+.preset-34 .text.text-md { font-size: 34px; }
+.preset-34 .text.text-sm { font-size: 26px; }
+.preset-34 .text.text-xs { font-size: 24px; } */
+
+
+.preset-35 {
+	background-color: #545454;
+}
+.preset-35 .text {
+	width: 65%;
+}
+/* .preset-35 .text.text-xl { font-size: 44px; }
+.preset-35 .text.text-lg { font-size: 32px; }
+.preset-35 .text.text-md { font-size: 28px; }
+.preset-35 .text.text-sm { font-size: 26px; }
+.preset-35 .text.text-xs { font-size: 24px; width: 70%; } */
+
+.preset-36 {
+}
+.preset-36 .text {
+	width: 70%;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    line-height: 2;
+}
+
+.preset-36 .text.text-md { width: 65%; }
+.preset-36 .text.text-sm { width: 68%; }
+.preset-36 .text.text-xs { width: 68%; }
+
+.preset-37 {
+}
+.preset-37 .text {
+	width: 70%;
+    text-transform: uppercase;
+    letter-spacing: 7px;
+    line-height: 2;
+}
+.preset-37 .text.text-md { width: 65%; }
+.preset-37 .text.text-sm { width: 68%; }
+.preset-37 .text.text-xs { width: 68%; }
+
+
+.preset-38 {
+}
+.preset-38 .text {
+    width: 300px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,.4);
+}
+
+.preset-39 { }
+.preset-39 .text {
+    width: 300px;
+    /* text-shadow: 3px 3px 0 rgba(0,0,0,.4); */
+}
+
+.preset-40 { }
+.preset-40 .text {
+    width: 300px;
+    text-shadow: 4px 3px 0px #F6878A;
+}
+
+.preset-41 {}
+.preset-41 .text { width: 350px; }
+.preset-41 .text .word.wc1 { color: #D3E2DB; }
+.preset-41 .text .word.wc2 { color: #D9B348; }
+.preset-41 .text .word.wc3 { color: #949A6D; }
+.preset-41 .text .word.wc4 { color: #a2b0c1; }
+.preset-41 .text .word.wc5 { color: #e0bfab; }
