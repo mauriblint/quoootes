@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-4">
                 <img src="/img/logo5.png" alt="Quoootes - Free Quote Maker and Generator" height="30">
-                <p class="mt20"><strong>Quote maker and generator online</strong>. Create beautiful quotes for Instagram, Pinterest and more (ready to share). Motivational and Inpirational quotes.</p>
+                <p class="mt-3 text-muted"><strong>Quote maker and generator online</strong>. Create beautiful quotes for Instagram, Pinterest and more (ready to share). Motivational and Inpirational quotes.</p>
                 <div class="clearfix"></div>
                 <!-- <a href="<?=Router::url(['_name' => 'QuoteImages']);?>" class="btn btn-info btn-block btn-lg  btn-bold mt40">Create free Quotes now!</a> -->
             </div>

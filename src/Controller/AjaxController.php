@@ -83,4 +83,13 @@ class AjaxController extends AppController
 
         return $this->renderJSON(true);
     }
+
+    public function proxy()
+    {
+        $url = $this->request->getQuery('url', null);
+        $filename = UploadService::getFilenameFromUrl($url, 'jpg');
+        $mime_type = UploadService::getMimeType($filename);
+        header('Content-Type: ' . $mime_type);
+        readfile($url);
+    }
 }

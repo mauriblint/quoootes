@@ -31,9 +31,9 @@ class PagesController extends AppController
 
     public function homepage()
     {
-    	$recentImages = DesignService::getRecentImagesQuotes(1, 16);
-
-    	$this->set('recentImages', $recentImages);
+    	// $this->set('recentImages', DesignService::getRecentImagesQuotes(1, 16));
+    	$this->set('recentImages', []);
+        $this->set('templates', TemplatesService::list(null, 1, 8));
         $this->render('home');
     }
 
@@ -41,6 +41,7 @@ class PagesController extends AppController
     {
     	$recentImages = null;
 
+    	$this->set('title', 'Quotes Templates');
     	$this->set('templates', TemplatesService::list(null, 1, 30));
         $this->render('templates');
     }

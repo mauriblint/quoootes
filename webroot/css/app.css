@@ -1,3 +1,50 @@
+body.app { background: #f7f9fb; overflow: hidden; }
+.kanvas{background-repeat:no-repeat;background-size:cover;background-position:center;position:relative;border:0;box-shadow:rgba(0,0,0,0.1) 1px 1px 2px}
+.kanvas.kanvas--square{width:600px;height:600px}
+.kanvas.kanvas--landscape{width:700px;height:400px}
+.kanvas.kanvas--portrait{width:450px;height:650px}
+.loader{border:3px solid #3498db;border-top:3px solid #f5f5f5;border-radius:50%;width:50px;height:50px;animation:spin .75s linear infinite}
+@keyframes spin {
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+.creator__save-preview{width:600px;height:auto;background-color:#fff;padding:25px;display:flex;border-radius:10px}
+.creator__save-image-preview{width:260px;display:flex;justify-content:center;align-items:center;min-height:215px}
+.creator__save-inputs{flex:1;padding-left:25px;display:flex;flex-direction:column}
+.creator__save-btn{margin-top:auto}
+#previewImage{width:260px;height:auto}
+#textinput{background-color:#f5f5f5}
+#__quote{zoom:.65}
+#clonedCanvas,#__quote{float:left}
+#clonedCanvas.__align_rb,#__quote.__align_rb{display:flex;align-items:flex-end;justify-content:flex-end}
+#clonedCanvas.__center,#__quote.__center{display:flex;align-items:center;justify-content:center}
+#clonedCanvas.__align_top_left,#__quote.__align_top_left{display:flex;align-items:flex-start;justify-content:flex-start}
+.text{padding:10px 3px;line-height:1.3;word-wrap:break-word;padding:5px;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;border:3px dotted rgba(0,0,0,0);height:auto!important}
+#textarea:hover,#textarea.ui-draggable-dragging{cursor:move;opacity:.8;border:3px dashed rgba(0,0,0,.25)}
+#textarea.active{border:3px dashed rgba(0,0,0,.4);cursor:default}
+#textarea .line{display:inline-block}
+#textarea .linewrap{display:block}
+#textinput:focus{box-shadow:0 0 0 .2rem rgba(236,241,88,0.82);transform:scale(1.05)}
+.slabtexted .slabtext{display:-moz-inline-box;display:inline-block;white-space:nowrap}
+.slabtextinactive .slabtext{display:inline;white-space:normal;font-size:1em!important;letter-spacing:inherit!important;word-spacing:inherit!important;*letter-spacing:normal!important;*word-spacing:normal!important}
+.slabtextdone .slabtext{display:block}
+
+input[type="range"]{-webkit-appearance:none;margin:0;width:100%;background-color:transparent;padding:0}
+input[type="range"]:focus{outline:none}
+input[type="range"]::-webkit-slider-runnable-track{width:100%;height:6px;cursor:pointer;background:#eee;border-radius:100px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="range"]::-webkit-slider-thumb{border:1px solid rgba(0,0,0,0.3);height:16px;width:16px;border-radius:100px;background-color:#fff;cursor:pointer;-webkit-appearance:none;margin-top:-5px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="range"]:focus::-webkit-slider-runnable-track{background:#eee;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="range"]::-moz-range-track{width:100%;height:6px;cursor:pointer;background:#eee;border-radius:100px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="range"]::-moz-range-thumb{border:1px solid rgba(0,0,0,0.3);height:16px;width:16px;border-radius:100px;background-color:#fff;cursor:pointer;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="range"]::-moz-focus-outer{border:0}
+input[type="range"]::-ms-track{width:100%;height:20px;cursor:pointer;background:transparent;border-color:transparent;color:transparent;border-width:6px 0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+input[type="range"]::-ms-tooltip{display:none}
+input[type="range"]::-ms-fill-lower{background:#eee;border-radius:100px}
+input[type="range"]::-ms-fill-upper{background:#eee;border-radius:100px}
+input[type="range"]::-ms-thumb{border:1px solid rgba(0,0,0,0.3);height:16px;width:16px;border-radius:100px;background-color:#fff;cursor:pointer}
+input[type="range"]:focus::-ms-fill-lower{background:#eee}
+input[type="range"]:focus::-ms-fill-upper{background:#eee}
+
 .foot {
 	position: absolute;
 	bottom: 8px;

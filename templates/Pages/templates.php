@@ -5,24 +5,8 @@
     </div>
 
     <div class="col-12">
-        <div class="row">
+        <div class="row templates-list">
         <?php foreach ($templates as $template) echo $this->element('ui/template', [ 'template' => $template]); ?>
         </div>
     </div>
 </div>
-
-<style>
-    .template {
-        background-color: #eef0f6;
-        text-align: center;
-        border-radius: 4px;
-        padding: 8px;
-    }
-    .template img {
-        border-radius: 4px;
-    }
-    .template:hover {
-        cursor: pointer;
-        background-color: #d9deea;
-    }
-</style>

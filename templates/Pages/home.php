@@ -22,7 +22,7 @@
 </div>
 <?php $this->end(); ?>
 
-<div class="row my-6">
+<div class="row home-section">
 	<div class="col-md-4">
         <div class="featured">
             <div class="featured__icon">
@@ -58,21 +58,24 @@
 	</div>
 </div>
 
-<div class="row my-5">
+<div class="row home-section">
 	<div class="col-md-12">
-		<section class="mt-5">
+		<section class="mt-6">
             <div class="text-center mb-5">
-			    <h2>Quotes Templates ready to Edit</h2>
-                <p>Check out this images with text recently created with our <a href="/quote-maker">quote maker app</a> online.</p>
+			    <h2>Quotes Templates</h2>
+                <p class="lead">Browse our Free Quote Templates ready to edit. Pick one, enter some text, and download a beautiful quote!</p>
             </div>
-            <div class="text-center mt-4">
-                <a href="<?=Router::url(['_name' => 'QuoteImages']);?>" class="btn btn-primary btn-lg">View more templates</a>
+            <div class="row templates-list templates-list__square">
+                <?php foreach ($templates as $template) echo $this->element('ui/template', [ 'template' => $template]); ?>
+            </div>
+            <div class="text-center mt-3">
+                <a href="<?=Router::url(['_name' => 'Studio']);?>" class="btn btn-primary btn-lg">Explore all Templates</a>
             </div>
 		</section>
 	</div>
 </div>
 
-<div class="row">
+<!-- <div class="row d-none">
 	<div class="col-md-12">
 		<section class="mt-5">
             <div class="text-center mb-5">
@@ -88,26 +91,32 @@
             </div>
 		</section>
 	</div>
-</div>
+</div> -->
 
-<div class="row">
-	<div class="col-md-12">
+<div class="row home-section">
+	<div class="col-md-12 mb-5">
 		<section class="mt-5">
-            <div class="text-center mb-5">
+            <div class="text-center mb-4">
 			    <h2>Quotes by Topics</h2>
-                <p>Check out this images with text recently created with our <a href="/quote-maker">quote maker app</a> online.</p>
+                <p class="lead mt-3">Browse your favourite topic quotes like Happiness, Motivational Quotes, Love, Success, etc</p>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center">
+                <?php foreach ($category_list as $cat):?>
+                    <a class="m-3" href="<?= Router::url(['_name' => 'QuoteImagesTag']) . $cat['slug'] ?>"><?= $cat['name']; ?></a>
+                <?php endforeach; ?>
             </div>
 		</section>
 	</div>
 </div>
 
-<div class="row my-5 justify-content-center">
+<div class="row home-section justify-content-center">
 	<div class="col-12 col-md-10 col-lg-8 text-center">
         <h2>What is Quoootes?</h2>
         <p class="lead mt-4">Quoootes.com is an online and <strong>free quote generator</strong>. This <strong>quote maker</strong> turns any text you write into beautiful graphics for Instagram, Pinterest and social media. You don't need to be a designer expert to <strong>create beautiful images with quotes</strong>. Just type your quote, pick one of out awesome Templates, and download it!</p>
 
         <h2 class="mt-6">How this Quote Generator works?</h2>
-        <p class="lead mt-4">Quoootes.com is an online and <strong>free quote generator</strong>. This <strong>quote maker</strong> turns any text you write into beautiful graphics for Instagram, Pinterest and social media. You don't need to be a designer expert to <strong>create beautiful images with quotes</strong>. Just type your quote, pick one of out awesome Templates, and download it!</p>
+        <p class="lead mt-4">This <strong>free quote maker</strong> works on all web browers (desktop computer or phone), just open Quoootes.com using your browser and start designing.
+        By entering any text, you will be able to downlod a beatuful designed <strong>quotes for Instagram</strong> and any social network.</p>
 	</div>
 </div>
 

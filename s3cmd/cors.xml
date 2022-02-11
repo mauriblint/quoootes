@@ -2,6 +2,7 @@
  <CORSRule>
    <AllowedOrigin>https://dev.quoootes.com</AllowedOrigin>
    <AllowedOrigin>https://quoootes.com</AllowedOrigin>
+   <AllowedOrigin>https://beta.quoootes.com</AllowedOrigin>
 
    <AllowedMethod>GET</AllowedMethod>
    <AllowedMethod>PUT</AllowedMethod>

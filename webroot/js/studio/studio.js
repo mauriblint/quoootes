@@ -410,7 +410,8 @@ var app = new Vue({
         generate: function (callback, scaleFactor) {
             var _this = this;
             html2canvas($('.studio__canvas')[0], {
-                useCORS: true,
+                // useCORS: true,
+                proxy: '/ajax/proxy',
                 scale: scaleFactor || window.devicePixelRatio,
                 onclone: function (cloned) {
                     var a = cloned.getElementsByClassName('studio__canvas')[0];
@@ -444,10 +445,10 @@ var app = new Vue({
 
             var scale_factor = 1;
 
-            if (canvas_width > studio_width) {
+            if (canvas_width > (studio_width*0.9)) {
                 scale_factor = (studio_width * 0.9) / canvas_width;
             }
-            if(canvas_height > studio_height) {
+            if(canvas_height > (studio_height*0.9)) {
                 var sf = (studio_height * 0.9) / canvas_height;
                 if (sf < scale_factor) {
                     scale_factor = sf;

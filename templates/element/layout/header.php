@@ -4,7 +4,7 @@ use Cake\Routing\Router;
 <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <img src="/img/logo5.png" alt="Quoootes - Free Quote Maker and Generator" height="30">
+            <img src="/img/logo5.png" alt="Quoootes - Free Quote Maker and Generator" height="28">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fa fa-bars" aria-hidden="true" style="color: #FFF;font-size: 33px;"></i>

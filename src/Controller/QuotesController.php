@@ -41,13 +41,12 @@ class QuotesController extends AppController
 
         $result = DesignService::find($tag_id, $page, $count);
 
-        $title = 'Beautiful Images with Quotes ready to share';
-        $page_title = 'Create beautiful Images with Quotes ready to share.';
-        // $keywords = '';
+        $title = 'Quotes Images';
+        $page_title = 'Quotes Images';
 
         if( !is_null($tag_id) ) {
             $this->set('tag', $category);
-            $title = 'Images with ' . $category->name_seo;
+            $title = $category->name_seo;
             $page_title = $category->name_seo;
         }
 

@@ -18,6 +18,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use App\Lib\TagService;
+use App\Lib\TemplatesService;
 /**
  * Application Controller
  *
