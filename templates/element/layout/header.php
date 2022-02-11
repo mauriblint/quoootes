@@ -7,7 +7,7 @@ use Cake\Routing\Router;
             <img src="/img/logo5.png" alt="Quoootes - Free Quote Maker and Generator" height="28">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa fa-bars" aria-hidden="true" style="color: #FFF;font-size: 33px;"></i>
+            <i class="bi bi-list" style="font-size: 27px;"></i>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -23,10 +23,10 @@ use Cake\Routing\Router;
                     </a>
                 </li>
                 <li class="nav-item dropdown hidden-xs-down">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="TopicsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Topics
                     </a>
-                    <div class="dropdown-menu dropdown-menu-categories" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-menu-categories" id="TopicsDropdownMenu">
                         <?php foreach ($category_list as $cat) {
                             $link = Router::url(['_name' => 'QuoteImagesTag']) . $cat['slug'];
                             echo '<a class="dropdown-item" href="' . $link . '">' . $cat['name'] . '</a>';

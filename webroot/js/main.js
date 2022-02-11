@@ -1,44 +1,28 @@
-$('.card').on('mousedown',function(e) {
-    if (e.ctrlKey) {
-        e.preventDefault();
+var TopicsDropdown = document.getElementById('TopicsDropdown');
+var TopicsDropdownMenu = document.getElementById('TopicsDropdownMenu');
 
-        $.get('/quotes/setInactive/')
-   }
-});
+TopicsDropdown.onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    TopicsDropdownMenu.classList.toggle('show');
+};
 
-var Sharer = {
+document.addEventListener('click', function (e) {
+    let clickedOutside = true;
 
-	init:function() {
-		$('a.share').click(function(e) {
-		    e.preventDefault();
-		    window.open(this.href,'_blank','width=750, height=500');
-		    id = $(this).attr('data-id');
-		    $('.shares-counter').html(parseInt($('.shares-counter').html(), 10)+1);
-		    Sharer.like( id );
-		});
+    e.path.forEach(item => {
+        if (!clickedOutside) {
+            return;
+        }
 
+        if (item.className && item.className.indexOf('dropdown-menu-categories') > -1) {
+            clickedOutside = false;
+        }
+    });
 
-        $('.share-download').click(function(event) {
-            id = $(this).attr('data-id');
-            Sharer.like( id );
-		    // $('.shares-counter').html(parseInt($('.shares-counter').html(), 10)+1);
-        });
-	},
-
-    like: function(_id) {
-        $.post('/quotes/like', {id: _id}, function(data, textStatus, xhr) {
-        	// alert(data);
-        });
+    if (clickedOutside) {
+        if (TopicsDropdownMenu.className.indexOf('show') > -1) {
+            TopicsDropdownMenu.classList.remove('show');
+        }
     }
-}
-Sharer.init();
-
-
-// if( $('.grid').length > 0 ) {
-// 	$('.grid').imagesLoaded( function() {
-// 		$('.grid').masonry({
-// 			itemSelector: '.grid-item',
-// 			columnWidth: '.grid-item',
-// 		});
-// 	});
-// }
+});

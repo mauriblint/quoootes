@@ -135,8 +135,6 @@ footer a{color:#25243c;font-size:14px}
 .card-statss span i{margin-right:3px}
 .card__create > .card__create-inner{padding:20px;border-radius:var(--card-boder-radius);color:#FFF;font-weight:700;font-size:26px;color:#FFF;display:block}
 .card__create .card__create-btn{margin-top:25px;margin-bottom:5px}
-.empty-grid{text-align:center;margin-top:80px;display:block}
-.empty-grid h3{font-weight:700;letter-spacing:-2px;color:#444}
 
 .homeText{font-size:13px;color:#999;text-align:center;line-height:1.9;max-width:800px;margin:0 auto 30px}
 

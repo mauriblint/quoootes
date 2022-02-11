@@ -42,6 +42,7 @@
     <?php echo $this->element('layout/footer');  ?>
 
     <?= $this->Html->script([
+        // 'main.js',
         'vendor/jquery.min.js',
         'vendor/popper.min.js',
         '/bootstrap4/js/bootstrap.min.js',

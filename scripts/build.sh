@@ -29,7 +29,7 @@ echo ""
 
 echo "Start obfuscating soft bundle"
 javascript-obfuscator webroot/js/studio.soft.build.js \
-    --compact true --disable-console-output true --debug-protection true --rename-properties true \
+    --compact true --disable-console-output true --debug-protection true \
     --output webroot/js/studio.soft.build.js
 
 echo "Soft bundle obfuscated!"
