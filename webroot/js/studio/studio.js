@@ -290,8 +290,6 @@ var app = new Vue({
         },
 
         getText: function () {
-            var text = this.text;
-
             if (!this.text && !this.text_footer && !this.text_header) {
                 return 'Write something..'
             }
@@ -301,16 +299,6 @@ var app = new Vue({
             }
 
             return this.text;
-
-            if (this.text_header && this.template.headerVisible) {
-                text += '<span class="text-header">' + this.text_header + '</span>';
-            }
-
-            if (this.text_footer && this.template.footerVisible) {
-                text += '<br /> <span class="text-footer">' + this.text_footer + '</span>';
-            }
-
-            return text;
         },
 
         getHeader: function () {
