@@ -66,7 +66,7 @@
             </div>
             <div class="ml-auto">
                 <button @click="onViewTemplates()" class="btn btn-light mb-0 btn-upper" v-if="mode === 'create'"><i class="bi bi-star-fill mr-1 text-warning"></i> Templates</button>
-                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create'">Save</button>
+                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create'" :disabled="!text && !text_footer && !text_header">Save</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'edit_template'">Save Changes</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'create_template'">Save Template</button>
 
@@ -158,7 +158,7 @@
 
                 <div class="form-group d-flex justify-content-between align-items-center form-group-mh">
                     <label class="mb-0 label-w-50">Text Width</label>
-                    <input type="range" v-model="template.boxWidth" min="45" max="100">
+                    <input type="range" v-model="template.boxWidth" min="45" max="100" @mousedown="onShowTextBoxDimensions(true)" @mouseup="onShowTextBoxDimensions(false)">
                     <span class="ml-1r range-value">{{ template.boxWidth }}</span>
                 </div>
 
@@ -343,27 +343,38 @@
         <div class="modal" tabindex="-1" role="dialog" id="saveModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" v-if="!saving">
                         <h5 class="modal-title">Save</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i class="bi bi-x"></i>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" v-if="saving">
+                        <div class="my-5 text-center">
+                            <!-- <h2 class="mx-4" style="font-weight: 700;">We are creating our awesome quote!</h2> -->
+                            <img src="/img/loader.gif" width="100%">
+                        </div>
+                    </div>
+                    <div class="modal-body" v-else>
                         <div class="form-group">
                             <label>Topic</label>
-                            <select v-model="tag_id" class="form-control custom-select">
+                            <select v-model="tag_id" class="form-control form-control-lg custom-select" :class="{'is-valid': tag_id, 'is-invalid': error_tag}" @change="error_tag=false;">
                                 <option value="">Select a Topic</option>
                                 <option v-for="tag in tags" :value="tag.id">{{tag.name}}</option>
                             </select>
+                            <div class="valid-feedback" v-if="tag_id">Looks good!</div>
+                            <div class="invalid-feedback" v-if="error_tag">Please choose a Topic.</div>
                         </div>
                         <div class="form-group">
                             <label>Keywords</label>
-                            <input type="text" v-model="keywords" class="form-control" placeholder="#love #life #sad #instagram">
+                            <input type="text" v-model="keywords" class="form-control form-control-lg" style="height: 48px;" placeholder="#love #life #sad #instagram">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-upper btn-lg" @click="onSaveDesign()">Save</button>
+                    <div class="modal-footer" v-if="!saving">
+                        <button type="button" class="btn btn-primary btn-upper btn-lg" @click="onSaveDesign()" :disabled="saving">
+                            <span v-if="!saving">Save</span>
+                            <span v-else>Generating quote...</span>
+                        </button>
                     </div>
                 </div>
             </div>

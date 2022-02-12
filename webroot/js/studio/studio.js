@@ -38,7 +38,6 @@ var app = new Vue({
     el: '#studio',
     data: {
         mode: 'create',
-
         page: 'start',
         onboarding_step: 1,
 
@@ -53,6 +52,9 @@ var app = new Vue({
         text: '',
         text_header: '',
         text_footer: '',
+        show_textbox_area: false,
+        saving: false,
+        error_tag: false,
 
         popovers: {
             color_picker_1_open: false,
@@ -157,6 +159,11 @@ var app = new Vue({
         },
 
         onSaveDesign: function () {
+            if (!this.tag_id) {
+                this.error_tag = true;
+                return;
+            }
+            this.saving = true;
             this.generate(this.onDesignGenerated, 1);
         },
 
@@ -175,7 +182,7 @@ var app = new Vue({
                 }
              })
              .done(function (response) {
-                window.location.href = '/quote-' + response.data.id;
+                // window.location.href = '/quote-' + response.data.id;
              })
         },
 
@@ -366,6 +373,7 @@ var app = new Vue({
                 fontSize: parseInt(this.template.fontSize) + 'px',
                 letterSpacing: parseFloat(this.template.letterSpacing) + 'px',
                 marginTop: (this.template.textOffset) ? parseInt(this.template.textOffset) + 'px' : '',
+                borderColor: (this.show_textbox_area) ? this.template.color : 'transparent',
             };
         },
 
@@ -481,6 +489,10 @@ var app = new Vue({
 
         onOnboardingSkipped: function () {
             this.page = 'editor';
+        },
+
+        onShowTextBoxDimensions: function (a) {
+            this.show_textbox_area = a;
         }
     },
 });
