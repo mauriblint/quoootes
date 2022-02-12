@@ -56,7 +56,7 @@ class TemplatesController extends AppController
 
     public function list ()
     {
-        $result = TemplatesService::list();
+        $result = TemplatesService::list(null, 1, 150);
 
         $this->renderJSON(true, $result);
     }

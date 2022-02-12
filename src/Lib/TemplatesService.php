@@ -72,7 +72,13 @@ class TemplatesService {
             ->page($page)
             ->enableHydration(false);
 
-        return $query->toArray();
+        $result = $query->toArray();
+
+        foreach($result as &$item) {
+            unset($item['styles']);
+        }
+
+        return $result;
     }
 
     public static function all () {

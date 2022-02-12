@@ -11,8 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<?= $meta_description ?>">
     <meta name="keywords" content="<?= $meta_keywords ?>">
-    <link href="/favicon.ico?version=1" type="image/x-icon" rel="icon"/>
-    <link href="/favicon.ico?version=1" type="image/x-icon" rel="shortcut icon"/>
+    <link href="/favicon.ico?version=3" type="image/x-icon" rel="icon"/>
+    <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
     <meta name="p:domain_verify" content="f0b7d6f5e9bac3d19dc79d01bcaa8826"/>
     <meta name="google-site-verification" content="AlLuCCNbeu8LykxQXBebfUV5pcRMZSEFUsAGOT184do" />
     <meta property="og:site_name" content="Quoootes"/>

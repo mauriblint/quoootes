@@ -9,10 +9,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <img src="/img/logo5.png" alt="Quoootes - Free Quote Maker and Generator" height="30">
-                <p class="mt-3 text-muted"><strong>Quote maker and generator online</strong>. Create beautiful quotes for Instagram, Pinterest and more (ready to share). Motivational and Inpirational quotes.</p>
-                <div class="clearfix"></div>
-                <!-- <a href="<?=Router::url(['_name' => 'QuoteImages']);?>" class="btn btn-info btn-block btn-lg  btn-bold mt40">Create free Quotes now!</a> -->
+                <img src="/img/logo.png" class="mt-2" alt="Quoootes - Free Quote Maker and Generator" height="24">
+                <p class="mt-4 text-muted"><strong>Quote maker and generator online</strong>. Create beautiful quotes for Instagram, Pinterest and more (ready to share). Motivational and Inpirational quotes.</p>
             </div>
             <!-- /.col -->
 
@@ -36,12 +34,18 @@
                 </ul>
                 <h4 class="mt-5">More</h4>
                 <ul class="list-unstyled">
-                <li>
-                    <a href="//app-sorteos.com/en">Free Instagram Comment Picker</a>
-                </li>
-                <li>
-                    <a href="//creatufrase.net">Spanish Quote Maker</a>
-                </li>
+                    <li>
+                        <a href="/templates">Templates</a>
+                    </li>
+                    <li>
+                        <a href="/quote-maker">Quote Maker</a>
+                    </li>
+                    <li>
+                        <a href="//app-sorteos.com/en">Free Instagram Comment Picker</a>
+                    </li>
+                    <!-- <li>
+                        <a href="//creatufrase.net">Spanish Quote Maker</a>
+                    </li> -->
                 </ul>
             </div>
             <!-- /.col -->

@@ -39,7 +39,8 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/quotes', ['controller' => 'Quotes', 'action' => 'index'], ['_name' => 'QuoteImages']);
         $builder->connect('/quotes/*', ['controller' => 'Quotes', 'action' => 'index'], ['_name' => 'QuoteImagesTag']);
 
-        $builder->connect('/quote-maker', ['controller' => 'Quotes', 'action' => 'generator'], ['_name' => 'Editor']);
+        $builder->connect('/quote-maker', ['controller' => 'Quotes', 'action' => 'studio'], ['_name' => 'Editor']);
+        $builder->connect('/quote-maker/{hash}', ['controller' => 'Quotes', 'action' => 'studio'])->setPass(['hash']);
 
         $builder->connect('/studio', ['controller' => 'Quotes', 'action' => 'studio'], ['_name' => 'Studio']);
         $builder->connect('/studio/{hash}', ['controller' => 'Quotes', 'action' => 'studio'])->setPass(['hash']);

@@ -242,11 +242,11 @@ class UploadService {
 
         $env = env('ENV', 'DEV');
 
-        // if ($env === 'DEV') {
-        //     if ($container !== 'backgrounds') {
-        //         $container = $container . '-dev';
-        //     }
-        // }
+        if ($env === 'DEV') {
+            if ($container !== 'backgrounds') {
+                $container = $container . '-dev';
+            }
+        }
 
         if (file_exists($file)) {
 

@@ -19,8 +19,8 @@
     <title>Quoootes - Studio</title>
     <?= $this->Html->css('/bootstrap4/css/bootstrap.min.css') ?>
     <?= $this->Html->css('studio.css') ?>
-    <link href="/favicon.ico?version=1" type="image/x-icon" rel="icon"/>
-    <link href="/favicon.ico?version=1" type="image/x-icon" rel="shortcut icon"/>
+    <link href="/favicon.ico?version=3" type="image/x-icon" rel="icon"/>
+    <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.0/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
     <link rel="stylesheet" href="/fonts/kredit/styles.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
@@ -41,10 +41,16 @@
 
     <div id="studio" class="studio" v-cloak>
 
-        <div class="studio__header">
+        <div class="page-info" v-if="onboarding_step === 9">
+            <h1>Free Quote Maker and Generator Online</h1>
+            <p>Quoootes's quote editor is the best, simple, and free <strong>online quote generator for Instagram</strong>, Pinterest, Facebook and any social network</p>
+            <p>You will be able to create beatiful quotes about Life, Love, Positive Quotes, Sad Quotes, just by enter a few lines of text and choose a pre designed template.</p>
+            <p>Of course, you always can use your imagination to <strong>create a custom quote</strong> or edit a pre-designed quote template.</p>
+        </div>
+
+        <div class="studio__header" v-if="page !== 'start'">
             <a href="/">
-                <!-- <img src="/img/logo.png?new3" alt="Quoootes - Free Quote Maker & Generator" width="120" class="d-none d-md-inline"> -->
-                <img src="/img/logo5.png" alt="Quoootes - Free Quote Maker and Generator" height="30" class="logo-desktop d-none d-md-inline">
+                <img src="/img/logo.png" alt="Quoootes - Free Quote Maker and Generator" class="logo-desktop d-none d-md-inline">
                 <img src="/favicon.ico" alt="Quoootes - Free Quote Maker & Generator" width="30" class="d-md-none">
             </a>
 
@@ -59,7 +65,7 @@
                 </div>
             </div>
             <div class="ml-auto">
-                <button @click="onViewTemplates()" class="btn btn-light mb-0 btn-upper" v-if="mode === 'create'">Templates</button>
+                <button @click="onViewTemplates()" class="btn btn-light mb-0 btn-upper" v-if="mode === 'create'"><i class="bi bi-star-fill mr-1 text-warning"></i> Templates</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create'">Save</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'edit_template'">Save Changes</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'create_template'">Save Template</button>
@@ -74,7 +80,7 @@
                 <!--  Text -->
                 <div class="form-group">
                     <label for="">Text</label>
-                    <textarea rows="3" v-model="text" class="form-control"></textarea>
+                    <textarea rows="3" v-model="text" ref="textInput" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -172,7 +178,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Background</label>
+                    <label>Background Image</label>
 
                     <div class="backgrounds-list scrollable">
                         <img :src="bg.url" v-for="bg in backgrounds" @click="onBackgroundSelected(bg.url)">
@@ -246,16 +252,16 @@
                 <div class="studio__canvas" ref="canvas" :style="getEditorStyles()">
                     <div class="studio__canvas__inner" :style="getBoxStyles()">
                         <div class="studio__canvas__text" :style="getTextStyles()">
-                            <div v-html="getHeader()" v-if="template.showHeader" class="studio__canvas__text-header"></div>
+                            <div v-html="getHeader()" v-if="template.headerVisible && text_header" class="studio__canvas__text-header"></div>
                             <div v-html="getText()" class="studio__canvas__text-main"></div>
-                            <div v-html="getFooter()" v-if="template.showFooter" class="studio__canvas__text-footer"></div>
+                            <div v-html="getFooter()" v-if="template.footerVisible && text_footer" class="studio__canvas__text-footer"></div>
                         </div>
                     </div>
 
                     <div class="studio__watermark" :class="'pos-' + template.watermarkPosition">QUOOOTES.COM</div>
 
                     <div class="studio__canvas__overlay">
-                        <div class="text-position" @click="template.boxPosition = 'left-top'" data-toggle="tooltip" data-title="Move Text Here" data-placement="top"></div>
+                        <!-- <div class="text-position" @click="template.boxPosition = 'left-top'" data-toggle="tooltip" data-title="Move Text Here" data-placement="top"></div>
                         <div class="text-position" @click="template.boxPosition = 'center-top'"><div class="pointer"></div></div>
                         <div class="text-position" @click="template.boxPosition = 'right-top'"></div>
 
@@ -265,7 +271,7 @@
 
                         <div class="text-position" @click="template.boxPosition = 'left-bottom'"></div>
                         <div class="text-position" @click="template.boxPosition = 'center-bottom'"></div>
-                        <div class="text-position" @click="template.boxPosition = 'right-bottom'"></div>
+                        <div class="text-position" @click="template.boxPosition = 'right-bottom'"></div> -->
                     </div>
                 </div>
             </div>
@@ -281,29 +287,55 @@
 
                 <div class="row">
                     <div v-for="template in templates" class="col-3">
-                        <img :src="template.preview_url" class="img-fluid" @click="loadTemplate(template.id)">
+                        <img :src="template.preview_url" class="img-fluid" @click="onTemplateSelected(template.id)">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="studio__body mt-5" v-if="page === 'start'">
-            <div class="container mt-5">
-                <div class="row justify-content-center">
-                    <div class="col-10">
-                        <h1>Let's create something beautiful.</h1>
-                        <p>Enter your text (you can edit it later)</p>
+        <div class="studio__body" :class="{'align-items-center': onboarding_step !== 3}" v-if="page === 'start'">
+            <div class="container">
+                <div class="row justify-content-center" v-if="onboarding_step === 1">
+                    <div class="col-10 text-center" >
+                        <h1>Let's create a beautiful quote.</h1>
+                        <p class="lead">Using this simple quote maker</p>
+                        <div class="text-center mt-5">
+                            <button class="btn btn-lg btn-link text-dark" @click="onOnboardingSkipped()">Skip</button>
+                            <button class="btn btn-success btn-lg" @click="onGoToOboardingStep(2)">Start</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-10 mt-4">
-                        <textarea class="form-control form-control-lg initial-text" v-model="text" rows="6"></textarea>
+                <div class="row justify-content-center" v-if="onboarding_step === 2">
+                    <div class="col-12 col-md-9 mt-4">
                         <div class="text-center">
-                            <button class="button-primary button-lg" @click="page='templates'">Continue</button>
+                            <h1>1. Write your quote</h1>
+                            <p class="lead">You can change the text later</p>
+                        </div>
+                        <div class="start-page__inputas mt-4">
+                            <!-- <label><i class="bi bi-quote"></i> Your Quote</label> -->
+                            <textarea ref="onboardingInput" class="form-control form-control-lg initial-text" v-model="text" rows="4" placeholder="Enter text here.."></textarea>
+                            <!-- <label class="mt-4"><i class="bi bi-person"></i> Author (Optional)</label>
+                            <input class="form-control form-control-lg" v-model="text_footer" style="font-size: 14px;" placeholder="Enter author's name" /> -->
+                        </div>
+                        <div class="text-center  mt-3">
+                            <button class="btn btn-success btn-lg" @click="onGoToOboardingStep(3)">Continue</button>
                         </div>
                     </div>
+                </div>
 
+                <div class="row justify-content-center" v-if="onboarding_step === 3">
+                    <div class="col-12 col-md-9 mt-4">
+                        <div class="text-center" style="margin-top: 100px;">
+                            <h1>2. Pick a Template</h1>
+                            <p class="lead">You can customize it later (or choose another)</p>
+                        </div>
+                    </div>
+                    <div class="templates-grid scrollable mt-4">
+                        <div v-for="template in templates" class="template template__square">
+                            <img :src="template.preview_url" class="img-fluid" @click="onTemplateSelected(template.id)">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

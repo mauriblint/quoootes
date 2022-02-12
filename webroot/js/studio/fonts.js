@@ -18,7 +18,7 @@ var FontsData = [
 	{ name: 'Caveat', weight: '700', },
 	{ name: 'Londrina Solid', },
 	{ name: 'Cutive Mono', },
-	{ name: 'Open Sans', },
+	{ name: 'Open Sans', weight: '400;700', },
 	{ name: 'Roboto', },
 	{ name: 'Special Elite',},
 	{ name: 'Indie Flower',},

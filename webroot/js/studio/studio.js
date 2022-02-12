@@ -40,7 +40,7 @@ var app = new Vue({
         mode: 'create',
 
         page: 'start',
-        page: 'editor',
+        onboarding_step: 1,
 
         templates: [],
         backgrounds: [],
@@ -72,37 +72,14 @@ var app = new Vue({
             'right-bottom',
         ],
 
-        fonts: [
-            'Tangerine',
-            'Inconsolata',
-            'Droid Sans',
-            'Open Sans',
-            'Josefin Slab',
-            'Special Elite',
-            'Arvo',
-            'Lato',
-            'Vollkorn',
-            'Abril Fatface',
-            'Ubuntu',
-            'Old Standard TT',
-            'Georgia',
-            'Arial Black',
-            'Times New Roman',
-            'Lobster',
-            'Bevan',
-            'Berkshire Swash',
-            "Bree Serif",
-            "Montserrat",
-            "IM Fell English SC",
-            "Cormorant SC",
-        ],
+        fonts: [],
 
         template_id: null,
 
         template: {},
         initial_template: {
             layout: 'square',
-            backgroundColor: '#7BD4AA',
+            backgroundColor: '#FFFFFF',
             backgroundImage: '',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -152,7 +129,7 @@ var app = new Vue({
         }
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.template) {
-            this.setTemplate(window.__NEXT_DATA__.template);
+            this.setTemplate(window.__NEXT_DATA__.template, true);
         }
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.mode) {
@@ -168,11 +145,9 @@ var app = new Vue({
         }
 
         setTimeout(this.onResize, 100);
+        setTimeout(this.onFocusTextarea, 100);
 
         this.fonts = Fonts.getFontsArray();
-        // setTimeout(this.onResize, 500);
-        // setTimeout(this.onResize, 1000);
-        // setTimeout(this.onResize, 2000);
     },
 
     methods: {
@@ -249,6 +224,15 @@ var app = new Vue({
 
         onTemplatesFetched: function (response) {
             this.templates = response.data;
+
+            if (!this.template_id) {
+                this.setRandomTemplate();
+            }
+        },
+
+        onTemplateSelected: function (id) {
+            this.loadTemplate(id);
+            this.page = 'editor';
         },
 
         loadTemplate: function (id) {
@@ -269,14 +253,21 @@ var app = new Vue({
             }
         },
 
-        setTemplate: function (data) {
+        setRandomTemplate: function (data) {
+            var item = this.templates[Math.floor(Math.random()*this.templates.length)];
+            this.loadTemplate(item.id);
+        },
+
+        setTemplate: function (data, back_to_editor) {
             if (!data.styles.layout) {
                 data.styles.layout = 'square';
             }
             this.template = Object.assign({}, this.initial_template, this._parseTemplateJSON(data.styles));
             this.template_id = data.id;
 
-            this.page = 'editor';
+            if (back_to_editor) {
+                this.page = 'editor';
+            }
         },
 
         _parseTemplateJSON: function (template) {
@@ -306,7 +297,7 @@ var app = new Vue({
             }
 
             if (this.template.textUppercase) {
-                return this.text.toUpperCase();
+                return this.text.replace(/<\/?[^>]+(>|$)/g, "").toUpperCase();
             }
 
             return this.text;
@@ -437,7 +428,16 @@ var app = new Vue({
             });
         },
 
+        onFocusTextarea: function (e) {
+            if (this.$refs.textInput) {
+                this.$refs.textInput.focus();
+            }
+        },
+
         onResize: function (e) {
+            if (!this.$refs.studio) {
+                return false;
+            }
             var studio_width = this.$refs.studio.offsetWidth;
             var studio_height = this.$refs.studio.offsetHeight;
             var canvas_width = this.$refs.canvas.offsetWidth;
@@ -479,6 +479,20 @@ var app = new Vue({
             var Layout = this._getLayout(layout);
 
             return Layout.name + ' (' + Layout.width + 'x' + Layout.height + ')';
+        },
+
+        onGoToOboardingStep: function (step) {
+            var _this = this;
+            this.onboarding_step=step;
+            if (step === 2) {
+                setTimeout(function () {
+                    _this.$refs.onboardingInput.focus()
+                }, 200);
+            }
+        },
+
+        onOnboardingSkipped: function () {
+            this.page = 'editor';
         }
     },
 });
