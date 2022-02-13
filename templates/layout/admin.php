@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex" />
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.0/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
     <?= $this->Html->css('/bootstrap4/css/bootstrap.min.css') ?>
     <?= $this->Html->css('styles.css') ?>
     <?= $this->Html->css('helpers.css') ?>
@@ -23,6 +24,9 @@
             </a>
             <div class="navbar-collapse">
                 <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{active: page === 'designs'}" href="#templates" @click="navigate('designs')">Designs</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" :class="{active: page === 'templates'}" href="#templates" @click="navigate('templates')">Templates</a>
                     </li>
@@ -42,12 +46,17 @@
     <?= $this->Html->script([
         'vendor/vue.js',
         'vendor/jquery.min.js',
+        'vendor/popper.min.js',
+        '/bootstrap4/js/bootstrap.min.js',
         'admin.js',
-        // 'vendor/popper.min.js',
-        // '/bootstrap4/js/bootstrap.min.js',
-        // 'vendor/html2canvas_old.min.js'
     ], ['defer' => true]) ?>
-    <?= $this->fetch('script_from_view'); ?>
+
+<style>
+    .table td { vertical-align: middle; }
+    .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+        color: var(--primary-color);
+    }
+</style>
 </body>
 
 </html>

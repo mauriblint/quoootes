@@ -28,9 +28,21 @@ class TemplatesService {
 
         $Template = $TemplatesTable->get($id);
 
-        $Template->styles = serialize($data['styles']);
-        $Template->preview_url = $data['preview_url'];
-        $Template->layout = $data['layout'];
+        if (isset($data['styles'])) {
+            $Template->styles = serialize($data['styles']);
+        }
+
+        if (isset($data['preview_url'])) {
+            $Template->preview_url = $data['preview_url'];
+        }
+
+        if (isset($data['layout'])) {
+            $Template->layout = $data['layout'];
+        }
+
+        if (isset($data['active'])) {
+            $Template->active = (bool) $data['active'];
+        }
 
         $id = $TemplatesTable->save($Template);
 

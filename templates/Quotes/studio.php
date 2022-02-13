@@ -130,7 +130,7 @@
                     <div class="color-picker">
                         <div class="color-picker__swatch" @click="popovers.color_picker_2_open=!popovers.color_picker_2_open" :style="{ background: template.backgroundColor }"></div>
                         <div class="color-picker__box" v-if="popovers.color_picker_2_open">
-                            <color-picker :value="template.backgroundColor" @input="(c) => { template.backgroundColor = c.hex8 }"></color-picker>
+                            <color-picker :value="template.backgroundColor" @input="(c) => { template.backgroundColor = c.hex8; template.backgroundImage = ''; }"></color-picker>
                         </div>
                     </div>
                 </div>
@@ -298,10 +298,10 @@
                 <div class="row justify-content-center" v-if="onboarding_step === 1">
                     <div class="col-10 text-center" >
                         <h1>Let's create a beautiful quote.</h1>
-                        <p class="lead">Using this simple quote maker</p>
+                        <p class="lead">Press Enter or click on Start to create an amazing quote!</p>
                         <div class="text-center mt-5">
                             <button class="btn btn-lg btn-link text-dark" @click="onOnboardingSkipped()">Skip</button>
-                            <button class="btn btn-success btn-lg" @click="onGoToOboardingStep(2)">Start</button>
+                            <button class="btn btn-success btn-lg" @click="onGoToOboardingStep(2)" ref="startButton">Start</button>
                         </div>
                     </div>
                 </div>

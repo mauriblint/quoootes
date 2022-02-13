@@ -144,6 +144,7 @@ var app = new Vue({
 
         if (this.mode === 'create_template' || this.mode === 'edit_template') {
             this.text = 'Life is what happens when you’re busy making other plans.';
+            this.page = 'editor';
         }
 
         setTimeout(this.onResize, 100);
@@ -232,7 +233,7 @@ var app = new Vue({
         onTemplatesFetched: function (response) {
             this.templates = response.data;
 
-            if (!this.template_id) {
+            if (!this.template_id && this.mode !== 'create_template') {
                 this.setRandomTemplate();
             }
         },
@@ -266,9 +267,9 @@ var app = new Vue({
         },
 
         setTemplate: function (data, back_to_editor) {
-            if (!data.styles.layout) {
-                data.styles.layout = 'square';
-            }
+            // if (!data.styles.layout) {
+            //     data.styles.layout = 'square';
+            // }
             this.template = Object.assign({}, this.initial_template, this._parseTemplateJSON(data.styles));
             this.template_id = data.id;
 
@@ -278,6 +279,9 @@ var app = new Vue({
         },
 
         _parseTemplateJSON: function (template) {
+            if (!template) {
+                return {};
+            }
             Object.keys(template).forEach((key) => {
                 if (template[key] === 'false') {
                     template[key] = false;
@@ -493,12 +497,20 @@ var app = new Vue({
 
         onShowTextBoxDimensions: function (a) {
             this.show_textbox_area = a;
+        },
+
+        onKeyPress: function () {
+            if (this.page === 'start' && this.onboarding_step === 1) {
+                this.onGoToOboardingStep(2);
+                window.removeEventListener('keyup', window.app.onKeyPress, true);
+            }
         }
     },
 });
 
 window.addEventListener('resize', window.app.onResize, true);
 window.addEventListener('click', window.app.onClick, true);
+window.addEventListener('keyup', window.app.onKeyPress, true);
 
 $(function () {
     $('[data-toggle="popover"]').popover()

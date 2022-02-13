@@ -196,6 +196,8 @@ class UploadService {
             $response = self::uploadFromFile($tmp_file, $container, $extension, $mime_type, $cache_control);
             return $response;
         }
+
+        return false;
     }
 
     public static function get_contents($URL)
@@ -400,11 +402,27 @@ class UploadService {
             return $extension;
         }
 
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
+
+        if ($ext) {
+            return $ext;
+        }
+
         if ($default) {
             return $default;
         }
 
         return '';
+    }
+
+    public static function getFilePathFromUrl($url)
+    {
+        // Remove Query Strings from URL
+        $url = preg_replace('/\?.*/', '', $url);
+        $url = preg_replace('/\#.*/', '', $url);
+        $url_path = parse_url($url, PHP_URL_PATH);
+
+        return substr($url_path, 1);
     }
 
     public static function getFilenameFromUrl($url, $default_extension=NULL)

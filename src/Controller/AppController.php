@@ -80,11 +80,15 @@ class AppController extends Controller
         return false;
     }
 
-    public function renderJSON ($status, $data=[]) {
+    public function renderJSON ($status, $data=[], $pagination = null) {
         $response = array(
             'success' => $status,
             'data' => $data
         );
+
+        if ($pagination) {
+            $response['pagination'] = $pagination;
+        }
 
         echo json_encode($response);
         die;

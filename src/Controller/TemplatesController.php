@@ -42,12 +42,17 @@ class TemplatesController extends AppController
 
         $Template = TemplatesService::get($data['template_id']);
 
-        $filename = $Template->hash . '.jpg';
+        if (isset($data['thumb'])) {
+            $filename = $Template->hash . '.jpg';
+            $upload = UploadService::uploadFromData($data['thumb'], $filename, UploadService::BUCKET_TEMPLATES, UploadService::EXTENSION_JPG);
 
-        $upload = UploadService::uploadFromData($data['thumb'], $filename, UploadService::BUCKET_TEMPLATES, UploadService::EXTENSION_JPG);
+            if ($upload) {
+                $data['preview_url'] = $upload['url'];
+            }
 
-        $data['preview_url'] = $upload['url'];
-        // $data['active'] = 1;
+            $current_file = UploadService::getFilePathFromUrl($Template->preview_url);
+            UploadService::deleteFile($current_file);
+        }
 
         $result = TemplatesService::update($data['template_id'], $data);
 

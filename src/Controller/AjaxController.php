@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Lib\BackgroundService;
 use App\Lib\UploadService;
 use App\Lib\DesignService;
+use App\Lib\TemplatesService;
 
 class AjaxController extends AppController
 {
@@ -32,6 +33,15 @@ class AjaxController extends AppController
     public function backgrounds()
     {
     	return $this->renderJSON(true, BackgroundService::all());
+    }
+
+    public function designs()
+    {
+        $page = $this->request->getQuery('page', 1);
+        $count = $this->request->getQuery('count', 50);
+        $designs = DesignService::find(null, $page, $count);
+
+    	return $this->renderJSON(true, $designs['result']['data'], $designs['result']['pagination']);
     }
 
     public function uploadBackground()
@@ -91,5 +101,18 @@ class AjaxController extends AppController
         $mime_type = UploadService::getMimeType($filename);
         header('Content-Type: ' . $mime_type);
         readfile($url);
+    }
+
+    public function updateTemplate()
+    {
+        if (!$this->request->is('post')) {
+            return $this->renderJSON(false);
+        }
+
+        $data = $this->request->getData();
+
+        $result = TemplatesService::update($data['template_id'], $data);
+
+        $this->renderJSON(true, $result);
     }
 }

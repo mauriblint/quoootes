@@ -3,37 +3,9 @@ var app = new Vue({
     el: '#admin',
     data: {
         page: 'templates',
-        page: 'backgrounds',
         templates: [],
         backgrounds: [],
-        // scale_factor: 1,
-
-        // text: '',
-        // text_footer: '',
-
-        // template_id: null,
-        // template: {
-        //     layout: 'story',
-        //     backgroundColor: '#7BD4AA',
-        //     backgroundImage: 'https://images.pexels.com/photos/10176829/pexels-photo-10176829.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-        //     backgroundImage: '',
-        //     backgroundSize: 'cover',
-        //     backgroundPosition: 'center',
-        //     color: '#333333',
-        //     boxBackgroundColor: '',
-        //     boxPosition: 'center-center',
-        //     boxWidth: 65,
-        //     textAlign: 'center',
-        //     lineHeight: 1,
-        //     fontFamily: 'Open Sans',
-        //     fontSize: 20,
-        // },
-
-        // layouts: [
-        //     { name: 'Square', key: 'square', width: 500, height: 500 },
-        //     { name: 'Story', key: 'story', width: 383, height: 680 },
-        //     { name: 'Landscape', key: 'landscape', width: 700, height: 400 }
-        // ]
+        designs: [],
     },
 
     created: function () {
@@ -41,20 +13,18 @@ var app = new Vue({
         if (window.location.hash) {
             this.page = window.location.hash.replace('#', '');
         }
-        // this.showEnterText
-        this.fetchTemplates();
-        this.fetchBackgrounds();
 
-        // if (window.__NEXT_DATA__ && window.__NEXT_DATA__.text) {
-        //     this.text = window.__NEXT_DATA__.text;
-        // }
+        this.navigate(this.page);
 
-        // if (window.__NEXT_DATA__ && window.__NEXT_DATA__.template) {
-        //     this.setTemplate(window.__NEXT_DATA__.template);
-        // }
+        setTimeout(this._initTooltips, 1000);
+        setInterval(this._initTooltips, 8000);
     },
 
     methods: {
+        _initTooltips: function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        },
+
         fetchTemplates: function () {
             if (!this.templates.length) {
                 $.ajax({
@@ -65,13 +35,27 @@ var app = new Vue({
                 .done(this.onTemplatesFetched);
             }
         },
+
         fetchBackgrounds: function () {
+            if (!this.templates.length) {
                 $.ajax({
                     type: "GET",
                     url: '/ajax/backgrounds',
                     dataType: 'json',
                 })
                 .done((r) => this.backgrounds = r.data);
+            }
+        },
+
+        fetchDesigns: function () {
+            if (!this.designs.length) {
+                $.ajax({
+                    type: "GET",
+                    url: '/ajax/designs',
+                    dataType: 'json',
+                })
+                .done((r) => this.designs = r.data);
+            }
         },
 
         onTemplatesFetched: function (response) {
@@ -100,6 +84,18 @@ var app = new Vue({
 
         navigate: function (slug) {
             this.page = slug;
+
+            switch (this.page) {
+                case 'templates':
+                    this.fetchTemplates();
+                    break;
+                case 'backgrounds':
+                    this.fetchBackgrounds();
+                    break;
+                case 'designs':
+                    this.fetchDesigns();
+                    break;
+            }
         },
 
 
@@ -141,8 +137,32 @@ var app = new Vue({
                     this.fetchBackgrounds();
                 })
             }
-        }
+        },
 
+        onUploadBackgrounds: function () {
+            this.$refs.fileUploadInput.click();
+        },
+
+        onChangeActive: function (template, status) {
+            console.log(status);
+            var _this = this;
+
+            $.ajax({
+                url: "/ajax/update-template",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    template_id: template.id,
+                    active: status
+                }
+            })
+            .done((response) => {
+                template.active = status;
+            })
+        },
+
+        onDeleteTemplate: function () {
+
+        }
     },
 });
-
