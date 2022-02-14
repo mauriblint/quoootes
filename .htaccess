@@ -22,7 +22,7 @@
     RewriteRule    ^(\.well-known/.*)$ $1 [L]
 
     # Wordpress
-    RewriteRule ^blog$ /blog [L,R=301]
+    RewriteRule ^blog$ /blog/ [L,R=301]
     RewriteRule ^blog/(.*)$ webroot/blog/$1 [L]
 
     # Site
