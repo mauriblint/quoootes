@@ -21,6 +21,7 @@ var FontsData = [
 	{ name: 'Open Sans', weight: '400;700', },
 	{ name: 'Roboto', },
 	{ name: 'Special Elite',},
+	{ name: 'Bevan',},
 	{ name: 'Indie Flower',},
 	{
 		name: 'Merriweather Sans',
