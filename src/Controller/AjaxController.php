@@ -131,6 +131,7 @@ class AjaxController extends AppController
         $mime_type = UploadService::getMimeType($filename);
         header('Content-Type: ' . $mime_type);
         readfile($url);
+        die();
     }
 
     public function updateTemplate()
