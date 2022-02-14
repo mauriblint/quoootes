@@ -2,7 +2,7 @@
 var app = new Vue({
     el: '#admin',
     data: {
-        page: 'templates',
+        page: 'designs',
         templates: [],
         backgrounds: [],
         designs: [],
@@ -158,6 +158,23 @@ var app = new Vue({
             })
             .done((response) => {
                 template.active = status;
+            })
+        },
+
+        onChangeDesignStatus: function (design, status) {
+            var _this = this;
+
+            $.ajax({
+                url: "/ajax/update-design",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    design_id: design.id,
+                    status: status
+                }
+            })
+            .done((response) => {
+                design.status = status;
             })
         },
 

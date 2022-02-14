@@ -125,9 +125,9 @@ footer a{color:#25243c;font-size:14px}
 .card-text.no-overflow{overflow:unset;white-space:unset}
 .card-stats{font-size:80%;font-weight:600}
 .card-img-top{border-radius:var(--card-boder-radius) var(--card-boder-radius) 0 0}
-.card-overlay{width:100%;height:100%;background-color:rgba(0,0,0,.2);position:absolute;top:0;left:0;display:none;border-radius:10px 10px 0 0}
+.card-overlay{width:100%;height:100%;background-color:rgba(255,255,255,.8);position:absolute;top:0;left:0;display:none;border-radius:4px 4px 0 0}
 .card-top{position:relative;border-radius:10px 10px 0 0}
-.card:hover .card-overlay{display:block;cursor:pointer}
+.card:hover .card-overlay{display:flex;}
 .card-stats{display:flex;justify-content:flex-end;color:#fb5378;font-size:15px}
 .card-stats i{margin-right:1px;color:#fb5378}
 .card-stats span{margin-left:20px;color:#c38b97}

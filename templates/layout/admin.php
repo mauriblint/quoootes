@@ -25,7 +25,7 @@
             <div class="navbar-collapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" :class="{active: page === 'designs'}" href="#templates" @click="navigate('designs')">Designs</a>
+                        <a class="nav-link" :class="{active: page === 'designs'}" href="#designs" @click="navigate('designs')">Designs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" :class="{active: page === 'templates'}" href="#templates" @click="navigate('templates')">Templates</a>
@@ -55,6 +55,18 @@
     .table td { vertical-align: middle; }
     .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
         color: var(--primary-color);
+    }
+    .card-overlay .bi {
+        font-size: 46px;
+        margin: 10px;
+        cursor: pointer;
+    }
+    .card-overlay .bi:hover {
+        opacity: .8;
+    }
+    .card-overlay {
+        align-items: center;
+        justify-content: center;
     }
 </style>
 </body>

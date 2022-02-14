@@ -94,9 +94,15 @@
             </div>
         </div>
 
-        <div v-for="item in designs" class="col-6 col-md-3 col-lg-2 mb-3">
+        <div v-for="item in designs" class="col-6 col-md-3 mb-3">
             <div class="card">
-                <img :src="item.image_url" class="card-img-top" />
+                <div style="position:relative;">
+                    <div class="card-overlay">
+                        <i class="bi bi-check-circle-fill text-success" v-if="item.status !== 1" @click="onChangeDesignStatus(item, 1)"></i>
+                        <i class="bi bi-dash-circle-fill text-danger" v-if="item.status !== 2" @click="onChangeDesignStatus(item, 2)"></i>
+                    </div>
+                    <img :src="item.image_url" class="card-img-top" />
+                </div>
                 <div class="card-body">
                     <span v-if="item.status === 1" class="badge badge-success">Approved</span>
                     <span v-if="item.status === 0" class="badge badge-warning">Pending</span>

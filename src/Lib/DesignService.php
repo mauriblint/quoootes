@@ -137,27 +137,38 @@ class DesignService {
     }
 
 
-    public static function search ($status=1, $tag_id=null, $page=1, $count=12) {
+    public static function search ($status=null, $tag_id=null, $q=null, $page=1, $count=12, $order=['created' => 'DESC']) {
 
         $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
 
         $query = $DesignsTable->find()
-            ->where(['status' => $status])
-            ->order(['created' => 'DESC'])
+            ->order($order)
             ->limit($count)
             ->page($page)
             ->contain(['Tags'])
-            ->hydrate(false);
+            ->enableHydration(false);
 
-        if( !is_null($tag_id) ) {
-
-            // $category = TableRegistry::get('Tags')->findBySlug($category)->first();
-            $query->matching('Tags', function ($q) use ($tag_id) {
-                return $q->where(['Tags.id' => $tag_id]);
-            });
+        if (!is_null($tag_id)) {
+            $query->where(['tag_id' => $tag_id]);
         }
 
-        return $query->toArray();
+        if (!is_null($status)) {
+            $query->where(['status' => $status]);
+        }
+
+        $items = $query->toArray();
+
+        $total = $query->count();
+
+        return array(
+            'data' => $items,
+            'pagination' => [
+                'total' => $total,
+                'page' => $page,
+                'per_page' => $count,
+                'pages' => ceil($total / $count),
+            ]
+        );
     }
 
     public static function find ($tag_id=null, $page=1, $count=12) {
@@ -200,6 +211,20 @@ class DesignService {
         $Design->views++;
         $DesignsTable->save($Design);
         return true;
+    }
+
+    public static function update ($id, $data) {
+        $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
+
+        $Design = $DesignsTable->get($id);
+
+        if (isset($data['status'])) {
+            $Design->status = (int) $data['status'];
+        }
+
+        $id = $DesignsTable->save($Design);
+
+        return $Design;
     }
 }
 ?>

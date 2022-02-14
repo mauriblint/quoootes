@@ -37,11 +37,41 @@ class AjaxController extends AppController
 
     public function designs()
     {
+        $status = $this->request->getQuery('status', 'ALL');
+        $tag = $this->request->getQuery('tag', 'ALL');
         $page = $this->request->getQuery('page', 1);
         $count = $this->request->getQuery('count', 50);
-        $designs = DesignService::find(null, $page, $count);
+        $sort = $this->request->getQuery('sort', '');
+        $query = $this->request->getQuery('query', '');
 
-    	return $this->renderJSON(true, $designs['result']['data'], $designs['result']['pagination']);
+        $tag = ($tag==='ALL') ? null : $tag;
+        $status = ($status==='ALL') ? null : $status;
+
+        // $order = ['created' => 'DESC'];
+        // if ($sort === 'views') {
+        //     $order = ['views' => 'DESC'];
+        // }
+        // if ($sort === 'likes') {
+        //     $order = ['likes' => 'DESC'];
+        // }
+
+        // if (is_numeric($query)) {
+        //     $Quote = QuotesService::getById($query);
+        //     if ($Quote) {
+        //         $result = [$Quote];
+        //     } else {
+        //         $result = [];
+        //     }
+        // } else {
+        //     $result = QuotesService::search($status, $tag, $query, $page, $count, $order);
+        // }
+
+        // echo json_encode($result); die;
+
+        $designs = DesignService::search($status, $tag, $query, $page, $count);
+
+
+    	return $this->renderJSON(true, $designs['data'], $designs['pagination']);
     }
 
     public function uploadBackground()
@@ -112,6 +142,19 @@ class AjaxController extends AppController
         $data = $this->request->getData();
 
         $result = TemplatesService::update($data['template_id'], $data);
+
+        $this->renderJSON(true, $result);
+    }
+
+    public function updateDesign()
+    {
+        if (!$this->request->is('post')) {
+            return $this->renderJSON(false);
+        }
+
+        $data = $this->request->getData();
+
+        $result = DesignService::update($data['design_id'], $data);
 
         $this->renderJSON(true, $result);
     }
