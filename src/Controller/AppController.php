@@ -66,7 +66,7 @@ class AppController extends Controller
 
     private function checkSSL () {
         if (!$this->is_ssl()) {
-            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->here);
+            return $this->redirect('https://' . env('SERVER_NAME') . $this->request->getRequestTarget());
         }
     }
 

@@ -95,7 +95,14 @@
         </div>
 
         <div v-for="item in designs" class="col-6 col-md-3 col-lg-2 mb-3">
-            <img :src="item.image_url" class="img-fluid" />
+            <div class="card">
+                <img :src="item.image_url" class="card-img-top" />
+                <div class="card-body">
+                    <span v-if="item.status === 1" class="badge badge-success">Approved</span>
+                    <span v-if="item.status === 0" class="badge badge-warning">Pending</span>
+                    <span v-if="item.status === 2" class="badge badge-danger">Rejected</span>
+                </div>
+            </div>
         </div>
     </div>
 

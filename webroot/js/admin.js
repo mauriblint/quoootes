@@ -37,7 +37,7 @@ var app = new Vue({
         },
 
         fetchBackgrounds: function () {
-            if (!this.templates.length) {
+            if (!this.backgrounds.length) {
                 $.ajax({
                     type: "GET",
                     url: '/ajax/backgrounds',
