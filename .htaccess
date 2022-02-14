@@ -21,6 +21,13 @@
     RewriteEngine on
     RewriteRule    ^(\.well-known/.*)$ $1 [L]
 
+    # Disable Automatic Directory detection
+    DirectorySlash Off
+
+    # Removing Slash
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301] # <- for test, for prod use [L,R=301]
+
     # Wordpress
     RewriteRule ^blog$ /blog/ [L,R=301]
     RewriteRule ^blog/(.*)$ webroot/blog/$1 [L]
