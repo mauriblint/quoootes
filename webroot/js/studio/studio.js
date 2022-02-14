@@ -142,6 +142,10 @@ var app = new Vue({
             this.tags = window.__NEXT_DATA__.tags;
         }
 
+        if (this.mode === 'create') {
+            mixpanel.track("ViewStudio");
+        }
+
         if (this.mode === 'create_template' || this.mode === 'edit_template') {
             this.text = 'Life is what happens when you’re busy making other plans.';
             this.page = 'editor';
@@ -157,6 +161,7 @@ var app = new Vue({
 
         saveDesign: function () {
             $('#saveModal').modal();
+            mixpanel.track("OpenedSaveDesign");
         },
 
         onSaveDesign: function () {
@@ -183,7 +188,8 @@ var app = new Vue({
                 }
              })
              .done(function (response) {
-                // window.location.href = '/quote-' + response.data.id;
+                mixpanel.track("SavedDesign");
+                window.location.href = '/quote-' + response.data.id;
              })
         },
 
@@ -485,14 +491,25 @@ var app = new Vue({
             var _this = this;
             this.onboarding_step=step;
             if (step === 2) {
+                mixpanel.track("StudioWizardStarted");
                 setTimeout(function () {
                     _this.$refs.onboardingInput.focus()
                 }, 200);
+            }
+
+            if (step === 3) {
+                mixpanel.track("StudioWizardAddedText");
             }
         },
 
         onOnboardingSkipped: function () {
             this.page = 'editor';
+            mixpanel.track("StudioWizardSkipped");
+        },
+
+        onWizardTemplateSelected: function (template_id) {
+            this.onTemplateSelected(template_id);
+            mixpanel.track("StudioWizardTemplateSelected");
         },
 
         onShowTextBoxDimensions: function (a) {

@@ -48,6 +48,7 @@
         '/bootstrap4/js/bootstrap.min.js',
     ], ['defer' => true]) ?>
     <?= $this->fetch('script_from_view'); ?>
+    <?= $this->fetch('script_tracking_events'); ?>
 </body>
 
 </html>

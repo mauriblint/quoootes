@@ -146,3 +146,7 @@ section.homeSection {
     .featured__icon { text-align: center; background: transparent; width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center;}
     .featured__icon svg { width: 50px; color: var(--primary-color);}
 </style>
+
+<?php $this->start('script_tracking_events'); ?>
+	<script>mixpanel.track("ViewHomepage");</script>
+<?php $this->end(); ?>

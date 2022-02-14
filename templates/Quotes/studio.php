@@ -333,7 +333,7 @@
                     </div>
                     <div class="templates-grid scrollable mt-4">
                         <div v-for="template in templates" class="template template__square">
-                            <img :src="template.preview_url" class="img-fluid" @click="onTemplateSelected(template.id)">
+                            <img :src="template.preview_url" class="img-fluid" @click="onWizardTemplateSelected(template.id)">
                         </div>
                     </div>
                 </div>

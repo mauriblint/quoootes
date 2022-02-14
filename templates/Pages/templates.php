@@ -10,3 +10,6 @@
         </div>
     </div>
 </div>
+<?php $this->start('script_tracking_events'); ?>
+	<script>mixpanel.track("ViewTemplates");</script>
+<?php $this->end(); ?>

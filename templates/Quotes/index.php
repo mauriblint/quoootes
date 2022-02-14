@@ -10,4 +10,6 @@
         echo $this->element('quotes/pagination', ['pagination' => $pagination]);
     }
 ?>
-<!-- /.col -->
+<?php $this->start('script_tracking_events'); ?>
+	<script>mixpanel.track("ViewQuotes", { tag: '<?= ($tag) ? $tag['slug'] : 'all'; ?>'});</script>
+<?php $this->end(); ?>

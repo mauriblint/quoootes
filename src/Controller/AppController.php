@@ -19,6 +19,8 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use App\Lib\TagService;
 use App\Lib\TemplatesService;
+use Cake\Event\EventInterface;
+
 /**
  * Application Controller
  *
@@ -45,6 +47,7 @@ class AppController extends Controller
         $this->checkSSL();
 
         $this->set('category_list', TagService::getAll() );
+        $this->set('env', env('ENV', 'DEV') );
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
@@ -54,6 +57,11 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+    }
+
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
     }
 
     private function checkSSL () {
