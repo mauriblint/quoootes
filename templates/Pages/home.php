@@ -18,7 +18,8 @@
 			</div>
 		</div>
 	</div>
-    <img src="https://pixelied.com/assets/img/landing-page/curve-section-process-info.svg" style="position: absolute; bottom: 0; left: 0; width: 100%;">
+    <!-- <img src="https://pixelied.com/assets/img/landing-page/curve-section-process-info.svg" style="position: absolute; bottom: 0; left: 0; width: 100%;"> -->
+    <img src="/img/curve.svg" style="position: absolute; bottom: 0; left: 0; width: 100%;">
 </div>
 <?php $this->end(); ?>
 
