@@ -34,7 +34,7 @@ class DesignService {
                 'tag_id' => isset($requestData['tag_id']) ? $requestData['tag_id'] : NULL,
                 'template' => isset($requestData['template']) ? serialize($requestData['template']) : NULL,
                 'template_id' => isset($requestData['template_id']) ? $requestData['template_id'] : NULL,
-                'status' => 1,
+                'status' => 0,
                 'views' => 1,
                 'layout' => isset($requestData['layout']) ? $requestData['layout'] : NULL,
                 'slug' => Helpers::slugify($plain),
