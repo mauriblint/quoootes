@@ -107,13 +107,14 @@ class DesignService {
         return $query->toArray();
     }
 
-    public static function getPopularImagesQuotes ($page=1, $count=12) {
+    public static function getPopularImagesQuotes ($page=1, $count=16) {
 
         $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
 
         $query = $DesignsTable->find()
             // ->where(['likes >=' => 60])
-            ->where(['user_id =' => 1])
+            // ->where(['user_id =' => 1])
+            ->where(['status =' => 1])
             ->order(['created' => 'DESC'])
             ->limit($count)
             ->page($page)

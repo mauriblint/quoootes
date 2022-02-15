@@ -1,4 +1,7 @@
 <?php
+$here = $this->getRequest()->getRequestTarget();
+
+$show_sticky = ($here!=='/studio' && $here !== '/quote-maker');
 ?>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125035147-1"></script>
@@ -22,5 +25,7 @@ mixpanel.init('<?= env('MIXPANEL_TOKEN', '') ?>', {debug: <?= $env === 'DEV' ? '
 <!--  Adsense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502811288809454" crossorigin="anonymous"></script>
 
+<?php if ($show_sticky): ?>
 <!-- ShareThis -->
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=620b940433b7500019540efe&product=sop" defer="defer"></script>
+<?php endif; ?>
