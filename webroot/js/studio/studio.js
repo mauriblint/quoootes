@@ -151,6 +151,15 @@ var app = new Vue({
             this.page = 'editor';
         }
 
+        if (this.mode === 'edit_design') {
+            this.page = 'editor';
+            this.text = __NEXT_DATA__.design.text;
+            this.tag_id = __NEXT_DATA__.design.tag.id;
+            if (__NEXT_DATA__.design && __NEXT_DATA__.design.template) {
+                this.setTemplate(__NEXT_DATA__.design.template, true);
+            }
+        }
+
         setTimeout(this.onResize, 100);
         setTimeout(this.onFocusTextarea, 100);
 
@@ -174,9 +183,12 @@ var app = new Vue({
         },
 
         onDesignGenerated: function (imageData) {
+            var design_id = (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null;
+            var action_url = (design_id) ? '/ajax/edit' : '/ajax/save';
+
             $.ajax({
                 type: "POST",
-                url: '/ajax/save',
+                url: action_url,
                 dataType: 'json',
                 data: {
                     template: this.template,
@@ -185,6 +197,7 @@ var app = new Vue({
                     text: this.text,
                     tag_id: this.tag_id,
                     keywords: this.keywords,
+                    design_id: (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null
                 }
              })
              .done(function (response) {
@@ -239,7 +252,7 @@ var app = new Vue({
         onTemplatesFetched: function (response) {
             this.templates = response.data;
 
-            if (!this.template_id && this.mode !== 'create_template') {
+            if (!this.template_id && this.mode !== 'create_template'  && this.mode !== 'edit_design') {
                 this.setRandomTemplate();
             }
         },
@@ -273,10 +286,8 @@ var app = new Vue({
         },
 
         setTemplate: function (data, back_to_editor) {
-            // if (!data.styles.layout) {
-            //     data.styles.layout = 'square';
-            // }
-            this.template = Object.assign({}, this.initial_template, this._parseTemplateJSON(data.styles));
+            var template_styles = (data.styles) ? data.styles : data;
+            this.template = Object.assign({}, this.initial_template, this._parseTemplateJSON(template_styles));
             this.template_id = data.id;
 
             if (back_to_editor) {

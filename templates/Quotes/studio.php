@@ -65,8 +65,8 @@
                 </div>
             </div>
             <div class="ml-auto">
-                <button @click="onViewTemplates()" class="btn btn-light mb-0 btn-upper" v-if="mode === 'create'"><i class="bi bi-star-fill mr-1 text-warning"></i> Templates</button>
-                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create'" :disabled="!text && !text_footer && !text_header">Save</button>
+                <button @click="onViewTemplates()" class="btn btn-light mb-0 btn-upper" v-if="mode === 'create' || mode === 'edit_design'"><i class="bi bi-star-fill mr-1 text-warning"></i> Templates</button>
+                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create' || mode === 'edit_design'" :disabled="!text && !text_footer && !text_header">Save</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'edit_template'">Save Changes</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'create_template'">Save Template</button>
 
@@ -398,6 +398,7 @@
 <script>
     var __NEXT_DATA__ = {
         template: <?php echo json_encode($template); ?>,
+        design: <?php echo json_encode($design); ?>,
         text: "<?= $text; ?>",
         backgrounds: <?php echo json_encode($backgrounds); ?>,
         tags: <?php echo json_encode($category_list); ?>,

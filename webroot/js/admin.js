@@ -180,6 +180,10 @@ var app = new Vue({
 
         onDeleteTemplate: function () {
 
+        },
+
+        onEditDesign: function (design) {
+            window.open('/studio/' + design.id + '?action=edit_design');
         }
     },
 });

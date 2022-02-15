@@ -30,6 +30,27 @@ class AjaxController extends AppController
         die(json_encode($response));
     }
 
+    public function edit () {
+        $response = [
+            'status' => false,
+            'error' => true,
+            'message' => 'Error saving image'
+        ];
+
+        if ($this->request->is('post')) {
+            $result = DesignService::save($this->request->getData());
+
+            if ($result) {
+                $response = [
+                    'status' => true,
+                    'data' => $result
+                ];
+            }
+        }
+
+        die(json_encode($response));
+    }
+
     public function backgrounds()
     {
     	return $this->renderJSON(true, BackgroundService::all());

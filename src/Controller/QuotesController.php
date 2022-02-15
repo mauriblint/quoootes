@@ -119,9 +119,15 @@ class QuotesController extends AppController
     public function studio($hash=null)
     {
         $Template = null;
+        $Design = null;
 
-        if ($hash) {
+        if ($hash && !is_numeric($hash)) {
             $Template = TemplatesService::get($hash);
+        }
+
+        if ($hash && is_numeric($hash)) {
+            $Design = DesignService::get($hash);
+            $Design->template = unserialize($Design->template);
         }
 
         $text = $this->request->getQuery('text', "");
@@ -129,6 +135,7 @@ class QuotesController extends AppController
 
         $this->set('title', 'Studio');
         $this->set('template', $Template);
+        $this->set('design', $Design);
         $this->set('text', $text);
         $this->set('action', $action);
         $this->set('backgrounds', BackgroundService::list(null, 1, 150));

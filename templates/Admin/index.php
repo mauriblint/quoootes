@@ -100,6 +100,7 @@
                     <div class="card-overlay">
                         <i class="bi bi-check-circle-fill text-success" v-if="item.status !== 1" @click="onChangeDesignStatus(item, 1)"></i>
                         <i class="bi bi-dash-circle-fill text-danger" v-if="item.status !== 2" @click="onChangeDesignStatus(item, 2)"></i>
+                        <i class="bi bi-pencil text-info" @click="onEditDesign(item)"></i>
                     </div>
                     <img :src="item.image_url" class="card-img-top" />
                 </div>

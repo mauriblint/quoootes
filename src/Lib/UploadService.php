@@ -90,6 +90,10 @@ class UploadService {
 
         $file = WWW_ROOT . $container . DS . $filename;
 
+        $base64img = str_replace('data:image/jpeg;base64,', '', $data);
+        $base64img = str_replace('data:image/png;base64,', '', $base64img);
+        $data = base64_decode($base64img);
+
         file_put_contents($file, $data);
 
         if (file_exists($file)) {
@@ -105,6 +109,7 @@ class UploadService {
                 'version' => time(),
                 'container' => $container,
                 'format' => 'jpg',
+                'url' => $image_url,
                 'image_url' => $image_url,
                 'thumb_url' => $thumb_url,
                 'storage' => 'local',

@@ -35,7 +35,6 @@ class DesignService {
                 'template' => isset($requestData['template']) ? serialize($requestData['template']) : NULL,
                 'template_id' => isset($requestData['template_id']) ? $requestData['template_id'] : NULL,
                 'status' => 0,
-                'views' => 1,
                 'layout' => isset($requestData['layout']) ? $requestData['layout'] : NULL,
                 'slug' => Helpers::slugify($plain),
             ];
@@ -49,23 +48,36 @@ class DesignService {
             }
 
             $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
-            $Design = $DesignsTable->newEntity($data);
 
+            if (isset($requestData['design_id']) && !empty($requestData['design_id'])) {
+                $Design = self::get($requestData['design_id']);
+                $Design->text = $data['text'];
+                $Design->tag_id = $data['tag_id'];
+                $Design->template = $data['template'];
+                $Design->template_id = $data['template_id'];
+                $Design->layout = $data['layout'];
+                $Design->slug = $data['slug'];
+            } else {
+                $Design = $DesignsTable->newEntity($data);
+            }
 
             if ($DesignsTable->save($Design)) {
                 $hash = 'quoootes_' . $Design->id;
                 $filename = $hash . '.jpg';
 
                 $env = env('ENV', 'PROD');
-                $env = 'prod';
 
                 $image_data = $requestData['image'];
 
                 if ($env==='DEV') {
-                    $result = UploadService::saveToLocalDisk($filename, $data, UploadService::BUCKET_UPLOADS);
+                    $result = UploadService::saveToLocalDisk($filename, $image_data, UploadService::BUCKET_UPLOADS);
                     $Design->status = 1;
                 } else {
                     $result = UploadService::uploadFromData($image_data, $filename, UploadService::BUCKET_UPLOADS, UploadService::EXTENSION_JPG);
+                }
+
+                if ($Design->image_public_id !== null && $Design->image_storage === 's3') {
+                    UploadService::deleteFile($Design->image_public_id);
                 }
 
                 $Design->image_filename = $result['filename'];
@@ -84,7 +96,6 @@ class DesignService {
                 ];
 
                 return $Design;
-                // die(json_encode($result));
             } else {
                 return false;
             }
