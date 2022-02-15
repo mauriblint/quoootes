@@ -116,7 +116,8 @@ footer a{color:#25243c;font-size:14px}
 .cat-badge{font-size:13px;padding:8px 16px;margin-right:7px;margin-bottom:7px;background-color:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 
 .card-columns-quotes{column-count:2;margin-top:20px;column-gap:20px}
-.card{border-radius:var(--card-boder-radius);background-color:#fdfdfd;border:1px solid rgba(0,0,0,.07);margin-bottom:25px!important;break-inside:avoid;-webkit-column-break-inside:avoid}
+.card-columns .card { margin-bottom: 25px; }
+.card{border-radius:var(--card-boder-radius);background-color:#fdfdfd;border:1px solid rgba(0,0,0,.07);margin-bottom:25px;break-inside:avoid;-webkit-column-break-inside:avoid}
 .card-header{border-bottom:1px solid rgba(0,0,0,.07)}
 .card > a{text-decoration:none!important;cursor:zoom-in!important}
 .card:hover{box-shadow:0 5px 25px rgba(0,0,0,.1);-webkit-transform:translateY(-1px);transform:translateY(-1px)}

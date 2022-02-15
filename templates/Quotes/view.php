@@ -26,7 +26,7 @@
 	<div class="col-md-9">
 		<div class="row">
 			<div class="col-md-6">
-				<div class="card">
+				<div class="card mb-0">
 					<div class="card-top">
 						<img class="card-img-top" src="<?=$quote['image_url'];?>" />
 					</div>
@@ -43,14 +43,20 @@
 				<div class="design__label">
 					<a href="<?= Router::url(['_name' => 'QuoteImagesTag']) . $quote['tag']['slug'] ?>"><?=$quote['tag']['name_seo'];?></a>
 				</div>
-				<h4 class="mb30"><?=$quote['text'];?></h4>
+				<h4 class="mb-4"><?=$quote['text'];?></h4>
 
-				<div class="addthis_inline_share_toolbox_ro0p mt10"></div>
-				<a target="_blank" href="/quotes/download/<?=$quote['id']?>" class="btn btn-primary mt20">Download</a>
+				<div class="my-3 single-quote__share">
+					<div class="sharethis-inline-share-buttons"></div>
+				</div>
+
+				<a target="_blank" href="/download/<?=$quote['id']?>" class="btn btn-primary mt-3">
+					<i class="bi bi-download mr-1"></i> Download
+				</a>
+
 			</div>
 
-			<div class="col-12 text-center mt30">
-
+			<div class="col-12 text-center my-5">
+				<div class="sharethis-inline-share-buttons"></div>
 			</div>
 		</div>
 	</div>
@@ -108,6 +114,10 @@
 	}
 	.design__label .badge {
 		padding: 5px 10px;
+	}
+
+	.single-quote__share #st-1 {
+		text-align: left !important;
 	}
 </style>
 

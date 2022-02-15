@@ -212,6 +212,12 @@ class DesignService {
         $DesignsTable->save($Design);
         return true;
     }
+    public static function incrementDownloads($Design) {
+        $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
+        $Design->downloads++;
+        $DesignsTable->save($Design);
+        return true;
+    }
 
     public static function update ($id, $data) {
         $DesignsTable = TableRegistry::getTableLocator()->get('Designs');

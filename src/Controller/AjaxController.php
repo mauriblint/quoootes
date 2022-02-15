@@ -159,4 +159,5 @@ class AjaxController extends AppController
 
         $this->renderJSON(true, $result);
     }
+
 }

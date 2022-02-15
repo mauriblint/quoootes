@@ -137,13 +137,33 @@ class QuotesController extends AppController
 
     public function download($id)
     {
-        // $quote = $this->Quotes->get($id);
-        // $quote->downloads++;
-        // $this->Quotes->save($quote);
+        $Design = DesignService::get($id);
+        DesignService::incrementDownloads($Design);
 
-        // $downloadUrl = str_replace('image/upload', 'image/upload/fl_attachment', $quote->image_url);
+        $tempFolder = ROOT . '/tmp/downloads';
+        if (!file_exists($tempFolder)) { mkdir($tempFolder, 0777, true); }
 
-        // $this->redirect($downloadUrl);
+        $file = $tempFolder . '/quoootes_com_' . $Design['id'] . '.jpg';
+        file_put_contents($file, file_get_contents($Design['image_url']));
+
+        if(!file_exists($file)) {
+            die('file not found');
+        } else {
+            $file_to_send = $file;
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename='.basename($file_to_send));
+            header('Content-Length: ' . filesize($file));
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            ob_clean();
+            flush();
+            readfile($file_to_send);
+            unlink($file);
+            exit;
+        }
     }
 
     public function migrate()
