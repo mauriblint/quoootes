@@ -1,7 +1,9 @@
 <?php
+    use Cake\Routing\Router;
     $meta_title = isset($title) ? $title : 'Free Quote Maker and Generator';
     $meta_description = isset($description) ? $description : 'Simple Quote Maker and Generator. Create beautiful quotes for Instagram, Pinterest and social networks. Best images quote generator.';
     $meta_keywords = isset($keywords) ? $keywords : 'Free Quote Maker for Instagram & Pinterest';
+    $meta_image = isset($share_image) ? $share_image : Router::url('/img/og-image.jpg', true);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,9 +17,6 @@
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
     <meta name="p:domain_verify" content="f0b7d6f5e9bac3d19dc79d01bcaa8826"/>
     <meta name="google-site-verification" content="AlLuCCNbeu8LykxQXBebfUV5pcRMZSEFUsAGOT184do" />
-    <meta property="og:site_name" content="Quoootes"/>
-    <meta property="fb:app_id" content="85493958355" />
-    <meta property="og:locale" content="en_US" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -25,6 +24,7 @@
     <?= $this->Html->css('/bootstrap4/css/bootstrap.min.css') ?>
     <?= $this->Html->css('styles.css') ?>
     <?php echo $this->element('meta/analitycs');  ?>
+    <?php echo $this->element('meta/og', ['title' => $meta_title, 'description' => $meta_description, 'image' => $meta_image]);  ?>
 </head>
 
 <body class="default">
