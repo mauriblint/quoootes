@@ -515,6 +515,7 @@ var app = new Vue({
 
         onOnboardingSkipped: function () {
             this.page = 'editor';
+            setTimeout(this.onResize, 200);
             mixpanel.track("StudioWizardSkipped");
         },
 

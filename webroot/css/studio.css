@@ -102,7 +102,7 @@ input[type="range"]:focus::-ms-fill-upper{background:#eee}
 
 @media (max-width: 767px) {
     .studio__header{overflow-y:hidden}
-    .studio__body{flex-direction:column-reverse;height:100%;min-height:570px}
-    .studio__editor{min-height:250px;margin:10px}
+    .studio__body.editor{flex-direction:column-reverse;height:100%;min-height:570px}
+    .studio__editor{min-height:270px;margin:10px}
     .sidebar{width:100%}
 }

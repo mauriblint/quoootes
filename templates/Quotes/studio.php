@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <div class="studio__body" v-if="page === 'editor'">
+        <div class="studio__body editor" v-if="page === 'editor'">
             <div class="sidebar scrollable">
 
                 <!--  Text -->
@@ -286,7 +286,7 @@
                 </div>
 
                 <div class="row">
-                    <div v-for="template in templates" class="col-3">
+                    <div v-for="template in templates" class="col-6 col-md-3">
                         <img :src="template.preview_url" class="img-fluid" @click="onTemplateSelected(template.id)">
                     </div>
                 </div>

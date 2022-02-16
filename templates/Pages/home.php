@@ -70,7 +70,7 @@
                 <?php foreach ($templates as $template) echo $this->element('ui/template', [ 'template' => $template]); ?>
             </div>
             <div class="text-center mt-3">
-                <a href="<?=Router::url(['_name' => 'Studio']);?>" class="btn btn-primary btn-lg">Explore all Templates</a>
+                <a href="<?=Router::url(['_name' => 'Templates']);?>" class="btn btn-primary btn-lg">Explore all Templates</a>
             </div>
 		</section>
 	</div>
