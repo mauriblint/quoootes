@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+    quoootes_nginx:
+        container_name: quoootes_nginx
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ../../quoootes-v2:/code:cached
+            - ./images/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+            - ./images/nginx/certs:/etc/ssl
+        links:
+            - quoootes_php7
+
+    quoootes_php7:
+        container_name: quoootes_php7
+        build: ./images/php
+        volumes:
+            - ../../quoootes-v2:/code:cached
+        depends_on:
+            - quoootes_mariadb
+
+    quoootes_mariadb:
+        container_name: quoootes_mariadb
+        image: mariadb
+        restart: always
+        volumes:
+            - ./mysql:/var/lib/mysql
+            - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+        environment:
+            MYSQL_DATABASE: quoootes
+            MYSQL_USER: quoootes
+            MYSQL_PASSWORD: quoootes
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
