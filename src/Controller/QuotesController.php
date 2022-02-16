@@ -74,6 +74,7 @@ class QuotesController extends AppController
 		$this->set(compact('quote'));
         $this->set('title', $quote->text);
         $this->set('description', htmlspecialchars($quote['text']));
+        $this->set('share_image', $quote['image_url']);
         $this->set('popularQuotes', DesignService::getPopularImagesQuotes());
         $this->set('keywords', 'free quotes generator, image quote generator, quotes about life generator, quotes for instagram, quotes for tattos, quotes for life, amazing quote generador, quotes for facebook, quotes to share');
     }
