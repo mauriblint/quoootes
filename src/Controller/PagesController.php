@@ -45,4 +45,20 @@ class PagesController extends AppController
     	$this->set('templates', TemplatesService::list(null, 1, 30));
         $this->render('templates');
     }
+
+    public function embed($id)
+    {
+    	$Design = DesignService::get($id);
+
+        $widget_version = (int) $this->request->getQuery('v', '1.0');
+
+        if (!$Design) {
+            echo 'Quote not found';
+        }
+
+    	$this->set('title', 'Embed Quote');
+    	$this->set('widget_version', $widget_version);
+    	$this->set('design', $Design);
+        $this->render('embed');
+    }
 }

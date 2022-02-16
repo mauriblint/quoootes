@@ -37,6 +37,7 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/quote-images/*', ['controller' => 'Quotes', 'action' => 'indexRedirect']);
 
         $builder->connect('/download/{id}', ['controller' => 'Quotes', 'action' => 'download'])->setPass(['id']);
+        $builder->connect('/embed/{id}', ['controller' => 'Pages', 'action' => 'embed'])->setPass(['id']);
 
         $builder->connect('/quotes', ['controller' => 'Quotes', 'action' => 'index'], ['_name' => 'QuoteImages']);
         $builder->connect('/quotes/*', ['controller' => 'Quotes', 'action' => 'index'], ['_name' => 'QuoteImagesTag']);

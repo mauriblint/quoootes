@@ -19,6 +19,10 @@
 	// print_r($quote);
 	// die();
 
+	function getEmbedCode ($id, $w, $h) {
+		return '&lt;iframe style="margin: 20px auto;" src="'. Router::url('/embed/' . $id . '?v=1.0', true).'" height="'.$h.'" width="'.$w.'" frameborder="0" scrolling="no"&gt;&lt;/iframe&gt;';
+	}
+
 ?>
 
 <div class="row justify-content-md-center mt-5">
@@ -45,13 +49,22 @@
 				</div>
 				<h4 class="mb-4"><?=$quote['text'];?></h4>
 
-				<div class="my-3 single-quote__share">
-					<div class="sharethis-inline-share-buttons"></div>
+				<div class="single-quote__share">
+					<div class="sharethis-inline-share-buttons my-3"></div>
 				</div>
 
-				<a target="_blank" href="/download/<?=$quote['id']?>" class="btn btn-primary mt-3">
-					<i class="bi bi-download mr-1"></i> Download
-				</a>
+				<div class="d-flex flex-column">
+					<div>
+						<a target="_blank" href="/download/<?=$quote['id']?>" class="btn btn-primary mt-3">
+							<i class="bi bi-download mr-1"></i> Download
+						</a>
+					</div>
+					<div>
+						<button data-toggle="modal" data-target="#embedCodeModal" class="btn btn-light mt-3" onclick="trackEmbed()">
+							<i class="bi bi-code-slash mr-1"></i> Embed on your Site
+						</a>
+					</div>
+				</div>
 
 			</div>
 
@@ -62,12 +75,61 @@
 	</div>
 </div>
 
+<div class="modal" tabindex="-1" role="dialog" id="embedCodeModal">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Get Embed Code</h5>
+         </div>
+         <div class="modal-body">
+			<!-- Nav tabs -->
+			<ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" id="home-tab" data-toggle="tab" href="#code-sm" role="tab">Small</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#code-md" role="tab">Medium</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="messages-tab" data-toggle="tab" href="#code-lg" role="tab">Large</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="settings-tab" data-toggle="tab" href="#code-rs" role="tab">Responsive</a>
+				</li>
+			</ul>
+         </div>
+
+		 <div class="modal-body">
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div class="tab-pane" id="code-sm" role="tabpanel" aria-labelledby="home-tab">
+					<div class="code"><samp><?= getEmbedCode($quote['id'], 250, 440) ?></samp></div>
+				</div>
+				<div class="tab-pane active" id="code-md" role="tabpanel" aria-labelledby="profile-tab">
+					<div class="code"><samp><?= getEmbedCode($quote['id'], 400, 440) ?></samp></div>
+				</div>
+				<div class="tab-pane" id="code-lg" role="tabpanel" aria-labelledby="messages-tab">
+					<div class="code"><samp><?= getEmbedCode($quote['id'], 600, 440) ?></samp></div>
+				</div>
+				<div class="tab-pane" id="code-rs" role="tabpanel" aria-labelledby="settings-tab">
+					<div class="code"><samp><?= getEmbedCode($quote['id'], '100%', 440) ?></samp></div>
+				</div>
+			</div>
+		 </div>
+
+         <div class="modal-footer p-4">
+            <button type="button" class="btn btn-light btn-block" data-dismiss="modal">Got it!</button>
+         </div>
+      </div>
+   </div>
+</div>
+
 <div class="row justify-content-md-center">
 <div class="col-md-10">
     <h1 class="h4 color-lite">More images with quotes</h1>
 </div>
 </div>
-<div class="card-columns card-columns-quotes" style="">
+<div class="card-columns card-columns-quotes">
 	<?php foreach( $popularQuotes as $quote ) {?>
 		<?php
 			$__q_link = Router::url('/quote-'.$quote['id'], true);
@@ -116,11 +178,19 @@
 		padding: 5px 10px;
 	}
 
+	.single-quote__share { min-height: 32px; padding-top: 0px;}
 	.single-quote__share #st-1 {
 		text-align: left !important;
+	}
+	.code {
+    	font-size: 12px;
+    	color: #333;
+		padding: 10px 20px;
 	}
 </style>
 
 <script>
-	var QuoteViewData = <?=json_encode($quoteFix);?>;
+	var trackEmbed = function () {
+		mixpanel.track("EmbedDesign");
+	}
 </script>

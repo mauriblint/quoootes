@@ -115,6 +115,8 @@ footer a{color:#25243c;font-size:14px}
 .tags-hlist{display:flex;overflow:hidden;flex-wrap:wrap}
 .cat-badge{font-size:13px;padding:8px 16px;margin-right:7px;margin-bottom:7px;background-color:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link { color: #fff; background-color: var(--primary-color); }
+
 .card-columns-quotes{column-count:2;margin-top:20px;column-gap:20px}
 .card-columns .card { margin-bottom: 25px; }
 .card{border-radius:var(--card-boder-radius);background-color:#fdfdfd;border:1px solid rgba(0,0,0,.07);margin-bottom:25px;break-inside:avoid;-webkit-column-break-inside:avoid}

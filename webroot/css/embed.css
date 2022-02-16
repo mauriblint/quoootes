@@ -1,0 +1,7 @@
+.embed-content.v-1{max-width:2000px;margin:0 auto}
+.embed-content.v-1 .card:hover{cursor:pointer;opacity:.9}
+.embed-content.v-1 .card-body{height:96px;overflow:hidden}
+.embed-content.v-1 .card-img-top{height:300px;object-fit:cover;object-position:center}
+.embed-content.v-1 .copy{padding:10px;text-align:center;border-top:1px solid rgba(0,0,0,.1);font-size:12px}
+.embed-content.v-1 .copy a{color:#333}
+.embed-content.v-1 .quote-text{padding:10px;font-weight:500;font-size:18px}

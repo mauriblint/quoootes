@@ -1,7 +1,7 @@
 <?php
 $here = $this->getRequest()->getRequestTarget();
 
-$show_sticky = (strpos($here, 'studio') === false && strpos($here, 'quote-maker') === false);
+$show_sticky = (strpos($here, 'studio') === false && strpos($here, 'quote-maker') === false && strpos($here, 'embed') === false);
 ?>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125035147-1"></script>
