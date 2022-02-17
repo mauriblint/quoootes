@@ -40,7 +40,7 @@ var app = new Vue({
         mode: 'create',
         page: 'start',
         onboarding_step: 1,
-
+        sidebar_open: null,
         templates: [],
         backgrounds: [],
         tags: [],
@@ -55,6 +55,10 @@ var app = new Vue({
         show_textbox_area: false,
         saving: false,
         error_tag: false,
+
+        search_image_query: '',
+        photos: [],
+        loading: false,
 
         popovers: {
             color_picker_1_open: false,
@@ -75,6 +79,7 @@ var app = new Vue({
         ],
 
         fonts: [],
+        filters: [],
 
         template_id: null,
 
@@ -106,6 +111,9 @@ var app = new Vue({
             footerVisible: false,
             headerVisible: false,
             watermarkPosition: 4,
+
+            filter: '',
+            filterOpacity: 0.65,
         },
 
         layouts: [
@@ -164,6 +172,7 @@ var app = new Vue({
         setTimeout(this.onFocusTextarea, 100);
 
         this.fonts = Fonts.getFontsArray();
+        this.filters = FiltersData;
     },
 
     methods: {
@@ -528,11 +537,65 @@ var app = new Vue({
             this.show_textbox_area = a;
         },
 
-        onKeyPress: function () {
+        onKeyPress: function (e) {
             if (this.page === 'start' && this.onboarding_step === 1) {
                 this.onGoToOboardingStep(2);
-                window.removeEventListener('keyup', window.app.onKeyPress, true);
+                // window.removeEventListener('keyup', window.app.onKeyPress, true);
             }
+
+            if(e.which == 27) {
+                this.closeSidebar();
+            }
+        },
+
+        resetSearch: function () {
+            this.photos = [];
+            this.search_image_query = '';
+            this.folderOpen = false;
+            this.folderContent = [];
+        },
+
+        searchPixImages: function (event) {
+            // if (!query) {
+            //     this.photos = [];
+            //     return;
+            // }
+            this.loading = true;
+            this.photos = [];
+            var page = Math.floor((Math.random() * 100) + 1);
+            var url = 'https://pixabay.com/api/?key=4442277-0ac9e784a7feed1c4455d5775&per_page=24&lang=es&image_type=photo&q='
+            var _this = this;
+
+            $.get(url + this.search_image_query)
+                .done(response => {
+                    _this.photos = _this.$transformPixabayImages(response.hits);
+                })
+                .always(() => {
+                    _this.loading = false;
+                });
+        },
+
+        $transformPixabayImages: function (images) {
+            return images.map(function (obj) {
+                return {
+                    thumb: obj.previewURL,
+                    image: obj.webformatURL,
+                }
+            });
+        },
+
+        openSidebar: function (type) {
+            this.sidebar_open = type;
+            setTimeout(function () { $('[data-toggle="tooltip"]').tooltip(); }, 500);
+        },
+
+        closeSidebar: function () {
+            this.sidebar_open = false;
+            $('.tooltip').remove();
+        },
+
+        setFilter: function (filter) {
+            this.template.filter = filter.color;
         }
     },
 });
@@ -548,3 +611,7 @@ $(function () {
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 });
+
+setInterval(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+}, 1000);

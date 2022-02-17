@@ -75,7 +75,7 @@
         </div>
 
         <div class="studio__body editor" v-if="page === 'editor'">
-            <div class="sidebar scrollable">
+            <div class="sidebar scrollable" v-if="!sidebar_open">
 
                 <!--  Text -->
                 <div class="form-group">
@@ -177,13 +177,36 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Background Image</label>
-
-                    <div class="backgrounds-list scrollable">
-                        <img :src="bg.url" v-for="bg in backgrounds" @click="onBackgroundSelected(bg.url)">
+                <div class="form-group clickeable" @click="openSidebar('images')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label class="mb-0 label-w-50">Background Image</label>
+                        <div v-if="template.backgroundImage" class="d-flex flex-row align-items-center">
+                            <img class="bg-thumb" :src="template.backgroundImage" alt="">
+                            <i class="bi bi-x-lg ml-2" data-toggle="tooltip" data-title="Remove" @click.stop="template.backgroundImage=''"></i>
+                        </div>
+                        <div v-else>
+                            <i class="bi bi-chevron-double-right"></i>
+                        </div>
                     </div>
                 </div>
+
+                <div class="form-group clickeable" @click="openSidebar('filters')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label class="mb-0 label-w-50">Filters</label>
+                        <div v-if="template.filter" class="gradient-item sm">
+                            <div class="gradient-preview">
+                                <div class="gradient-preview-inner">
+                                    <div class="gradient-image"></div>
+                                    <div class="gradient-color" :style="{background: template.filter }"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <i class="bi bi-chevron-double-right"></i>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="form-group d-flex justify-content-between align-items-center">
                     <label class="mb-0" style="width: 180px;">Text Box</label>
@@ -248,8 +271,74 @@
 
             </div>
 
+            <div class="sidebar" v-if="sidebar_open === 'images'">
+                <div class="sidebar__content">
+                    <div class="sidebar__header">
+                        <h4>Background Images</h4>
+                        <div class="sidebar__close" data-toggle="tooltip" data-title="(or press scape)" @click="closeSidebar()">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </div>
+                        <div class="form-group">
+                            <div class="search-input">
+                                <input type="text" v-model="search_image_query" @keyup.enter="searchPixImages" class="form-control" placeholder="Search dogs, love, peace..">
+                                <i class="bi  bi-search" v-if="!photos.length" @click="searchPixImages"></i>
+                                <i class="bi bi-x-lg" v-else @click="resetSearch"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar__body scrollable">
+                        <div v-if="loading">
+                            <div class="loader"></div>
+                        </div>
+                        <div class="backgrounds-list backgrounds-list-full" v-if="!photos.length && !loading">
+                            <img :src="bg.url" v-for="bg in backgrounds" @click="onBackgroundSelected(bg.url)">
+                        </div>
+                        <div class="backgrounds-list backgrounds-list-full" v-if="photos.length && !loading">
+                            <img :src="bg.thumb" v-for="bg in photos" @click="onBackgroundSelected(bg.image)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar" v-if="sidebar_open === 'filters'">
+                <div class="sidebar__content">
+                    <div class="sidebar__header">
+                        <h4>Filters & Effecs</h4>
+                        <div class="sidebar__close" data-toggle="tooltip" data-title="(or press scape)" @click="closeSidebar()">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </div>
+                    </div>
+                    <div class="sidebar__body scrollable">
+                        <div>
+                            <div class="slider form-group" :class="{disabled: !template.filter}">
+                                <label class="mb-0">Intensity</label>
+                                <div class="form-group slider--input" style="flex:1">
+                                    <input class="form-control-range" v-model="template.filterOpacity" type="range" step="0.05" min="0.15" max="0.85" />
+                                </div>
+                                <span class="ml-2 range-value">
+                                    {{ Math.round(template.filterOpacity*100) }}%
+                                </span>
+                            </div>
+                            <div class="">
+                                <div v-for="(gradient) in filters" v-on:click="setFilter(gradient)" class="gradient-item" :class="{active: gradient.color===template.filter}">
+                                    <div class="gradient-preview">
+                                        <div class="gradient-preview-inner">
+                                            <div class="gradient-image"></div>
+                                            <div class="gradient-color" :style="{background: gradient.color }"></div>
+                                        </div>
+                                    </div>
+                                    <div class="gradient-name">{{ gradient.name }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="studio__editor" ref="studio">
                 <div class="studio__canvas" ref="canvas" :style="getEditorStyles()">
+
+                    <div class="studio__filter" v-if="template.filter" :style="{background: template.filter, opacity: template.filterOpacity}"></div>
                     <div class="studio__canvas__inner" :style="getBoxStyles()">
                         <div class="studio__canvas__text" :style="getTextStyles()">
                             <div v-html="getHeader()" v-if="template.headerVisible && text_header" class="studio__canvas__text-header"></div>
