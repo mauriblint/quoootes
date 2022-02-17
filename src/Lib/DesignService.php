@@ -240,6 +240,10 @@ class DesignService {
             $Design->status = (int) $data['status'];
         }
 
+        if (isset($data['tag_id'])) {
+            $Design->tag_id = (int) $data['tag_id'];
+        }
+
         $id = $DesignsTable->save($Design);
 
         return $Design;

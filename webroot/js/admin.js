@@ -1,4 +1,10 @@
 
+Vue.use(Toasted, {
+    theme: "bubble",
+    position: "top-center",
+    duration : 3000
+});
+
 var app = new Vue({
     el: '#admin',
     data: {
@@ -6,6 +12,12 @@ var app = new Vue({
         templates: [],
         backgrounds: [],
         designs: [],
+        tags: [],
+        pagination: {},
+        filters: {
+            status: 0,
+            page: 1,
+        }
     },
 
     created: function () {
@@ -18,6 +30,8 @@ var app = new Vue({
 
         setTimeout(this._initTooltips, 1000);
         setInterval(this._initTooltips, 8000);
+
+        this.tags = __NEXT_DATA__.tags;
     },
 
     methods: {
@@ -47,15 +61,25 @@ var app = new Vue({
             }
         },
 
-        fetchDesigns: function () {
-            if (!this.designs.length) {
-                $.ajax({
-                    type: "GET",
-                    url: '/ajax/designs',
-                    dataType: 'json',
-                })
-                .done((r) => this.designs = r.data);
+        fetchDesigns: function (clear_all) {
+            if (clear_all) {
+                this.designs = [];
+                this.filters.page = 1;
             }
+
+            $.ajax({
+                type: "GET",
+                url: '/ajax/designs',
+                data: {
+                    status: this.filters.status,
+                    page: this.filters.page,
+                },
+                dataType: 'json',
+            })
+            .done((r) => {
+                this.designs = this.designs.concat(r.data);
+                this.pagination = r.pagination;
+            });
         },
 
         onTemplatesFetched: function (response) {
@@ -93,7 +117,7 @@ var app = new Vue({
                     this.fetchBackgrounds();
                     break;
                 case 'designs':
-                    this.fetchDesigns();
+                    this.fetchDesigns(true);
                     break;
             }
         },
@@ -175,6 +199,7 @@ var app = new Vue({
             })
             .done((response) => {
                 design.status = status;
+                app.$toasted.show('Changes successfully saved!');
             })
         },
 
@@ -184,6 +209,30 @@ var app = new Vue({
 
         onEditDesign: function (design) {
             window.open('/studio/' + design.id + '?action=edit_design');
+        },
+
+        updateDesignValue: function (design, prop, value, e) {
+            var data = {
+                design_id: design.id
+            };
+
+            data[prop] = value;
+
+            $.ajax({
+                url: "/ajax/update-design",
+                type: 'POST',
+                dataType: 'json',
+                data: data
+            })
+            .done((response) => {
+                design[prop] = value;
+                app.$toasted.show('Changes successfully saved!');
+            })
+        },
+
+        loadNextPage: function () {
+            this.filters.page ++;
+            this.fetchDesigns(false);
         }
     },
 });

@@ -42,12 +42,17 @@
         </div>
 
     </div>
-
+    <script>
+        var __NEXT_DATA__ = {
+            tags: <?= json_encode($category_list) ?>,
+        }
+    </script>
     <?= $this->Html->script([
         'vendor/vue.js',
         'vendor/jquery.min.js',
         'vendor/popper.min.js',
         '/bootstrap4/js/bootstrap.min.js',
+        'https://unpkg.com/vue-toasted',
         'admin.js',
     ], ['defer' => true]) ?>
 

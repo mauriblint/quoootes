@@ -91,10 +91,66 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="">Designs</h1>
+                <div class="d-flex align-items-center">
+                    <label class="small mb-0 mr-1">Status</label>
+                    <select class="form-control custom-select" v-model="filters.status" @change="fetchDesigns()">
+                        <option value="ALL">All</option>
+                        <option value="0">Pendings</option>
+                        <option value="1">Accepted</option>
+                        <option value="2">Rejected</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div v-for="item in designs" class="col-6 col-md-3 mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Showing {{ (designs.length < pagination.per_page) ? designs.length : pagination.per_page }} of {{ pagination.total }} designs
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tag</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Status</th>
+                                <th class="text-right" scope="col" style="width: 100%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in designs">
+                                <td>{{ item.id }}</td>
+                                <td class="text-left"><img style="width: 120px;" :src="item.image_url" @click="onItemCicked(item)"></td>
+                                <td>
+                                    <select v-model="item.tag_id" class="form-control custom-select" style="width: 140px" @change="updateDesignValue(item, 'tag_id', item.tag_id, $event)">
+                                        <option :value="tag.id" v-for="tag in tags">{{ tag.name }}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span v-if="item.status === 1" class="badge badge-success">Approved</span>
+                                    <span v-if="item.status === 0" class="badge badge-warning">Pending</span>
+                                    <span v-if="item.status === 2" class="badge badge-danger">Rejected</span>
+                                </td>
+                                <td class="text-right">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-warning" v-if="item.status !== 2" @click="onChangeDesignStatus(item, 2)" data-toggle="tooltip" data-title="Reject"><i class="bi bi-slash-circle"></i></button>
+                                        <button type="button" class="btn btn-success" @click="onChangeDesignStatus(item, 1)" v-if="item.status !== 1" data-toggle="tooltip" data-title="Accept"><i class="bi bi-check-circle"></i></button>
+                                        <button type="button" class="btn btn-dark" @click="onEditDesign(item)" data-toggle="tooltip" data-title="Edit"><i class="bi bi-pencil"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-success" @click="loadNextPage()" :disabled="filters.page >= pagination.pages">Load more</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div v-for="item in designs" class="col-6 col-md-3 mb-3">
             <div class="card">
                 <div style="position:relative;">
                     <div class="card-overlay">
@@ -110,7 +166,7 @@
                     <span v-if="item.status === 2" class="badge badge-danger">Rejected</span>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
 
