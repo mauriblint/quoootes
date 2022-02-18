@@ -93,7 +93,7 @@
                 <h1 class="">Designs</h1>
                 <div class="d-flex align-items-center">
                     <label class="small mb-0 mr-1">Status</label>
-                    <select class="form-control custom-select" v-model="filters.status" @change="fetchDesigns()">
+                    <select class="form-control custom-select" v-model="filters.status" @change="fetchDesigns(true)">
                         <option value="ALL">All</option>
                         <option value="0">Pendings</option>
                         <option value="1">Accepted</option>
