@@ -1,6 +1,6 @@
 <?php
     $this->disableAutoLayout();
-
+    use Cake\Routing\Router;
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +31,7 @@
                 <span class="quote-text"><?=$design['text'];?></span>
             </div>
             <div class="copy">
-                <a href="#" class=" stretched-link">Powered by QUOOOTES.COM</a>
+                <a href="<?= Router::url('/quote-' . $design['id'], true); ?>" class="stretched-link">Powered by QUOOOTES.COM</a>
             </div>
         </div>
     </div>
