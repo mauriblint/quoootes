@@ -15,6 +15,7 @@ class TagService {
         $TagsTable = TableRegistry::getTableLocator()->get('Tags');
 
         $query = $TagsTable->find()
+            ->order(['name' => 'DESC'])
             ->enableHydration(false);
 
         return $query->toArray();
