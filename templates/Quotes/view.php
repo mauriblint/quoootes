@@ -55,7 +55,7 @@
 
 				<div class="d-flex flex-column">
 					<div>
-						<a target="_blank" href="/download/<?=$quote['id']?>" class="btn btn-primary mt-3">
+						<a target="_blank" href="/download/<?=$quote['id']?>"  rel="nofollow" class="btn btn-primary mt-3">
 							<i class="bi bi-download mr-1"></i> Download
 						</a>
 					</div>
