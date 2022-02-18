@@ -14,7 +14,7 @@
     <?= $this->Html->css('embed.css') ?>
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="icon"/>
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
-
+    <base target="_blank" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.0/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
     <style>
         [v-cloak] { display: none; }
@@ -31,7 +31,7 @@
                 <span class="quote-text"><?=$design['text'];?></span>
             </div>
             <div class="copy">
-                <a href="<?= Router::url('/quote-' . $design['id'], true); ?>" class="stretched-link">Powered by QUOOOTES.COM</a>
+                <a target="_blank" href="<?= Router::url('/quote-' . $design['id'], true); ?>" class="stretched-link">Powered by QUOOOTES.COM</a>
             </div>
         </div>
     </div>
