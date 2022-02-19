@@ -191,7 +191,7 @@ var app = new Vue({
             this.generate(this.onDesignGenerated, 1);
         },
 
-        onDesignGenerated: function (imageData) {
+        onDesignGenerated: function (imageData, width, height) {
             var design_id = (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null;
             var action_url = (design_id) ? '/ajax/edit' : '/ajax/save';
 
@@ -203,7 +203,11 @@ var app = new Vue({
                     template: this.template,
                     template_id: this.template_id,
                     image: imageData,
+                    width: width,
+                    height: height,
                     text: this.text,
+                    text_header: (this.template.headerVisible) ? this.text_header : '',
+                    text_footer: (this.template.footerVisible) ? this.text_footer : '',
                     tag_id: this.tag_id,
                     keywords: this.keywords,
                     design_id: (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null
@@ -437,6 +441,7 @@ var app = new Vue({
                     // }
                     if (a) {
                         a.style.boxShadow = 'none';
+                        a.style.transform = 'none';
                     }
                     if (_this.mode === 'edit_template' || _this.mode === 'create_template') {
                         cloned.getElementsByClassName('studio__watermark')[0].remove();
@@ -449,7 +454,7 @@ var app = new Vue({
                 document.body.appendChild(img);
 
                 if (callback) {
-                    callback(imgData);
+                    callback(imgData, canvas.width, canvas.height);
                 }
             });
         },

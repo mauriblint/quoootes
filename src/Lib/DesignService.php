@@ -29,13 +29,20 @@ class DesignService {
         // if ($this->request->is('post')) {
 
             $plain = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text']));
+            $text_header = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_header']));
+            $text_footer = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_footer']));
+
             $data = [
                 'text' => $plain,
+                'text_header' => $text_header,
+                'text_footer' => $text_footer,
                 'tag_id' => isset($requestData['tag_id']) ? $requestData['tag_id'] : NULL,
                 'template' => isset($requestData['template']) ? serialize($requestData['template']) : NULL,
                 'template_id' => isset($requestData['template_id']) ? $requestData['template_id'] : NULL,
                 'status' => 0,
                 'layout' => isset($requestData['layout']) ? $requestData['layout'] : NULL,
+                'width' => isset($requestData['width']) ? (int) $requestData['width'] : NULL,
+                'height' => isset($requestData['height']) ? (int) $requestData['height'] : NULL,
                 'slug' => Helpers::slugify($plain),
             ];
 
