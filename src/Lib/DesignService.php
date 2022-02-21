@@ -177,6 +177,7 @@ class DesignService {
 
 
         if(!is_null($q) || !empty($q)) {
+            $q = strtolower($q);
             $query->where(['OR' => [
                 ['LOWER(text) LIKE ' => '%'.$q.'%'],
                 ['LOWER(keywords) LIKE ' => '%'.$q.'%']
