@@ -175,6 +175,14 @@ class DesignService {
             $query->where(['status' => $status]);
         }
 
+
+        if(!is_null($q) || !empty($q)) {
+            $query->where(['OR' => [
+                ['LOWER(text) LIKE ' => '%'.$q.'%'],
+                ['LOWER(keywords) LIKE ' => '%'.$q.'%']
+            ]]);
+        }
+
         $items = $query->toArray();
 
         $total = $query->count();

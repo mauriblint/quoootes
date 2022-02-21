@@ -92,6 +92,10 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="">Designs</h1>
                 <div class="d-flex align-items-center">
+
+                    <!-- <label class="small mb-0 mr-1">Texto</label> -->
+                    <input type="text" class="form-control mr-3" v-model="filters.query" placeholder="Texto, keywords.." @keypress.enter="fetchDesigns(true)">
+
                     <label class="small mb-0 mr-1">Status</label>
                     <select class="form-control custom-select" v-model="filters.status" @change="fetchDesigns(true)">
                         <option value="ALL">All</option>
@@ -105,23 +109,30 @@
 
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    Showing {{ (designs.length < pagination.per_page) ? designs.length : pagination.per_page }} of {{ pagination.total }} designs
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>
+                        Showing {{ (designs.length < pagination.per_page) ? designs.length : pagination.per_page }} of {{ pagination.total }} designs
+                    </span>
+                    <div class="ml-auto">
+                        <button class="btn btn-dark" v-if="designs.length" @click="onExportWordpress()">Export for Wordpress</button>
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Tag</th>
-                                <th scope="col">Size</th>
+                                <th scope="col">Preview</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Tag</th>
+                                <th scope="col">Text</th>
+                                <th scope="col">Keywords</th>
                                 <th class="text-right" scope="col" style="width: 100%;"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item in designs">
-                                <td>{{ item.id }}</td>
+                                <td><a :href="'/quote-' + item.id" target="_blank">{{ item.id }}</a></td>
                                 <td class="text-left"><img style="width: 120px;" :src="item.image_url" @click="onItemCicked(item)"></td>
                                 <td>
                                     <select v-model="item.tag_id" class="form-control custom-select" style="width: 140px" @change="updateDesignValue(item, 'tag_id', item.tag_id, $event)">
@@ -133,6 +144,14 @@
                                     <span v-if="item.status === 0" class="badge badge-warning">Pending</span>
                                     <span v-if="item.status === 2" class="badge badge-danger">Rejected</span>
                                 </td>
+                                <td style="min-width: 200px">
+                                    <blockquote>
+                                        <div v-if="item.text_header" style="font-size: 110%;"><strong>{{ item.text_header }}</strong></div>
+                                        <div style="font-size: 90%; margin: 10px 0;">{{ item.text }}</div>
+                                        <div v-if="item.text_footer" style="font-size: 70%;"><strong>{{ item.text_footer }}</strong></div>
+                                    </blockquote>
+                                </td>
+                                <td>{{ item.keywords }}</td>
                                 <td class="text-right">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-warning" v-if="item.status !== 2" @click="onChangeDesignStatus(item, 2)" data-toggle="tooltip" data-title="Reject"><i class="bi bi-slash-circle"></i></button>
@@ -170,4 +189,44 @@
     </div>
 
 
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="ExportWordpress">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Export to Wordpress</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" v-if="wordpress_code_generated">
+        <textarea id="wordpress_code" class="form-control w-100" style="font-size: 11px; font-family: monospace" rows="30">{{ wordpress_code_generated }}</textarea>
+      </div>
+      <div class="modal-body p-0" v-if="!wordpress_code_generated">
+        <table class="table table-striped table-sm">
+            <thead>
+                <th>Text</th>
+                <th>Image?</th>
+            </thead>
+            <tbody>
+                <tr v-for="item in designs">
+                    <td style="font-size: 13px; padding: 10px;">{{ item.text }}</td>
+                    <td>
+                        <input type="checkbox" v-model="item.export_as_iframe">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click="onGenerateWordpressCode()" v-if="!wordpress_code_generated">Generate Code</button>
+        <div v-else>
+            <button type="button" class="btn btn-secondary" @click="wordpress_code_generated = ''; ">Back</button>
+            <button type="button" class="btn btn-success" @click="copyToClipboard()">Copy Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

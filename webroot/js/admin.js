@@ -14,9 +14,11 @@ var app = new Vue({
         designs: [],
         tags: [],
         pagination: {},
+        wordpress_code_generated: null,
         filters: {
-            status: 0,
+            status: 1,
             page: 1,
+            query: '',
         }
     },
 
@@ -73,6 +75,7 @@ var app = new Vue({
                 data: {
                     status: this.filters.status,
                     page: this.filters.page,
+                    query: this.filters.query,
                 },
                 dataType: 'json',
             })
@@ -233,6 +236,55 @@ var app = new Vue({
         loadNextPage: function () {
             this.filters.page ++;
             this.fetchDesigns(false);
+        },
+
+        onExportWordpress: function () {
+            for (i=0; i < this.designs.length; i++) {
+                Vue.set(this.designs[i], 'export_as_iframe', (Math.random() >= 0.5));
+            }
+            $('#ExportWordpress').modal();
+        },
+
+        onGenerateWordpressCode: function () {
+            let html = '';
+
+            for (i=0; i < this.designs.length; i++) {
+                if (this.designs[i].export_as_iframe) {
+                    html += this.getIframeCodeForWordress(this.designs[i]);
+                    html += '\n';
+                } else {
+                    html += this.getShortcodeForWordress(this.designs[i]);
+                    html += '\n';
+                }
+            }
+
+            this.wordpress_code_generated = html;
+        },
+
+        getIframeCodeForWordress: function (item) {
+            var html = '<!-- wp:html -->';
+            html += '<iframe style="margin: 20px auto;" src="https://quoootes.com/embed/' + item.id + '?v=1.0" height="440" width="400" frameborder="0" scrolling="no"></iframe>';
+            html += '<!-- /wp:html -->';
+
+            return html;
+        },
+
+        getShortcodeForWordress: function (item) {
+            var author = (item.text_footer) ? ' cite="' + item.text_footer+ '"' : '';
+            var html = '<!-- wp:paragraph -->';
+            html += '<p>';
+            html += '[su_quote' + author + ']' + item.text + '[/su_quote]';
+            html += '</p>';
+            html += '<!-- /wp:paragraph -->';
+
+            return html;
+        },
+
+        copyToClipboard: function () {
+            var textBox = document.getElementById("wordpress_code");
+            textBox.select();
+            document.execCommand("copy");
+            app.$toasted.show('Code copied to clipboard!');
         }
     },
 });
