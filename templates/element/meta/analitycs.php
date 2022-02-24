@@ -23,7 +23,9 @@ mixpanel.init('<?= env('MIXPANEL_TOKEN', '') ?>', {debug: <?= $env === 'DEV' ? '
 </script>
 
 <!--  Adsense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502811288809454" crossorigin="anonymous"></script>
+<?php if ($env === 'PROD'): ?>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502811288809454" crossorigin="anonymous"></script>
+  <?php endif; ?>
 
 <?php if ($show_sticky): ?>
 <!-- ShareThis -->

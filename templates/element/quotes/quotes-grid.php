@@ -3,7 +3,7 @@
 ?>
 <div class="card-columns card-columns-quotes">
 	<?php $i=0; foreach( $quotes as $quote ) { $i++;?>
-        <?php if($i===2): ?>
+        <?php if($i===2 && false): ?>
             <div class="card card-ads" style="padding: 15px 0;">
                 <?= $this->element('ads/ad-ingrid'); ?>
             </div>
@@ -16,7 +16,7 @@
                 </a>
             </div>
         <?php endif; ?>
-        <?php if($i===12): ?>
+        <?php if($i===12 && false): ?>
             <div class="card card-ads" style="padding: 15px 0;">
                 <?= $this->element('ads/ad-ingrid'); ?>
             </div>

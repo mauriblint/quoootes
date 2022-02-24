@@ -16,7 +16,7 @@ var app = new Vue({
         pagination: {},
         wordpress_code_generated: null,
         filters: {
-            status: 1,
+            status: 0,
             page: 1,
             query: '',
         }
