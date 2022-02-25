@@ -17,6 +17,7 @@
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
     <meta name="p:domain_verify" content="f0b7d6f5e9bac3d19dc79d01bcaa8826"/>
     <meta name="google-site-verification" content="AlLuCCNbeu8LykxQXBebfUV5pcRMZSEFUsAGOT184do" />
+    <meta name="msvalidate.01" content="D2347BCC2A4799B81EEDFC25EB9A2AE1" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
