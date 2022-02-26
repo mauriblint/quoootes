@@ -3,7 +3,7 @@ $here = $this->getRequest()->getRequestTarget();
 
 $show_sticky = (strpos($here, 'studio') === false && strpos($here, 'quote-maker') === false && strpos($here, 'embed') === false);
 
-$hide_ads = (strpos($here, 'studio') !== false && strpos($here, 'quote-maker') !== false && strpos($here, 'embed') === false);
+$hide_ads = (strpos($here, 'studio') !== false || strpos($here, 'quote-maker') !== false || strpos($here, 'embed') === false);
 ?>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125035147-1"></script>
@@ -27,7 +27,7 @@ mixpanel.init('<?= env('MIXPANEL_TOKEN', '') ?>', {debug: <?= $env === 'DEV' ? '
 <!--  Adsense -->
 <?php if ($env === 'PROD' && !$hide_ads): ?>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502811288809454" crossorigin="anonymous"></script>
-  <?php endif; ?>
+<?php endif; ?>
 
 <?php if ($show_sticky): ?>
 <!-- ShareThis -->
