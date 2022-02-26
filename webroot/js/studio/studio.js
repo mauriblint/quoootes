@@ -308,6 +308,12 @@ var app = new Vue({
             }
         },
 
+
+        setLayout: function (layout) {
+            this.template.layout = layout.key;
+            $('.studio__canvas__text').css('top', '').css('left', '');
+        },
+
         _parseTemplateJSON: function (template) {
             if (!template) {
                 return {};
@@ -430,6 +436,7 @@ var app = new Vue({
 
         generate: function (callback, scaleFactor) {
             var _this = this;
+            this.destroyMoveable();
             html2canvas($('.studio__canvas')[0], {
                 // useCORS: true,
                 proxy: '/ajax/proxy',
@@ -500,6 +507,13 @@ var app = new Vue({
                 this.popovers.color_picker_2_open = false;
                 this.popovers.color_picker_3_open = false;
             }
+
+            if (e.target.className.indexOf('moveable') === -1 &&
+                e.target.className.indexOf('studio__canvas__text') === -1
+            ) {
+                this.destroyMoveable();
+            }
+
         },
 
         onBackgroundSelected: function (bg_url) {
@@ -601,7 +615,26 @@ var app = new Vue({
 
         setFilter: function (filter) {
             this.template.filter = filter.color;
-        }
+        },
+
+        onTextMouseHover: function () {
+            if (!window.MoveableInstance) {
+                window.initMovable();
+            }
+        },
+
+        onTextMouseLeave: function (e) {
+            if (e && e.toElement && e.toElement.className.indexOf('moveable') === -1) {
+                this.destroyMoveable();
+            }
+        },
+
+        destroyMoveable: function () {
+            if (window.MoveableInstance && !window.MoveableDragging) {
+                window.MoveableInstance.destroy();
+                window.MoveableInstance = null;
+            }
+        },
     },
 });
 
@@ -620,3 +653,143 @@ $(function () {
 setInterval(function () {
     $('[data-toggle="tooltip"]').tooltip()
 }, 1000);
+
+
+window.MoveableInstance = null;
+window.MoveableDragging = null;
+
+initMovable = function() {
+    var parent = $('.studio__canvas')[0].getBoundingClientRect();
+    var bounds = {
+        left: parent.left,
+        right: parent.left + parent.width,
+        top: parent.top,
+        bottom: parent.top + parent.height,
+    };
+    console.log(bounds);
+    const moveable = new Moveable(document.body, {
+        target: document.querySelector(".studio__canvas__text"),
+        // If the container is null, the position is fixed. (default: parentElement(document.body))
+        container: document.querySelector(".studio__canvas")[0],
+        draggable: true,
+        rotatable: true,
+        resizable: true,
+        scalable: false,
+        warpable: false,
+        snappable: true,
+        renderDirections: ["e", "w"],
+        // Enabling pinchable lets you use events that
+        // can be used in draggable, resizable, scalable, and rotateable.
+        pinchable: true, // ["resizable", "scalable", "rotatable"]
+        origin: true,
+        keepRatio: true,
+        // Resize, Scale Events at edges.
+        edge: false,
+        throttleDrag: 0,
+        throttleResize: 0,
+        throttleScale: 0,
+        throttleRotate: 0,
+        bounds: bounds
+    });
+
+    /* draggable */
+    moveable.on("dragStart", ({
+        target,
+        clientX,
+        clientY
+    }) => {
+        // console.log("onDragStart", target);
+        window.MoveableDragging = true;
+    }).on("drag", ({
+        target,
+        transform,
+        left,
+        top,
+        right,
+        bottom,
+        beforeDelta,
+        beforeDist,
+        delta,
+        dist,
+        clientX,
+        clientY,
+    }) => {
+        // console.log("onDrag left, top", left, top);
+        target.style.left = `${left}px`;
+        target.style.top = `${top}px`;
+        // console.log("onDrag translate", dist);
+        // target!.style.transform = transform;
+    }).on("dragEnd", ({
+        target,
+        isDrag,
+        clientX,
+        clientY
+    }) => {
+        // console.log("onDragEnd", target, isDrag);
+        window.MoveableDragging = false;
+    });
+
+    /* resizable */
+    moveable.on("resizeStart", ({
+        target,
+        clientX,
+        clientY
+    }) => {
+        console.log("onResizeStart", target);
+        window.MoveableDragging = true;
+
+    }).on("resize", ({
+        target,
+        width,
+        height,
+        dist,
+        delta,
+        clientX,
+        clientY
+    }) => {
+        console.log("onResize", width, height);
+        let scale = (width * 100) / target.offsetWidth;
+        scale = target.offsetWidth / width;
+        // console.log("onResize", scale, target.offsetWidth, target.offsetHeight);
+        delta[0] && (target.style.width = `${width}px`);
+        // delta[1] && (target.style.height = `${height}px`);
+        // target.style.transform = 'scale(' + scale + ')';
+    }).on("resizeEnd", ({
+        target,
+        isDrag,
+        clientX,
+        clientY
+    }) => {
+        // console.log("onResizeEnd", target, isDrag);
+        window.MoveableDragging = false;
+    });
+
+    /* rotatable */
+    moveable.on("rotateStart", ({
+        target,
+        clientX,
+        clientY
+    }) => {
+        // console.log("onRotateStart", target);
+    }).on("rotate", ({
+        target,
+        beforeDelta,
+        delta,
+        dist,
+        transform,
+        clientX,
+        clientY
+    }) => {
+        // console.log("onRotate", dist);
+        target.style.transform = transform;
+    }).on("rotateEnd", ({
+        target,
+        isDrag,
+        clientX,
+        clientY
+    }) => {
+        // console.log("onRotateEnd", target, isDrag);
+    });
+
+    window.MoveableInstance = moveable;
+}

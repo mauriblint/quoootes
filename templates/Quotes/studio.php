@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="/fonts/brook/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="/fonts/french-love-simplicity/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="/fonts/obelix-pro/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/sifonn-basic-outline/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <style>
         [v-cloak] { display: none; }
     </style>
@@ -60,7 +61,7 @@
                         <span class="text-capitalize">{{ getLayoutFullName(template.layout) }}</span>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" v-for="layout in layouts" style="font-size: 16px;" href="#" @click="template.layout = layout.key;">{{ layout.name }}</a>
+                        <a class="dropdown-item" v-for="layout in layouts" style="font-size: 16px;" href="#" @click="setLayout(layout)">{{ layout.name }}</a>
                     </div>
                 </div>
             </div>
@@ -251,7 +252,7 @@
                 </div>
 
 
-                <div class="form-group">
+                <div class="form-group" v-if="mode === 'create_template' || mode === 'edit_template'">
                     <label>Text Position</label>
                     <div class="text-position-selector">
                         <div><i class="bi bi-arrow-up-left":class="{active: template.boxPosition==='left-top'}" @click="template.boxPosition='left-top'"></i></div>
@@ -336,11 +337,11 @@
             </div>
 
             <div class="studio__editor" ref="studio">
-                <div class="studio__canvas" ref="canvas" :style="getEditorStyles()">
+                <div class="studio__canvas" ref="canvas" :style="getEditorStyles()" @mouseleave="onTextMouseLeave($event)">
 
                     <div class="studio__filter" v-if="template.filter" :style="{background: template.filter, opacity: template.filterOpacity}"></div>
                     <div class="studio__canvas__inner" :style="getBoxStyles()">
-                        <div class="studio__canvas__text" :style="getTextStyles()">
+                        <div class="studio__canvas__text" :style="getTextStyles()" @mouseover="onTextMouseHover()"  @click="onTextMouseHover()">
                             <div v-html="getHeader()" v-if="template.headerVisible && text_header" class="studio__canvas__text-header"></div>
                             <div v-html="getText()" class="studio__canvas__text-main"></div>
                             <div v-html="getFooter()" v-if="template.footerVisible && text_footer" class="studio__canvas__text-footer"></div>
@@ -497,14 +498,15 @@
         __NEXT_DATA__.mode = '<?= $action ?>';
     <?php endif; ?>
 </script>
+
 <?php
 if ($env === 'DEV') {
     echo $this->Html->script([
-        'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js',
+        'studio/vue.min.js',
+        'studio/moveable.min.js',
         'vendor/jquery.min.js',
         'vendor/popper.min.js',
         '/bootstrap4/js/bootstrap.min.js',
-        // 'studio/html2canvas.js',
         'studio/html2canvas.min.js',
         'studio/vue-color.js',
         'studio/polyfills.js',
