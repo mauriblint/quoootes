@@ -32,5 +32,6 @@ class LandingPagesController extends AppController
     public function inspirational()
     {
     	$this->set('title', 'Inspirational Quotes Maker (FREE)');
+    	$this->set('description', 'Create amazing Inspirational Quotes with this online quote maker, super simple and fast');
     }
 }
