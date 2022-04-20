@@ -27,6 +27,14 @@ class TemplatesController extends AppController
 
         $upload = UploadService::uploadFromData($data['thumb'], $filename, UploadService::BUCKET_TEMPLATES, UploadService::EXTENSION_JPG);
 
+        if ( !empty($data['styles']['backgroundImage']) && strpos($data['styles']['backgroundImage'], 'pixabay') !== false) {
+            $upload2 = UploadService::uploadFromUrl($data['styles']['backgroundImage'], UploadService::BUCKET_BACKGROUNDS);
+
+            if ($upload2['url']) {
+                $data['styles']['backgroundImage'] = $upload2['url'];
+            }
+        }
+
         $data['hash'] = $template_hash;
         $data['preview_url'] = $upload['url'];
         $data['active'] = 1;
