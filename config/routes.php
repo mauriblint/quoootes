@@ -48,6 +48,8 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/studio', ['controller' => 'Quotes', 'action' => 'studio'], ['_name' => 'Studio']);
         $builder->connect('/studio/{hash}', ['controller' => 'Quotes', 'action' => 'studio'])->setPass(['hash']);
 
+        $builder->connect('/inspirational-quotes-maker', ['controller' => 'LandingPages', 'action' => 'inspirational']);
+
         $builder->connect('/quote-{id}', ['controller' => 'Quotes', 'action' => 'view'],
             [
                 'pass' => ['id'],
