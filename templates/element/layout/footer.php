@@ -35,13 +35,16 @@
                 <h4 class="mt-5">More</h4>
                 <ul class="list-unstyled">
                     <li>
-                        <a href="/templates">Templates</a>
+                        <a href="/templates" title="Templates to create Images with Texts and Quotes">Templates</a>
                     </li>
                     <li>
-                        <a href="/quote-maker">Quote Maker</a>
+                        <a href="/quote-maker" title="Online Quote Images Maker and Generator">Quote Maker</a>
                     </li>
                     <li>
-                        <a href="//app-sorteos.com/en">Free Instagram Comment Picker</a>
+                        <a href="/templates/instagram-quotes" title="Templates to Create Instagram Quotes">Instagram Quotes Maker</a>
+                    </li>
+                    <li>
+                        <a href="//app-sorteos.com/en" title="Free Instagram Giveaways Picker">Free Instagram Comment Picker</a>
                     </li>
                     <!-- <li>
                         <a href="//creatufrase.net">Spanish Quote Maker</a>

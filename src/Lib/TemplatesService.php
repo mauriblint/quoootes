@@ -73,7 +73,7 @@ class TemplatesService {
         }
     }
 
-    public static function list ($tag_id=null, $page=1, $count=12) {
+    public static function list ($tag_id=null, $page=1, $count=12, $layout=null) {
 
         $TemplatesTable = TableRegistry::getTableLocator()->get('Templates');
 
@@ -83,6 +83,10 @@ class TemplatesService {
             ->limit($count)
             ->page($page)
             ->enableHydration(false);
+
+        if ($layout) {
+            $query->where(['layout' => $layout]);
+        }
 
         $result = $query->toArray();
 

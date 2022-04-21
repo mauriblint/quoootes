@@ -32,6 +32,7 @@ return static function (RouteBuilder $routes) {
 
         $builder->connect('/', ['controller' => 'Pages', 'action' => 'homepage'], ['_name' => 'Home']);
         $builder->connect('/templates', ['controller' => 'Pages', 'action' => 'templates'], ['_name' => 'Templates']);
+        $builder->connect('/templates/instagram-quotes', ['controller' => 'LandingPages', 'action' => 'instagramQuotes']);
 
         $builder->connect('/quote-images', ['controller' => 'Quotes', 'action' => 'indexRedirect']);
         $builder->connect('/quote-images/*', ['controller' => 'Quotes', 'action' => 'indexRedirect']);
