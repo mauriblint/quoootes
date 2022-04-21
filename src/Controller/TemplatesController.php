@@ -62,6 +62,14 @@ class TemplatesController extends AppController
             UploadService::deleteFile($current_file);
         }
 
+        if ( !empty($data['styles']['backgroundImage']) && strpos($data['styles']['backgroundImage'], 'pixabay') !== false) {
+            $upload2 = UploadService::uploadFromUrl($data['styles']['backgroundImage'], UploadService::BUCKET_BACKGROUNDS);
+
+            if ($upload2['url']) {
+                $data['styles']['backgroundImage'] = $upload2['url'];
+            }
+        }
+
         $result = TemplatesService::update($data['template_id'], $data);
 
         $this->renderJSON(true, $result);
