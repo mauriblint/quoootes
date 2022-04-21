@@ -36,8 +36,8 @@ class LandingPagesController extends AppController
     }
     public function instagramQuotes()
     {
-    	$this->set('title', 'Inspirational Quotes Maker (FREE)');
-    	$this->set('description', 'Create amazing Inspirational Quotes with this online quote maker, super simple and fast');
+    	$this->set('title', 'Instagram Quotes Maker (FREE)');
+    	$this->set('description', 'Create amazing Instagram Quotes usign your own texts (Images with Texts) with this online quote maker, super simple and fast');
         $this->set('templates', TemplatesService::list(null, 1, 30, 'story'));
     }
 }
