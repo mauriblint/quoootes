@@ -79,6 +79,11 @@ p.lead {
 .btn-primary:hover,.btn-brand:hover{background:var(--primary-color-dark);color:#fff}
 .btn-success{background-color:#99c432;border-color:#89b02d}
 .btn-success:hover{background-color:#89b02d}
+.btn-icon {
+	width: 32px;
+	height: 32px;
+	padding: 0;
+}
 
 .navbar-light .navbar-nav .nav-link { color: #254a58; font-weight: 700; }
 .navbar-brand{ padding: 0;}
@@ -125,6 +130,13 @@ footer a{color:#25243c;font-size:14px}
 
 .hentry p { color: #444; }
 
+.signup-modal .modal-dialog { max-width: 450px; }
+.modal-v2 .modal-content { border-radius: 10px; }
+.modal-v2 .modal-body { padding: 30px;}
+.modal-v2 .modal-title {    flex: 1;
+    text-align: center;
+    padding-left: 36px;}
+
 .circles-list ol{list-style-type:none;margin-left:1.25em;padding-left:2.5em;counter-reset:li-counter;border-left:1px solid #00c4cc;position:relative}
 .circles-list ol>li{position:relative;margin-bottom:3.125em;clear:both}
 .circles-list ol>li:before{position:absolute;top:-.5em;font-weight:600;font-size:19px;left:-62px;width:2.25em;height:2.25em;line-height:37px;text-align:center;z-index:9;color:#1ac1a0;border:2px solid #6ad229;border-radius:50%;content:counter(li-counter);background-color:#edf0f2;counter-increment:li-counter}
@@ -159,12 +171,26 @@ footer a{color:#25243c;font-size:14px}
 .homeText{font-size:13px;color:#999;text-align:center;line-height:1.9;max-width:800px;margin:0 auto 30px}
 
 .home-section{margin-top:120px;margin-bottom:120px}
-.template{background-color:#eef0f6;text-align:center;border-radius:4px;padding:8px}
+.template{background-color:#eef0f6;text-align:center;border-radius:4px;padding:8px; position: relative;}
+.template > a { position: relative; }
 .template img{border-radius:4px}
 .template:hover{cursor:pointer;background-color:#d9deea}
 .templates-list__square .template{width:100%;height:200px;margin-bottom:30px}
 .templates-list__square .template a{width:100%;height:100%;display:inline-block}
 .templates-list__square .template img{width:100%;height:100%;object-fit:cover}
+
+/* Dashboard */
+.delete-btn {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	display: none;
+}
+
+.template:hover .delete-btn {
+	display: block;
+	z-index: 999;
+}
 
 @media (max-width: 575px) {
 	.navbar-nav{text-align:center;font-size:20px}

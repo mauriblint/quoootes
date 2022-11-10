@@ -28,4 +28,23 @@ var app = new Vue({
         //     _this.selectTemplate(template);
         // });
     },
+
+    methods: {
+        onDelete: function (event, item, index) {
+            var _this = this;
+
+            if (window.confirm("Do you really want to leave?")) {
+                $.ajax({
+                    type: "DELETE",
+                    url: '/ajax/delete/' + item.id,
+                    dataType: 'json',
+                })
+                .done(function (response) {
+                    if (response.data.deleted) {
+                        _this.designs.splice(index, 1);
+                    }
+                })
+            }
+        }
+    }
 });

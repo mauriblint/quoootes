@@ -11,6 +11,7 @@ use App\Lib\MixpanelService;
 use App\Lib\ResponseHandler;
 
 use App\Utility\Helpers;
+use Cake\I18n\FrozenTime;
 
 class DesignService {
 
@@ -23,6 +24,30 @@ class DesignService {
         } catch (\Throwable $th) {
             return false;
         }
+    }
+
+    public static function setUserId ($design_id, $user_id) {
+        $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
+        $Design = $DesignsTable->get($design_id);
+
+        if (!$Design->user_id) {
+            $Design->user_id = $user_id;
+            $DesignsTable->save($Design);
+        }
+
+
+        return true;
+    }
+
+    public static function delete ($Design) {
+        $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
+
+        $Design->status = 9;
+        $Design->deleted = FrozenTime::now();
+
+        $DesignsTable->save($Design);
+
+        return true;
     }
 
     public static function save ($requestData) {

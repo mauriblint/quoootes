@@ -1,4 +1,5 @@
 <?php
+    use Cake\Routing\Router;
     $this->disableAutoLayout();
 
     // echo '<pre>';
@@ -7,6 +8,8 @@
     // echo json_encode($template, JSON_UNESCAPED_UNICODE);
     // die;
     $env = env('ENV', 'DEV');
+
+
 ?>
 
 
@@ -17,6 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quoootes - Studio</title>
+    <link rel="canonical" href="<?= Router::url('/studio', true); ?>" />
     <?= $this->Html->css('/bootstrap4/css/bootstrap.min.css') ?>
     <?= $this->Html->css('studio.css') ?>
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="icon"/>
@@ -65,13 +69,23 @@
                     </div>
                 </div>
             </div>
-            <div class="ml-auto">
+            <div class="studio__header-options">
                 <button @click="onViewTemplates()" class="btn btn-light mb-0 btn-upper" v-if="mode === 'create' || mode === 'edit_design'"><i class="bi bi-star-fill mr-1 text-warning"></i> Templates</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create' || mode === 'edit_design'" :disabled="!text && !text_footer && !text_header">Save</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'edit_template'">Save Changes</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'create_template'">Save Template</button>
 
                 <button class="btn btn-success mb-0 ml-3 btn-upper" @click="createNewTemplate()" v-if="mode === 'edit_template'">New Template</button>
+
+                <div class="studio__header-user-menu" v-if="user">
+                    <button class="dropdown-toggle btn btn-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="user-profile-pic" :src="user.picture" alt="">
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard?ref=studio" class="dropdown-item">My Quotes</a>
+                        <a href="/logout" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -492,6 +506,7 @@
         text: "<?= $text; ?>",
         backgrounds: <?php echo json_encode($backgrounds); ?>,
         tags: <?php echo json_encode($category_list); ?>,
+        user: <?php echo json_encode($user); ?>,
     }
 
     <?php if ($action): ?>

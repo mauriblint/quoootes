@@ -43,6 +43,7 @@ var app = new Vue({
         sidebar_open: null,
         templates: [],
         backgrounds: [],
+        user: null,
         tags: [],
         tag_id: '',
         keywords: '',
@@ -150,6 +151,10 @@ var app = new Vue({
             this.tags = window.__NEXT_DATA__.tags;
         }
 
+        if (window.__NEXT_DATA__ && window.__NEXT_DATA__.user) {
+            this.user = window.__NEXT_DATA__.user;
+        }
+
         if (this.mode === 'create') {
             mixpanel.track("ViewStudio");
         }
@@ -199,6 +204,9 @@ var app = new Vue({
                 type: "POST",
                 url: action_url,
                 dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
                 data: {
                     template: this.template,
                     template_id: this.template_id,

@@ -8,6 +8,7 @@ use Cake\Event\EventInterface;
 
 use App\Lib\DesignService;
 use App\Lib\TemplatesService;
+use Cake\Routing\Router;
 
 class QuotesController extends AppController
 {
@@ -71,10 +72,29 @@ class QuotesController extends AppController
 
         DesignService::incrementView($quote);
 
+        $Session = $this->request->getSession();
+        $session_key = 'quote_' . $quote['id'] . '_anon_owner';
+        $session_key = 'save_anon_design_id';
+        $is_anon_owner = $Session->read($session_key) === $quote['id'];
+
+        // var_dump($is_anon_owner);
+        // die;
+
+        // var_dump($this->request);
+        // echo $this->request->getRequestTarget();
+        // die;
+        if (!$this->user_id) {
+            $Session->write('redirect_after_google_login', Router::url($this->request->getRequestTarget(), true));
+            // if ($is_anon_owner) {
+            //     $Session->write('save_anon_design_id', $quote['id']);
+            // }
+        }
+
 		$this->set(compact('quote'));
         $this->set('title', $quote->text);
         $this->set('description', htmlspecialchars($quote['text']));
         $this->set('share_image', $quote['image_url']);
+        $this->set('is_anon_owner', $is_anon_owner);
         $this->set('popularQuotes', DesignService::getPopularImagesQuotes());
         $this->set('keywords', 'free quotes generator, image quote generator, quotes about life generator, quotes for instagram, quotes for tattos, quotes for life, amazing quote generador, quotes for facebook, quotes to share');
     }

@@ -86,7 +86,25 @@ class GoogleController extends AppController
                 $this->Auth->setUser($User);
             }
 
-            return $this->redirect('/dashboard');
+            $Session = $this->request->getSession();
+            $redirect_url = $Session->read('redirect_after_google_login');
+            $save_anon_design_id = $Session->read('save_anon_design_id');
+
+            // var_dump($redirect_url);
+            // var_dump($save_anon_design_id);
+            // die;
+
+            if ($save_anon_design_id) {
+                DesignService::setUserId($save_anon_design_id, $User['id']);
+                $Session->delete('save_anon_design_id');
+                $Session->delete('redirect_after_google_login');
+            }
+
+            if ($redirect_url) {
+                return $this->redirect($redirect_url);
+            } else {
+                return $this->redirect('/dashboard');
+            }
         }
 
         return $this->redirect('/?login_error');

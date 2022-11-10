@@ -140,15 +140,7 @@
 	<div class="col-md-12 mt50 mb40">
 		<p class="homeText">Welcome to <strong>Quoootes.com</strong>. Is an online <strong>quotes creator</strong> that allow you to create images quotes online and free. Create quotes ready to share on Pinterest, Facebook, Whatsapp, Twitter, Instagram. Also you will find <i>beautiful quotes</i>, quotes about love, life, <strong>positive quotes</strong>. Create your own images with online and super easy. </p>
 	</div>
-
 </div>
-<?php if (!$user): ?>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<div id="g_id_onload"
-data-client_id="443859332061-cl9dab1raicl1ernph96mot32jpkhlk2.apps.googleusercontent.com"
-data-login_uri="https://quoootes.com/google/callback">
-</div>
-<?php endif; ?>
 <style>
     body {
         background: white;

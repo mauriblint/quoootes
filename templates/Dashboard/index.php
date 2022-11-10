@@ -12,11 +12,12 @@
         </div>
     </div>
     <div class="row templates-list templates-list__square">
-        <div class="col-12 col-sm-6 col-md-3" v-for="item in designs">
+        <div class="col-12 col-sm-6 col-md-3" v-for="(item, index) in designs">
             <div class="template">
                 <a :href="'/quote-' + item.id">
                     <img class="img-fluid" :src="item.image_url">
                 </a>
+                <button class="btn btn-ligth btn-sm delete-btn btn-icon" @click.stop="onDelete($event, item, index)"><i class="bi bi-trash"></i></button>
             </div>
         </div>
     </div>

@@ -16,6 +16,11 @@ class AjaxController extends AppController
             'message' => 'Error saving image'
         ];
 
+        // $session_key = 'quote_' . 99999 . '_anon_owner';
+        // $this->request->getSession()->write($session_key, 1);
+        // echo $this->request->getSession()->read($session_key);
+        // die(json_encode($response));
+
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $data['user_id'] = $this->user_id;
@@ -23,6 +28,13 @@ class AjaxController extends AppController
             $result = DesignService::save($data);
 
             if ($result) {
+
+                if (!$this->user_id) {
+                    $session_key = 'quote_' . $result['id'] . '_anon_owner';
+                    $session_key = 'save_anon_design_id';
+                    $this->request->getSession()->write($session_key, $result['id']);
+                }
+
                 $response = [
                     'status' => true,
                     'data' => $result
@@ -53,6 +65,35 @@ class AjaxController extends AppController
 
         die(json_encode($response));
     }
+
+    public function delete ($id) {
+        $response = [
+            'status' => false,
+            'error' => true,
+            'message' => 'Error deleting design'
+        ];
+
+        if ($this->request->is('delete')) {
+
+            $Design = DesignService::get($id);
+
+            if ($Design && $Design['user_id'] === $this->user_id) {
+                $result = DesignService::delete($Design);
+            }
+
+            if ($result) {
+                $response = [
+                    'status' => true,
+                    'data' => array(
+                        'deleted' => true
+                    )
+                ];
+            }
+        }
+
+        die(json_encode($response));
+    }
+
 
     public function backgrounds()
     {
