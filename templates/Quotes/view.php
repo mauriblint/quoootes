@@ -32,7 +32,7 @@ function getEmbedCode($id, $w, $h)
 
 	<div class="col-md-9">
 		<?php if ($is_anon_owner) : ?>
-			<div class="row">
+			<div class="row d-none">
 				<div class="col-12">
 					<div class="alert alert-info">
 						asdasd
