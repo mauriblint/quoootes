@@ -62,7 +62,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
         <div id="g_id_onload"
         data-client_id="443859332061-cl9dab1raicl1ernph96mot32jpkhlk2.apps.googleusercontent.com"
-        data-login_uri="https://quoootes.com/google/callback">
+        data-login_uri="<?= Router::url('/google/callback', true); ?>">
     </div>
     <?php endif; ?>
 </body>
