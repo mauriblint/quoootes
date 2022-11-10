@@ -3,7 +3,7 @@ namespace App\Lib;
 
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 
 // use App\Lib\MixpanelService;
 use App\Lib\ResponseHandler;
@@ -19,6 +19,42 @@ class UserService {
 
     private static function getTable () {
         return TableRegistry::get('Users');
+    }
+
+    public static function handleLoginWithGoogle ($google_data) {
+        $UsersTable = TableRegistry::getTableLocator()->get('Users');
+        $User = self::findByGoogleIdOrEmail($google_data['id'], $google_data['email']);
+
+        if (!$User) {
+            $User = self::createFromGoogle($google_data);
+        } else {
+            $User->picture = $google_data['picture'];
+            $User->last_login = FrozenTime::now();
+            $UsersTable->save($User);
+        }
+
+        return $User;
+    }
+
+    public static function createFromGoogle ($google_data) {
+        $UsersTable = TableRegistry::getTableLocator()->get('Users');
+
+        $User = $UsersTable->newEmptyEntity();
+
+        $User->google_id = $google_data['id'];
+        $User->email = $google_data['email'];
+        $User->email_verified = (bool) $google_data['email_verified'];
+        $User->name = $google_data['name'];
+        $User->first_name = $google_data['given_name'];
+        $User->last_name = $google_data['family_name'];
+        $User->picture = $google_data['picture'];
+        $User->last_login = FrozenTime::now();
+
+        if ($UsersTable->save($User)) {
+            return $User;
+        } else {
+            return false;
+        }
     }
 
     public static function authenticate ($AuthComponent, $data) {
@@ -94,10 +130,10 @@ class UserService {
         return $user;
 	}
 
-    public function findByGoogleIdOrEmail ($google_id, $email) {
+    public static function findByGoogleIdOrEmail ($google_id, $email) {
 	    $user = self::getTable()->find()
-            ->where(['email = ' => $email])
-            ->orWhere(['google_id = ' => $google_id])
+            ->where(['email' => $email])
+            // ->where(['OR' => ['google_id' => $google_id]])
             ->first();
 
         return $user;

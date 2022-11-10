@@ -33,6 +33,7 @@ class DesignService {
             $text_footer = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_footer']));
 
             $data = [
+                'user_id' => (isset($user_id) && !is_null($user_id) && is_numeric($user_id)) ? $user_id : null,
                 'text' => $plain,
                 'text_header' => $text_header,
                 'text_footer' => $text_footer,
@@ -200,25 +201,39 @@ class DesignService {
         );
     }
 
-    public static function find ($tag_id=null, $page=1, $count=12) {
+    public static function findByUserId ($user_id=null) {
+        if (!$user_id) {
+            return false;
+        }
+
+        return self::find(null, 1, 20, $user_id);
+    }
+
+    public static function find ($tag_id=null, $page=1, $count=12, $user_id=null) {
 
         $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
 
         $query = $DesignsTable->find()
             ->where(['status' => 1])
-            // ->orWhere(['likes > 10'])
-            // ->orWhere(['user_id = 1'])
             ->order(['created' => 'DESC'])
             ->limit($count)
             ->page($page)
             ->contain(['Tags'])
             ->enableHydration(false);
 
-        if( !is_null($tag_id) ) {
-            $query->matching('Tags', function ($q) use ($tag_id) {
-                return $q->where(['Tags.id' => $tag_id]);
-            });
+        if (!is_null($user_id)) {
+            $query->where(['user_id' => $user_id]);
         }
+
+        if (!is_null($tag_id)) {
+            $query->where(['tag_id' => $tag_id]);
+        }
+
+        // if( !is_null($tag_id) ) {
+        //     $query->matching('Tags', function ($q) use ($tag_id) {
+        //         return $q->where(['Tags.id' => $tag_id]);
+        //     });
+        // }
 
         $total = $query->count();
 

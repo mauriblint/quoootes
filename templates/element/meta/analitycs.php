@@ -1,7 +1,15 @@
 <?php
 $here = $this->getRequest()->getRequestTarget();
 
-$show_sticky = (strpos($here, 'studio') === false && strpos($here, 'quote-maker') === false && strpos($here, 'embed') === false);
+$show_sticky =  (strpos($here, 'studio') === false
+                && strpos($here, 'quote-maker') === false
+                && strpos($here, 'embed') === false
+                && strpos($here, 'dashboard') === false
+              );
+
+if (isset($hide_share_buttons)) {
+  $show_sticky = false;
+}
 
 $hide_ads = (strpos($here, 'studio') !== false || strpos($here, 'quote-maker') !== false || strpos($here, 'embed') === false);
 

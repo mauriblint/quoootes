@@ -31,6 +31,9 @@ return static function (RouteBuilder $routes) {
     $routes->scope('/', function (RouteBuilder $builder) {
 
         $builder->connect('/', ['controller' => 'Pages', 'action' => 'homepage'], ['_name' => 'Home']);
+        $builder->connect('/login', ['controller' => 'Pages', 'action' => 'login'], ['_name' => 'Login']);
+        $builder->connect('/logout', ['controller' => 'Google', 'action' => 'logout'], ['_name' => 'Logout']);
+        $builder->connect('/dashboard', ['controller' => 'Dashboard', 'action' => 'index'], ['_name' => 'Dashboard']);
         $builder->connect('/templates', ['controller' => 'Pages', 'action' => 'templates'], ['_name' => 'Templates']);
         $builder->connect('/templates/instagram-quotes', ['controller' => 'LandingPages', 'action' => 'instagramQuotes']);
 

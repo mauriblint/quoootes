@@ -20,7 +20,7 @@
     <meta name="msvalidate.01" content="D2347BCC2A4799B81EEDFC25EB9A2AE1" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.0/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
     <?= $this->Html->css('/bootstrap4/css/bootstrap.min.css') ?>
     <?= $this->Html->css('styles.css') ?>
@@ -30,7 +30,7 @@
 
 <body class="default">
 
-    <?php echo $this->element('layout/header');  ?>
+    <?php echo (!isset($hide_header)) ? $this->element('layout/header') : null;  ?>
 
     <div class="fluid-container mb20">
         <?= $this->fetch('fluidcontent');?>
@@ -40,7 +40,7 @@
         <?= $this->fetch('content'); ?>
     </div>
 
-    <?php echo $this->element('layout/footer');  ?>
+    <?php echo (!isset($hide_footer)) ? $this->element('layout/footer') : null;  ?>
 
     <?= $this->Html->script([
         // 'main.js',

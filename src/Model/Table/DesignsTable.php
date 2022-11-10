@@ -11,6 +11,10 @@ class DesignsTable extends Table
     {
         $this->addBehavior('Timestamp');
         $this->belongsTo('Tags');
+        $this->belongsTo('Users');
+        $this->addBehavior('CounterCache', [
+            'Users' => ['designs_count']
+        ]);
         // $this->belongsTo('Frases');
         // $this->belongsToMany ('Tags', [
         //     'joinType' => 'INNER'

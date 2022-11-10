@@ -22,7 +22,23 @@
     <img src="/img/curve.svg" style="position: absolute; bottom: 0; left: 0; width: 100%;">
 </div>
 <?php $this->end(); ?>
-
+<div class="row">
+    <div class="col-12">
+        <div class="create-account-banner">
+            Starting today, you can create an account to <strong>save your designs</strong>!
+            <div class="mt-4 mx-auto d-flex justify-content-center">
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-size="large"
+                    data-theme="outline"
+                    data-text="sign_in_with"
+                    data-shape="rectangular"
+                    data-logo_alignment="left">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row home-section">
 	<div class="col-md-4">
         <div class="featured">
@@ -58,7 +74,6 @@
         </div>
 	</div>
 </div>
-
 <div class="row home-section">
 	<div class="col-md-12">
 		<section class="mt-6">
@@ -127,7 +142,13 @@
 	</div>
 
 </div>
-
+<?php if (!$user): ?>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<div id="g_id_onload"
+data-client_id="443859332061-cl9dab1raicl1ernph96mot32jpkhlk2.apps.googleusercontent.com"
+data-login_uri="https://dev.quoootes.com/google/callback">
+</div>
+<?php endif; ?>
 <style>
     body {
         background: white;

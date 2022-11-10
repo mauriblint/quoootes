@@ -17,7 +17,10 @@ class AjaxController extends AppController
         ];
 
         if ($this->request->is('post')) {
-            $result = DesignService::save($this->request->getData());
+            $data = $this->request->getData();
+            $data['user_id'] = $this->user_id;
+
+            $result = DesignService::save($data);
 
             if ($result) {
                 $response = [

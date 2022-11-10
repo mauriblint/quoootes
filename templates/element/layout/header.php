@@ -12,6 +12,7 @@ use Cake\Routing\Router;
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
+                <?php if (!$user): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?= Router::url(['_name' => 'QuoteImages']); ?>">
                         Quotes
@@ -34,16 +35,49 @@ use Cake\Routing\Router;
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/blog/how-to-create-images-with-text">
+                    <a class="nav-link" href="/blog">
                         Help
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= Router::url(['_name' => 'Login']); ?>">
+                        Login
+                    </a>
+                </li>
+                <?php endif; ?>
+
+                <?php if ($user): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= Router::url(['_name' => 'Dashboard']); ?>">
+                        My Quotes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= Router::url(['_name' => 'QuoteImages']); ?>">
+                        Explore
+                    </a>
+                </li>
+                <?php endif; ?>
+
                 <li class="nav-item active">
                     <a class="btn btn-brand gr" href="<?= Router::url(['_name' => 'Studio']); ?>">
                         <i class="bi bi-plus-lg mr-1"></i>
                         Create
                     </a>
                 </li>
+
+                <?php if ($user): ?>
+                <li class="nav-item dropdown hidden-xs-down">
+                    <a class="nav-link dropdown-toggle" href="#" id="TopicsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="user-profile-pic" src="<?=$user['picture']?>" alt="">
+                    </a>
+                    <div class="dropdown-menu" id="TopicsDropdownMenu">
+                        <a href="<?= Router::url(['_name' => 'Dashboard']); ?>" class="dropdown-item">My Quotes</a>
+                        <hr class="dropdown-divider">
+                        <a href="<?= Router::url(['_name' => 'Logout']); ?>" class="dropdown-item">Logout</a>
+                    </div>
+                </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

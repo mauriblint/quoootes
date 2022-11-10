@@ -51,6 +51,18 @@ class AppController extends Controller
 
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'loginAction' => '/',
+            'loginRedirect' => '/dashboard',
+            'logoutRedirect' => '/',
+            'unauthorizedRedirect' => '/',
+        ]);
+
+        $User = $this->Auth->user();
+        $this->user = $User;
+        $this->user_id = (isset($User['id'])) ? $User['id'] : null;
+        $this->set('user', $User);
+        $this->set('user_id', $this->user_id);
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.
@@ -62,6 +74,7 @@ class AppController extends Controller
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
+        $this->Auth->allow();
     }
 
     private function checkSSL () {

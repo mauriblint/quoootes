@@ -37,6 +37,18 @@ class PagesController extends AppController
         $this->render('home');
     }
 
+    public function login()
+    {
+        if ($this->user) {
+            return $this->redirect('/');
+        }
+    	$this->set('title', 'Login');
+    	$this->set('hide_header', 1);
+    	$this->set('hide_footer', 1);
+    	$this->set('hide_share_buttons', 1);
+        $this->render('login');
+    }
+
     public function templates()
     {
     	$recentImages = null;
