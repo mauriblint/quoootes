@@ -243,7 +243,7 @@ class DesignService {
 			->contain(['Tags'])
 			->enableHydration(false);
 
-		echo $query->sql(); die;
+		// echo $query->sql(); die;
 
 		$total = $query->count();
 
