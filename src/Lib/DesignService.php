@@ -236,6 +236,7 @@ class DesignService {
 
 		$query = $DesignsTable->find()
 			->where(['status !=' > 9])
+			->where(['user_id !=' > $user_id])
 			->order(['created' => 'DESC'])
 			->limit($count)
 			->page($page)
