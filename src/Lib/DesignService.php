@@ -235,8 +235,8 @@ class DesignService {
 		$DesignsTable = TableRegistry::getTableLocator()->get('Designs');
 
 		$query = $DesignsTable->find()
-			->where(['status !=' > 9])
-			->where(['user_id !=' > $user_id])
+			->where(['status !=' => 9])
+			->where(['user_id !=' => $user_id])
 			->order(['created' => 'DESC'])
 			->limit($count)
 			->page($page)
