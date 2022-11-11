@@ -90,6 +90,10 @@ class UploadService {
 
         $file = WWW_ROOT . $container . DS . $filename;
 
+        if (!file_exists(WWW_ROOT . $container)) {
+            mkdir(WWW_ROOT . $container, 0777, true);
+        }
+
         $base64img = str_replace('data:image/jpeg;base64,', '', $data);
         $base64img = str_replace('data:image/png;base64,', '', $base64img);
         $data = base64_decode($base64img);
