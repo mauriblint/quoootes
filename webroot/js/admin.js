@@ -13,6 +13,7 @@ var app = new Vue({
         backgrounds: [],
         designs: [],
         tags: [],
+        users: [],
         pagination: {},
         wordpress_code_generated: null,
         filters: {
@@ -49,6 +50,17 @@ var app = new Vue({
                     dataType: 'json',
                 })
                 .done(this.onTemplatesFetched);
+            }
+        },
+
+        fetchUsers: function () {
+            if (!this.templates.length) {
+                $.ajax({
+                    type: "GET",
+                    url: '/admin/get-all-users',
+                    dataType: 'json',
+                })
+                .done(this.onUsersFetched);
             }
         },
 
@@ -89,6 +101,10 @@ var app = new Vue({
             this.templates = response.data;
         },
 
+        onUsersFetched: function (response) {
+            this.users = response.data;
+        },
+
         onEditTemplate: function (template) {
             window.open('/studio/' + template.hash + '?action=edit_template');
         },
@@ -121,6 +137,9 @@ var app = new Vue({
                     break;
                 case 'designs':
                     this.fetchDesigns(true);
+                    break;
+                case 'users':
+                    this.fetchUsers(true);
                     break;
             }
         },

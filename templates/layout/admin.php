@@ -25,6 +25,9 @@
             <div class="navbar-collapse">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
+                        <a class="nav-link" :class="{active: page === 'users'}" href="#users" @click="navigate('users')">Users</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" :class="{active: page === 'designs'}" href="#designs" @click="navigate('designs')">Designs</a>
                     </li>
                     <li class="nav-item">
@@ -37,7 +40,7 @@
             </div>
         </nav>
 
-        <div class="container my-6" id="mainContainer">
+        <div class="container-fluaid my-6" id="mainContainer">
             <?= $this->fetch('content'); ?>
         </div>
 

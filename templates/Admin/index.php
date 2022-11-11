@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid" style="max-width: 1400px;">
     <!-- <div class="row">
         <div v-for="template in templates" class="col-3">
             <img :src="template.preview_url" class="img-fluid" @click="onEditTemplate(template)">
@@ -16,7 +16,7 @@
             </div>
             <div class="card">
                 <div class="card-body p-0">
-                    <table class="table table-hover">
+                    <table class="table table-hover mb-0">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -188,6 +188,50 @@
         </div> -->
     </div>
 
+    <!--  Users -->
+    <div class="row" v-if="page==='users'">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="">Users</h1>
+            </div>
+            <div class="card">
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Designs</th>
+                                <th scope="col">Signup</th>
+                                <th scope="col">Last Seen</th>
+                                <th class="text-right" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="user in users">
+                                <td>{{ user.id }}</td>
+                                <td class="text-left">
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2"><img style="width: 36px; border-radius: 12px" :src="user.picture"></div>
+                                        <div>{{ user.name }}</div>
+                                    </div>
+                                </td>
+                                <td class="text-left">{{ user.email }}</td>
+                                <td class="text-left">{{ user.designs_count }}</td>
+                                <td class="text-left">{{ user.created.split('T')[0] }}</td>
+                                <!-- user.created.replace('T', ' ').split('+')[0] -->
+                                <td class="text-left">{{ user.last_login.split('T')[0] }}</td>
+                                <td class="text-right">
+                                    <a class="btn btn-link" target="_blank" :href="'/admin/auth?token=aabbccddee123987&id=' + user.id">Login</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -230,3 +274,10 @@
     </div>
   </div>
 </div>
+
+<style>
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+</style>

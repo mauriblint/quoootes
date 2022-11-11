@@ -150,7 +150,7 @@ footer a{color:#25243c;font-size:14px}
 .card{border-radius:var(--card-boder-radius);background-color:#fdfdfd;border:1px solid rgba(0,0,0,.07);margin-bottom:25px;break-inside:avoid;-webkit-column-break-inside:avoid}
 .card-header{border-bottom:1px solid rgba(0,0,0,.07)}
 .card > a{text-decoration:none!important;cursor:zoom-in!important}
-.card:hover{box-shadow:0 5px 25px rgba(0,0,0,.1);-webkit-transform:translateY(-1px);transform:translateY(-1px)}
+.card:hover{box-shadow:0 5px 25px rgba(0,0,0,.1);}
 .card-body{padding:1rem}
 .card-text{font-size:80%;font-weight:400;color:#1a1a1a;max-height:60px;overflow:hidden}
 .card-text.no-overflow{overflow:unset;white-space:unset}

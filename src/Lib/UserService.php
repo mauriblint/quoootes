@@ -18,7 +18,15 @@ class UserService {
 
 
     private static function getTable () {
-        return TableRegistry::get('Users');
+        return TableRegistry::getTableLocator()->get('Users');
+    }
+
+    public static function all () {
+        $UsersTable = TableRegistry::getTableLocator()->get('Users');
+        return $UsersTable->find()
+            ->enableHydration(false)
+            ->all()
+            ->toArray();
     }
 
     public static function handleLoginWithGoogle ($google_data) {

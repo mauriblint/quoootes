@@ -31,7 +31,9 @@ class PagesController extends AppController
 
     public function homepage()
     {
-    	// $this->set('recentImages', DesignService::getRecentImagesQuotes(1, 16));
+        if ($this->user) {
+            return $this->redirect('/dashboard');
+        }
     	$this->set('recentImages', []);
         $this->set('templates', TemplatesService::list(null, 1, 8));
         $this->render('home');

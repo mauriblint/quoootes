@@ -53,6 +53,11 @@ use Cake\Routing\Router;
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="<?= Router::url(['_name' => 'Templates']); ?>">
+                        Templates
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="<?= Router::url(['_name' => 'QuoteImages']); ?>">
                         Explore
                     </a>

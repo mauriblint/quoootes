@@ -226,13 +226,36 @@ class DesignService {
         );
     }
 
-    public static function findByUserId ($user_id=null) {
-        if (!$user_id) {
-            return false;
-        }
+	public static function findByUserId($user_id = null, $page = 1, $count = 50)
+	{
+		if (!$user_id) {
+			return false;
+		}
 
-        return self::find(null, 1, 20, $user_id);
-    }
+		$DesignsTable = TableRegistry::getTableLocator()->get('Designs');
+
+		$query = $DesignsTable->find()
+			->where(['status !=' > 9])
+			->order(['created' => 'DESC'])
+			->limit($count)
+			->page($page)
+			->contain(['Tags'])
+			->enableHydration(false);
+
+		$total = $query->count();
+
+		$result = ResponseHandler::success([
+			'data' => $query->toArray(),
+			'pagination' => [
+				'total' => $total,
+				'page' => $page,
+				'per_page' => $count,
+				'pages' => ceil($total / $count),
+			]
+		]);
+
+		return $result;
+	}
 
     public static function find ($tag_id=null, $page=1, $count=12, $user_id=null) {
 
