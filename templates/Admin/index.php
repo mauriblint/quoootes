@@ -226,6 +226,7 @@
                                 <td class="text-left">{{ user.last_login.split('T')[0] }}</td>
                                 <td class="text-right">
                                     <a class="btn btn-link" target="_blank" :href="'/admin/auth?token=aabbccddee123987&id=' + user.id">Login</a>
+                                    <a v-if="user.customer_id" class="btn btn-link" target="_blank" :href="'https://dashboard.stripe.com/customers/' + user.customer_id">Stripe</a>
                                 </td>
                             </tr>
                         </tbody>
