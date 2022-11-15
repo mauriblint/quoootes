@@ -1000,7 +1000,7 @@ var app = new Vue({
                 this.template = data.template;
 
                 if (data.upgrade_showed) {
-                    if (window.location.search && window.location.search.indexOf('payment_cancel') === -1) {
+                    if (window.location.search && window.location.search.indexOf('payment_cancel') === -1 && window.location.search.indexOf('payment_success') === -1) {
                         setTimeout(function () {
                             _this.showUpgrade(data.upgrade_showed);
                         }, 1000);
