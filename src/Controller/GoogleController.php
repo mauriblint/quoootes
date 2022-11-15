@@ -35,6 +35,7 @@ class GoogleController extends AppController
         $client_secret = env('GOOGLE_CLIENT_SECRET');
         $redirect_url = Router::url('/google/callback', true);
         $google_account_info = null;
+        $redirect_to = $this->request->getQuery('redirect_to', null);
 
         $client->setClientId($client_id);
         $client->setClientSecret($client_secret);
@@ -80,6 +81,7 @@ class GoogleController extends AppController
 
         if ($google_account_info) {
 
+            $google_account_info['country'] = $this->getCountry();
             $User = UserService::handleLoginWithGoogle($google_account_info);
 
             if ($User) {
@@ -100,7 +102,9 @@ class GoogleController extends AppController
                 $Session->delete('redirect_after_google_login');
             }
 
-            if ($redirect_url) {
+            if ($redirect_to) {
+                return $this->redirect($redirect_to);
+            } else if ($redirect_url) {
                 return $this->redirect($redirect_url);
             } else {
                 return $this->redirect('/dashboard');
@@ -145,6 +149,5 @@ class GoogleController extends AppController
         $session->destroy();
         return $this->redirect('/');
     }
-
 
 }

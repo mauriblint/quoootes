@@ -33,11 +33,6 @@ MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mix
 mixpanel.init('<?= env('MIXPANEL_TOKEN', '') ?>', {debug: <?= $env === 'DEV' ? 'true' : 'false'; ?>});
 </script>
 
-<!--  Adsense -->
-<?php if ($env === 'PROD' && !$hide_ads): ?>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3502811288809454" crossorigin="anonymous"></script>
-<?php endif; ?>
-
 <?php if ($show_sticky): ?>
 <!-- ShareThis -->
 <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=620b940433b7500019540efe&product=sop" defer="defer"></script>

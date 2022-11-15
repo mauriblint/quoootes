@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Lib\DesignService;
-use Cake\Routing\Router;
+use App\Lib\UserService;
 use Cake\Event\EventInterface;
 
 class DashboardController extends AppController
@@ -21,9 +21,11 @@ class DashboardController extends AppController
     }
 
     public function index () {
-        $this->set('title', 'My Quotes');
-
+        UserService::setLastSeen($this->user_id);
         $user_designs = DesignService::findByUserId($this->user_id);
+
+        $this->set('title', 'My Quotes');
+        $this->set('hide_share_buttons', 1);
         $this->set('user_designs', $user_designs['result']['data']);
         $this->set('user_designs_pagination', $user_designs['result']['pagination']);
     }

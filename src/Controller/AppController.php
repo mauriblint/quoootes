@@ -19,6 +19,7 @@ namespace App\Controller;
 use Cake\Controller\Controller;
 use App\Lib\TagService;
 use App\Lib\TemplatesService;
+use App\Lib\SubscriptionService;
 use Cake\Event\EventInterface;
 
 /**
@@ -58,11 +59,26 @@ class AppController extends Controller
             'unauthorizedRedirect' => '/',
         ]);
 
-        $User = $this->Auth->user();
-        $this->user = $User;
-        $this->user_id = (isset($User['id'])) ? $User['id'] : null;
+        $this->user = null;
+        $this->user_id = null;
+        $this->subscription = null;
+        $this->env = (env('DEBUG') === 'true') ? 'dev' : 'prod';
+        $this->country = $this->getCountry();
+
+        if ($User = $this->Auth->user()) {
+            $this->user_id = (isset($User['id'])) ? $User['id'] : null;
+            $this->subscription = SubscriptionService::findByUserId($this->user_id);
+            $this->is_customer = ($this->subscription['plan_id'] > 1 && $this->subscription['status'] === 'active');
+            $this->is_free = !$this->is_customer;
+            $User->is_customer = $this->is_customer;
+            $User->is_free = $this->is_free;
+            $User->plan_id = $this->subscription['plan_id'];
+            $this->user = $User;
+        }
+
         $this->set('user', $User);
         $this->set('user_id', $this->user_id);
+        $this->set('subscription', $this->subscription);
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.
@@ -113,5 +129,40 @@ class AppController extends Controller
 
         echo json_encode($response);
         die;
+    }
+
+    public function getClientIP()
+    {
+        $ipaddress = 'UNKNOWN';
+        $keys=array('HTTP_CF_CONNECTING_IP','HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+        foreach($keys as $k)
+        {
+            if (isset($_SERVER[$k]) && !empty($_SERVER[$k]) && filter_var($_SERVER[$k], FILTER_VALIDATE_IP))
+            {
+                $ipaddress = $_SERVER[$k];
+                break;
+            }
+        }
+        return $ipaddress;
+    }
+
+    public function getCountry ()
+    {
+        $userCountry = false;
+        $isDev = ($this->env === 'dev');
+
+        if ($isDev) {
+            $userCountry = 'US';
+        }
+
+        if (isset($_SESSION['emulate_user_country'])) {
+            return $_SESSION['emulate_user_country'];
+        }
+
+        if(isset($_SERVER["HTTP_CF_IPCOUNTRY"])){
+            $userCountry = $_SERVER["HTTP_CF_IPCOUNTRY"];
+        }
+
+        return $userCountry;
     }
 }

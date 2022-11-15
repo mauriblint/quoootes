@@ -77,6 +77,7 @@ use Cake\Routing\Router;
                         <img class="user-profile-pic" src="<?=$user['picture']?>" alt="">
                     </a>
                     <div class="dropdown-menu" id="TopicsDropdownMenu">
+                        <a href="<?= Router::url(['_name' => 'Account']); ?>" class="dropdown-item">My Account</a>
                         <a href="<?= Router::url(['_name' => 'Dashboard']); ?>" class="dropdown-item">My Quotes</a>
                         <hr class="dropdown-divider">
                         <a href="<?= Router::url(['_name' => 'Logout']); ?>" class="dropdown-item">Logout</a>

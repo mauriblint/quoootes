@@ -34,6 +34,7 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/login', ['controller' => 'Pages', 'action' => 'login'], ['_name' => 'Login']);
         $builder->connect('/logout', ['controller' => 'Google', 'action' => 'logout'], ['_name' => 'Logout']);
         $builder->connect('/dashboard', ['controller' => 'Dashboard', 'action' => 'index'], ['_name' => 'Dashboard']);
+        $builder->connect('/account', ['controller' => 'Account', 'action' => 'index'], ['_name' => 'Account']);
         $builder->connect('/templates', ['controller' => 'Pages', 'action' => 'templates'], ['_name' => 'Templates']);
         $builder->connect('/templates/instagram-quotes', ['controller' => 'LandingPages', 'action' => 'instagramQuotes']);
 

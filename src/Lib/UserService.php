@@ -5,7 +5,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\I18n\FrozenTime;
 
-// use App\Lib\MixpanelService;
+use App\Lib\MixpanelService;
 use App\Lib\ResponseHandler;
 
 class UserService {
@@ -19,6 +19,12 @@ class UserService {
 
     private static function getTable () {
         return TableRegistry::getTableLocator()->get('Users');
+    }
+
+    public static function findById ($user_id, $contain='Subscriptions.Plans') {
+        $query = TableRegistry::getTableLocator()->get('Users')
+            ->get($user_id, ['contain' => $contain]);
+        return $query;
     }
 
     public static function all () {
@@ -35,13 +41,34 @@ class UserService {
 
         if (!$User) {
             $User = self::createFromGoogle($google_data);
+
+            MixpanelService::track('SignUp', array(
+                'source' => 'google',
+                'user_id' => $User['id'],
+            ));
+
         } else {
             $User->picture = $google_data['picture'];
             $User->last_login = FrozenTime::now();
+            if ($google_data['country'] && !$User->country) {
+                $User->country = $google_data['country'];
+            }
             $UsersTable->save($User);
         }
 
         return $User;
+    }
+
+    public static function setLastSeen ($user_id) {
+        $UsersTable = TableRegistry::getTableLocator()->get('Users');
+        $User = $UsersTable->get($user_id);
+        if ($User) {
+            $User->last_login = FrozenTime::now();
+            $UsersTable->save($User);
+            return true;
+        }
+
+        return false;
     }
 
     public static function createFromGoogle ($google_data) {
@@ -56,6 +83,7 @@ class UserService {
         $User->first_name = $google_data['given_name'];
         $User->last_name = $google_data['family_name'];
         $User->picture = $google_data['picture'];
+        $User->country = (isset($google_data['country']) && !empty($google_data['country'])) ? $google_data['country'] : null;
         $User->last_login = FrozenTime::now();
 
         if ($UsersTable->save($User)) {
@@ -108,6 +136,59 @@ class UserService {
         $u->last_login = Time::now();
         self::getTable()->save($u);
     }
+
+    public static function getByCustomerId ($customer_id) {
+
+        $query = TableRegistry::get('Users')
+            ->find()
+            ->where(['customer_id' => $customer_id])
+            ->contain('Subscriptions')
+            ->first();
+
+        return $query;
+    }
+
+    public static function update ($user_id, $data) {
+        $User = self::getTable()->get($user_id);
+
+
+        if (isset($data['first_name'])) {
+            $User->set('first_name', $data['first_name']);
+        }
+        if (isset($data['last_name'])) {
+            $User->set('last_name', $data['last_name']);
+        }
+        if (isset($data['customer_id'])) {
+            $User->set('customer_id', $data['customer_id']);
+        }
+        if (isset($data['business_name'])) {
+            $User->set('business_name', $data['business_name']);
+        }
+        if (isset($data['business_address'])) {
+            $User->set('business_address', $data['business_address']);
+        }
+        if (isset($data['business_tax_id'])) {
+            $User->set('business_tax_id', $data['business_tax_id']);
+        }
+        if (isset($data['picture'])) {
+            $User->set('picture', $data['picture']);
+        }
+        if (isset($data['facebook_id'])) {
+            $User->set('facebook_id', $data['facebook_id']);
+        }
+        if (isset($data['__email'])) {
+            $User->set('email', $data['__email']);
+
+            if ($User->customer_id) {
+                StripeService::updateCustomer($User->customer_id, array('email' => $data['__email']));
+            }
+        }
+
+        self::getTable()->save($User);
+
+        return $User;
+    }
+
 
     public static function updatePicture ($user_id, $picture) {
         $u = self::getTable()->get($user_id);

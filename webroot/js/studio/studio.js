@@ -47,9 +47,10 @@ var app = new Vue({
         tags: [],
         tag_id: '',
         keywords: '',
+        saved_session: false,
+        is_free: true,
 
         scale_factor: 1,
-
         text: '',
         text_header: '',
         text_footer: '',
@@ -96,7 +97,6 @@ var app = new Vue({
             boxVisible: false,
             boxBackgroundColor: '#228c5f',
             boxPosition: 'center-center',
-            boxWidth: 65,
             boxBorderRadius: 4,
             boxPadding: 20,
 
@@ -115,19 +115,53 @@ var app = new Vue({
 
             filter: '',
             filterOpacity: 0.65,
+
+            logoImage: '', // https://quoootes.com/img/isologo_color.png
+            logoSize: 38,
+            logoBorderRadius: 8,
+
+            textboxWidth: 250,
+            textboxHeight: 250,
         },
 
+        canvas_width: 0,
+        canvas_height: 0,
+
+        // text_max_width: 0,
+        // text_min_width: 0,
+        // text_max_height: 0,
+        // text_min_height: 0,
+
+        show_advanced_options: false,
+
         layouts: [
-            { name: 'Square', key: 'square', width: 500, height: 500 },
-            { name: 'Story', key: 'story', width: 383, height: 680 },
-            { name: 'Landscape', key: 'landscape', width: 700, height: 400 },
-            { name: 'Portrait', key: 'portrait', width: 450, height: 650 }
+            { name: 'Square', key: 'square', width: 500, height: 500, textboxWidth: 290, textboxHeight: 290, text_min_width: 0.3, text_min_height: 0.3, text_max_width: 0.8, text_max_height: 0.8 },
+            { name: 'Story', key: 'story', width: 383, height: 680, textboxWidth: 215, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
+            { name: 'Landscape', key: 'landscape', width: 700, height: 400, textboxWidth: 470, textboxHeight: 170, text_min_width: 0.5, text_min_height: 0.35, text_max_width: 0.82, text_max_height: 0.55 },
+            { name: 'Portrait', key: 'portrait', width: 450, height: 650, textboxWidth: 220, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   }
         ]
     },
 
+    watch: {
+        'template.fontFamily': function () {
+            setTimeout(this.resizeText, 100);
+            setTimeout(this.resizeText, 200);
+        },
+        'template.lineHeight': function () {
+            setTimeout(this.resizeText, 100);
+            setTimeout(this.resizeText, 200);
+        },
+        'template.letterSpacing': function () {
+            setTimeout(this.resizeText, 100);
+            setTimeout(this.resizeText, 200);
+        }
+    },
+
+    mounted: function () {
+    },
+
     created: function () {
-        // this.showEnterText
-        this.fetchTemplates();
+        // this.fetchTemplates();
 
         this.template = Object.assign({}, this.initial_template);
 
@@ -137,6 +171,10 @@ var app = new Vue({
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.backgrounds) {
             this.backgrounds = window.__NEXT_DATA__.backgrounds;
+        }
+
+        if (window.__NEXT_DATA__ && window.__NEXT_DATA__.templates) {
+            this.templates = window.__NEXT_DATA__.templates;
         }
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.template) {
@@ -153,6 +191,7 @@ var app = new Vue({
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.user) {
             this.user = window.__NEXT_DATA__.user;
+            this.is_free = (this.user.is_free);
         }
 
         if (this.mode === 'create') {
@@ -167,10 +206,17 @@ var app = new Vue({
         if (this.mode === 'edit_design') {
             this.page = 'editor';
             this.text = __NEXT_DATA__.design.text;
+            this.text_header = __NEXT_DATA__.design.text_header;
+            this.text_footer = __NEXT_DATA__.design.text_footer;
             this.tag_id = __NEXT_DATA__.design.tag.id;
             if (__NEXT_DATA__.design && __NEXT_DATA__.design.template) {
                 this.setTemplate(__NEXT_DATA__.design.template, true);
             }
+        }
+
+        if (this.hasSavedSession()) {
+            this.saved_session = true;
+            this.restoreWorkSession();
         }
 
         setTimeout(this.onResize, 100);
@@ -178,9 +224,21 @@ var app = new Vue({
 
         this.fonts = Fonts.getFontsArray();
         this.filters = FiltersData;
+
+        if (window.location.search && window.location.search.indexOf('payment_success') > -1) {
+            setTimeout(function () {
+                $('#SuccessPaymentModal').modal();
+            }, 1000);
+        }
     },
 
     methods: {
+        onTextChange: function (type) {
+            this.resizeText();
+            if (type === 'text_paste') {
+                setTimeout(this.resizeText, 100);
+            }
+        },
 
         saveDesign: function () {
             $('#saveModal').modal();
@@ -273,7 +331,7 @@ var app = new Vue({
         onTemplatesFetched: function (response) {
             this.templates = response.data;
 
-            if (!this.template_id && this.mode !== 'create_template'  && this.mode !== 'edit_design') {
+            if (!this.template_id && this.mode !== 'create_template'  && this.mode !== 'edit_design' && !this.saved_session) {
                 this.setRandomTemplate();
             }
         },
@@ -311,15 +369,22 @@ var app = new Vue({
             this.template = Object.assign({}, this.initial_template, this._parseTemplateJSON(template_styles));
             this.template_id = data.id;
 
+            setTimeout(this.updateResizerPosition, 200);
+            setTimeout(this.resizeText, 50);
+            setTimeout(this.resizeText, 150);
+
             if (back_to_editor) {
                 this.page = 'editor';
             }
         },
 
-
         setLayout: function (layout) {
             this.template.layout = layout.key;
-            $('.studio__canvas__text').css('top', '').css('left', '');
+            var layout = this._getLayout(layout.key);
+            this.template.textboxWidth = layout.textboxWidth;
+            this.template.textboxHeight = layout.textboxHeight;
+            this.template.textboxLeft = ((layout.width - layout.textboxWidth) / 2);
+            this.template.textboxTop = ((layout.height - layout.textboxHeight) / 2);
         },
 
         _parseTemplateJSON: function (template) {
@@ -340,6 +405,26 @@ var app = new Vue({
                   template[key] = parseFloat(template[key]); // This is bad, '1abc' will be 1
                 }
             });
+
+            if (template.boxWidth) {
+                delete template.boxWidth;
+            }
+
+            var template_layout = this._getLayout(template.layout);
+
+            if (!template.textboxWidth) {
+                template.textboxWidth = template_layout.textboxWidth;
+                template.textboxHeight = template_layout.textboxHeight;
+                template.textboxLeft = ((template_layout.width - template_layout.textboxWidth) / 2);
+                template.textboxTop = ((template_layout.height - template_layout.textboxHeight) / 2);
+            }
+
+            if (this.template.footerVisible) {
+                template.footerVisible = true;
+            }
+            if (this.template.headerVisible) {
+                template.headerVisible = true;
+            }
 
             return template;
         },
@@ -369,10 +454,20 @@ var app = new Vue({
 
         getFooter: function () {
             if (this.text_footer && this.template.footerVisible) {
+                var ft = this.text_footer;
+                var ft_start = '— ';
+                var ft_end = ' —';
+
                 if (this.template.textUppercase) {
-                    return this.text_footer.toUpperCase();
+                    ft = this.text_footer.toUpperCase();
                 }
-                return this.text_footer;
+                if (this.template.textAlign === 'left') {
+                    ft_end = '';
+                }
+                if (this.template.textAlign === 'right') {
+                    ft_start = '';
+                }
+                return ft_start + ft + ft_end;
             }
 
             return '';
@@ -408,19 +503,45 @@ var app = new Vue({
             };
         },
 
+        getLogoStyles: function () {
+            var marginLeft = 0;
+            if (this.template.logoPosition === '5' || this.template.logoPosition === '6') {
+                marginLeft = (parseInt(this.template.logoSize)/2) * -1;
+            }
+            return {
+                width: this.template.logoSize + 'px',
+                borderRadius: this.template.logoBorderRadius + '%',
+                marginLeft: marginLeft
+            };
+        },
+
         getTextStyles: function () {
+            var boxWidth = this.template.textboxWidth;
+            var boxHeight = this.template.textboxHeight;
+            var boxTop = this.template.textboxTop;
+            var boxLeft = this.template.textboxLeft;
+
+            if (!this.template.textboxWidth) {
+                boxWidth = Math.round(parseInt(this.canvas_width * 0.5));
+            }
+            if (!this.template.textboxHeight) {
+                boxHeight = Math.round(parseInt(this.canvas_height * 0.5));
+            }
             return {
                 backgroundColor: (this.template.boxVisible) ? this.template.boxBackgroundColor : 'transparent',
                 padding: (this.template.boxVisible) ? parseInt(this.template.boxPadding) + 'px' : '20px',
                 borderRadius: parseInt(this.template.boxBorderRadius) + 'px',
                 textAlign: this.template.textAlign,
-                width: parseInt(this.template.boxWidth) + '%',
+                width: boxWidth + 'px',
+                height: boxHeight + 'px',
+                top: boxTop + 'px',
+                left: boxLeft + 'px',
                 textAlign: this.template.textAlign,
                 lineHeight: this.template.lineHeight,
                 fontFamily: this.template.fontFamily,
                 fontSize: parseInt(this.template.fontSize) + 'px',
                 letterSpacing: parseFloat(this.template.letterSpacing) + 'px',
-                marginTop: (this.template.textOffset) ? parseInt(this.template.textOffset) + 'px' : '',
+                // marginTop: (this.template.textOffset) ? parseInt(this.template.textOffset) + 'px' : '',
                 borderColor: (this.show_textbox_area) ? this.template.color : 'transparent',
             };
         },
@@ -436,10 +557,7 @@ var app = new Vue({
         getLayoutDimensions: function (layout) {
             var find = this._getLayout(layout);
 
-            return {
-                width: find.width,
-                height: find.height,
-            }
+            return find;
         },
 
         generate: function (callback, scaleFactor) {
@@ -459,11 +577,14 @@ var app = new Vue({
                         a.style.transform = 'none';
                     }
                     if (_this.mode === 'edit_template' || _this.mode === 'create_template') {
-                        cloned.getElementsByClassName('studio__watermark')[0].remove();
+                        $watermark = cloned.getElementsByClassName('studio__watermark');
+                        if ($watermark[0]) {
+                            $watermark[0].remove();
+                        }
                     }
                  }
             }).then(function (canvas) {
-				var imgData = canvas.toDataURL("image/jpeg", 0.9);
+				var imgData = canvas.toDataURL("image/jpeg", 1);
                 var img = document.createElement('img');
                 img.src = imgData;
                 document.body.appendChild(img);
@@ -517,7 +638,8 @@ var app = new Vue({
             }
 
             if (e.target.className.indexOf('moveable') === -1 &&
-                e.target.className.indexOf('studio__canvas__text') === -1
+                e.target.className.indexOf('studio__canvas__text') === -1 &&
+                e.target.className.indexOf('studio__canvas_resizer') === -1
             ) {
                 this.destroyMoveable();
             }
@@ -551,6 +673,7 @@ var app = new Vue({
 
         onOnboardingSkipped: function () {
             this.page = 'editor';
+            // setTimeout(this.repositionTextBox, 200);
             setTimeout(this.onResize, 200);
             mixpanel.track("StudioWizardSkipped");
         },
@@ -643,6 +766,266 @@ var app = new Vue({
                 window.MoveableInstance = null;
             }
         },
+
+        updateResizerPosition: function (direction) {
+            // console.log('updateResizerPosition');
+            if (window.MoveableInstance) {
+                return false;
+            }
+            $StudioCanvasText = document.getElementById('StudioCanvasText');
+            $StudioCanvasTextResizer = document.getElementById('StudioCanvasTextResizer');
+
+            if (!$StudioCanvasText || !$StudioCanvasTextResizer) {
+                return false;
+            }
+
+            var StudioCanvasTextRect = $StudioCanvasText.getBoundingClientRect();
+            var StudioCanvasTextPosition = $($StudioCanvasText).position();
+
+            $StudioCanvasTextResizer.style.top = StudioCanvasTextPosition.top + 'px';
+            $StudioCanvasTextResizer.style.left = StudioCanvasTextPosition.left + 'px';
+            $StudioCanvasTextResizer.style.width = StudioCanvasTextRect.width + 'px';
+            $StudioCanvasTextResizer.style.height = StudioCanvasTextRect.height + 'px';
+        },
+
+        centerTextOnCanvas: function (_position) {
+            var position = (_position || this.template.boxPosition || 'center-center').split('-');
+            var position_x = position[0];
+            var position_y = position[1];
+            var left = 0;
+            var top = 0;
+            var $StudioCanvas = $('#StudioCanvas');
+            var $StudioCanvasText = $('#StudioCanvasText');
+
+            if (position_x === 'center') {
+                left = ($StudioCanvas.outerWidth()/2 - $StudioCanvasText.outerWidth()/2)
+            }
+            if (position_x === 'left') {
+                left = 20;
+            }
+            if (position_x === 'right') {
+                left = (($StudioCanvas.outerWidth()/2 - $StudioCanvasText.outerWidth()/2)*2)-20;
+            }
+
+            if (position_y === 'center') {
+                top = ($StudioCanvas.outerHeight()/2 - $StudioCanvasText.outerHeight()/2);
+            }
+            if (position_y === 'top') {
+                top = 20;
+            }
+            if (position_y === 'bottom') {
+                top = (($StudioCanvas.outerHeight()/2 - $StudioCanvasText.outerHeight()/2)*2)-20;
+            }
+
+            $StudioCanvasText.css({
+                top: top,
+                left: left
+            }) ;
+
+            this.destroyMoveable();
+        },
+
+        resizeText: function () {
+            var a = document.getElementById('StudioCanvasText');
+            var b = document.getElementById('StudioCanvasTextContainer');
+
+            if (!a || !b) { return false; }
+            if (!this.text) { return false; }
+            get_is_h_overflown = () => {
+                var available_h = a.getBoundingClientRect().height - (this.template.boxPadding * 2);
+                var text_h = b.getBoundingClientRect().height;
+                return (text_h > available_h);
+            }
+
+            get_is_h_subbflown = () => {
+                var available_h = a.getBoundingClientRect().height - (this.template.boxPadding * 2);
+                var text_h = b.getBoundingClientRect().height;
+                return (text_h < available_h);
+            }
+
+            var MAX_FONT_SIZE = 60;
+            var MIN_FONT_SIZE = 8;
+            var new_font_size = 0;
+
+            var is_h_overflown = get_is_h_overflown();
+            var while_steps = 0;
+
+            while (is_h_overflown && while_steps < 1000 && new_font_size < MAX_FONT_SIZE) {
+                console.log('while_steps', while_steps, 'is_h_overflown', is_h_overflown);
+                new_font_size = (parseFloat(a.style.fontSize.replace('px')) - 0.2);
+                a.style.fontSize = (new_font_size + 'px');
+                is_h_overflown = get_is_h_overflown();
+                while_steps++;
+            }
+
+            var is_h_subbflown = get_is_h_subbflown();
+            var while_steps = 0;
+
+            while (is_h_subbflown && while_steps < 1000 && new_font_size < MAX_FONT_SIZE) {
+                console.log('while_steps', while_steps, 'is_h_subbflown', is_h_subbflown);
+                new_font_size = (parseFloat(a.style.fontSize.replace('px')) + 0.2);
+                a.style.fontSize = (new_font_size + 'px');
+
+                is_h_subbflown = get_is_h_subbflown();
+                while_steps++;
+            }
+
+            // var is_w_overflown = get_is_w_overflown();
+            // var while_steps = 0;
+
+            // while (is_w_overflown && while_steps < 1000 && new_font_size > MIN_FONT_SIZE) {
+            //     console.log('while_steps', while_steps, 'is_w_overflown', is_w_overflown);
+            //     new_font_size = (parseFloat(a.style.fontSize.replace('px')) - 0.2);
+            //     a.style.fontSize = (new_font_size + 'px');
+            //     is_w_overflown = get_is_w_overflown();
+            //     while_steps++;
+            // }
+
+            // console.log('Done in ' + while_steps + ' steps! New font size is: ' + new_font_size);
+
+            if (new_font_size) {
+                this.template.fontSize = new_font_size;
+            }
+        },
+
+        onAddLogo: function () {
+            if (this.is_free) {
+                this.showUpgrade('logo');
+                return false;
+            }
+
+            this.$refs.upload_logo_image_input.click();
+
+        },
+
+        onRemoveWatermark: function () {
+            this.showUpgrade('watermark');
+        },
+
+        showUpgrade: function (feature) {
+            if (this.user && !this.user.is_free) {
+                return false;
+            }
+
+            mixpanel.track("ShowedUpgrade", {
+                feature: feature
+            });
+
+            $('#UpgradeModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            this.saveCurrentWorkSession(feature);
+        },
+
+        onLogoImageSelected: function (event) {
+            var _this = this;
+            if (event.target.files.length) {
+                // this.design.logo = URL.createObjectURL(event.target.files[0]);
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // _this.template.logo_image = e.target.result;
+                    Vue.set(_this.template, 'logoImage', e.target.result);
+                    // mixpanel.track("AS_WheelUserAction", {'action': 'Uploaded_Logo'});
+
+                    _this.resizeDownDataUrlKeepProportions(e.target.result, 300, 300, function (data) {
+                        // _this.template.logoImage = data;
+                        Vue.set(_this.template, 'logoImage', data);
+                    });
+                }
+                // reader.onerror = e => rej(e);
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        },
+
+        resizeDownDataUrlKeepProportions: function(datas, maxWidth, maxHeight, callback, quality) {
+            // https://jsfiddle.net/Doskii/gfeq70rt/50/
+            quality = quality || 0.9;
+
+            var img = document.createElement('img');
+
+            img.addEventListener("load", function() {
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+
+                if (img.width > maxWidth || img.height > maxHeight) {
+                    if (img.width == img.height) {
+                        canvas.width = (maxHeight >= maxWidth ? maxWidth : maxHeight);
+                        canvas.height = (maxHeight >= maxWidth ? maxWidth : maxHeight);
+                    } else if (img.width > img.height) {
+                        canvas.width = maxWidth;
+                        canvas.height = (maxWidth / img.width) * img.height;
+                    } else if (img.height > img.width) {
+                        canvas.height = maxHeight;
+                        canvas.width = (maxHeight / img.height) * img.width;
+                    }
+                } else {
+                    return false;
+                }
+
+                ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+
+                var image_type = 'image/jpeg';
+
+                if (/^data:image\/png[,;]/.test(datas) ) {
+                  image_type = 'image/png';
+                }
+                var dataURI = canvas.toDataURL(image_type, quality);
+                callback && callback(dataURI);
+            });
+
+            img.src = datas;
+        },
+
+        goToCheckout: function () {
+            if (this.user && this.user.id) {
+                window.location.href = "/subscriptions/pay/pro";
+            } else {
+                $('#UpgradeModal').modal('hide');
+                $('#LoginModal').modal();
+                mixpanel.track("ViewLoginModal");
+            }
+        },
+
+        restoreWorkSession: function () {
+            var session_data = localStorage.getItem('quoootes::design');
+
+            if (session_data) {
+                var data = JSON.parse(session_data);
+                this.text = data.text;
+                this.text_footer = data.text_footer;
+                this.text_header = data.text_header;
+                this.template = data.template;
+
+                if (data.upgrade_showed) {
+                    this.showUpgrade(data.upgrade_showed);
+                }
+
+                localStorage.removeItem('quoootes::design');
+            }
+        },
+
+        hasSavedSession: function () {
+            var session_data = localStorage.getItem('quoootes::design');
+            return (session_data) ? JSON.parse(session_data) : null;
+        },
+
+        saveCurrentWorkSession: function (upgrade_showed) {
+            var work_data = {
+                text: this.text,
+                text_footer: this.text_footer,
+                text_header: this.text_header,
+                template: this.template,
+                upgrade_showed: upgrade_showed || false,
+            };
+
+            localStorage.setItem('quoootes::design', JSON.stringify(work_data));
+        },
+
+        closeModal: function (modal_id) {
+            $('#' + modal_id).modal('hide');
+        }
     },
 });
 
@@ -674,129 +1057,66 @@ initMovable = function() {
         top: parent.top,
         bottom: parent.top + parent.height,
     };
-    console.log(bounds);
+
     const moveable = new Moveable(document.body, {
-        target: document.querySelector(".studio__canvas__text"),
-        // If the container is null, the position is fixed. (default: parentElement(document.body))
+        target: document.getElementById("StudioCanvasTextResizer"),
         container: document.querySelector(".studio__canvas")[0],
         draggable: true,
-        rotatable: true,
         resizable: true,
-        scalable: false,
-        warpable: false,
         snappable: true,
+        zoom: 1,
         renderDirections: ["e", "w"],
-        // Enabling pinchable lets you use events that
-        // can be used in draggable, resizable, scalable, and rotateable.
-        pinchable: true, // ["resizable", "scalable", "rotatable"]
-        origin: true,
-        keepRatio: true,
-        // Resize, Scale Events at edges.
-        edge: false,
-        throttleDrag: 0,
-        throttleResize: 0,
-        throttleScale: 0,
-        throttleRotate: 0,
+        renderDirections: ["e", "se"],
+        origin: false,
+        keepRatio: false,
         bounds: bounds
     });
 
     /* draggable */
-    moveable.on("dragStart", ({
-        target,
-        clientX,
-        clientY
-    }) => {
-        // console.log("onDragStart", target);
+    moveable.on("dragStart", ({}) => {
         window.MoveableDragging = true;
-    }).on("drag", ({
-        target,
-        transform,
-        left,
-        top,
-        right,
-        bottom,
-        beforeDelta,
-        beforeDist,
-        delta,
-        dist,
-        clientX,
-        clientY,
-    }) => {
-        // console.log("onDrag left, top", left, top);
+    });
+
+    moveable.on("drag", ({target,transform,left,top}) => {
         target.style.left = `${left}px`;
         target.style.top = `${top}px`;
+        $target = document.getElementById("StudioCanvasText");
+        $target.style.left = left + 'px';
+        $target.style.top = top + 'px';
         // console.log("onDrag translate", dist);
         // target!.style.transform = transform;
-    }).on("dragEnd", ({
-        target,
-        isDrag,
-        clientX,
-        clientY
-    }) => {
-        // console.log("onDragEnd", target, isDrag);
+    });
+    moveable.on("dragEnd", (e) => {
         window.MoveableDragging = false;
+        // console.log(e);
+        Vue.set(app.template, 'textboxTop', Math.max(0, e.lastEvent.top));
+        Vue.set(app.template, 'textboxLeft', Math.max(0, e.lastEvent.left));
+        // app.updateCanvasTextboxSizeAndPosition();
     });
 
     /* resizable */
-    moveable.on("resizeStart", ({
-        target,
-        clientX,
-        clientY
-    }) => {
-        console.log("onResizeStart", target);
+    moveable.on("resizeStart", (e) => {
+        // e.setMin([app.text_min_width, app.text_min_height]);
+        // e.setMax([app.text_max_width, app.text_max_height]);
+        e.setMin([100, 100]);
         window.MoveableDragging = true;
-
-    }).on("resize", ({
-        target,
-        width,
-        height,
-        dist,
-        delta,
-        clientX,
-        clientY
-    }) => {
-        console.log("onResize", width, height);
-        let scale = (width * 100) / target.offsetWidth;
-        scale = target.offsetWidth / width;
-        // console.log("onResize", scale, target.offsetWidth, target.offsetHeight);
-        delta[0] && (target.style.width = `${width}px`);
-        // delta[1] && (target.style.height = `${height}px`);
-        // target.style.transform = 'scale(' + scale + ')';
-    }).on("resizeEnd", ({
-        target,
-        isDrag,
-        clientX,
-        clientY
-    }) => {
-        // console.log("onResizeEnd", target, isDrag);
-        window.MoveableDragging = false;
     });
 
-    /* rotatable */
-    moveable.on("rotateStart", ({
-        target,
-        clientX,
-        clientY
-    }) => {
-        // console.log("onRotateStart", target);
-    }).on("rotate", ({
-        target,
-        beforeDelta,
-        delta,
-        dist,
-        transform,
-        clientX,
-        clientY
-    }) => {
-        // console.log("onRotate", dist);
-        target.style.transform = transform;
-    }).on("rotateEnd", ({
-        target,
-        isDrag,
-        clientX,
-        clientY
-    }) => {
-        // console.log("onRotateEnd", target, isDrag);
+    moveable.on("resize", ({target,width,height,dist,delta}) => {
+        // console.log("onResize", width, height);
+        $target = document.getElementById("StudioCanvasTextResizer");
+        delta[0] && ($target.style.width = width + 'px');
+        delta[1] && ($target.style.height = height + 'px');
+    });
+    moveable.on("resizeEnd", (e) => {
+        // console.log("onResizeEnd", e);
+        window.MoveableDragging = false;
+        Vue.set(app.template, 'textboxWidth', e.lastEvent.width);
+        Vue.set(app.template, 'textboxHeight', e.lastEvent.height);
+
+        Vue.nextTick(() => {
+            app.resizeText();
+        });
     });
 
     window.MoveableInstance = moveable;

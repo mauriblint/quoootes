@@ -90,32 +90,34 @@
         </div>
 
         <div class="studio__body editor" v-if="page === 'editor'">
+
+            <!-- Editor Sidebar -->
             <div class="sidebar scrollable" v-if="!sidebar_open">
 
                 <!--  Text -->
                 <div class="form-group">
                     <label for="">Text</label>
-                    <textarea rows="3" v-model="text" ref="textInput" class="form-control"></textarea>
+                    <textarea rows="3" v-model="text" ref="textInput" class="form-control" @input="onTextChange('text')" maxlength="400" @paste="onTextChange('text_paste')"></textarea>
                 </div>
 
                 <div class="form-group">
                     <div class="d-flex justify-content-between align-items-center">
-                        <label class="mb-0 label-w-50">Header</label>
+                        <label class="mb-0 label-w-50">Author</label>
+                        <div>
+                            <input type="checkbox" class="form-controla" v-model="template.footerVisible" @input="onTextChange('text_paste')">
+                        </div>
+                    </div>
+                    <input v-if="template.footerVisible" type="text" v-model="text_footer" class="form-control mt-2" maxlength="30" @input="onTextChange('footer')">
+                </div>
+
+                <div class="form-group">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label class="mb-0 label-w-50">Title</label>
                         <div>
                             <input type="checkbox" class="form-controla" v-model="template.headerVisible">
                         </div>
                     </div>
-                    <input v-if="template.headerVisible" type="text" v-model="text_header" class="form-control mt-2" maxlength="30">
-                </div>
-
-                <div class="form-group">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label class="mb-0 label-w-50">Footer</label>
-                        <div>
-                            <input type="checkbox" class="form-controla" v-model="template.footerVisible">
-                        </div>
-                    </div>
-                    <input v-if="template.footerVisible" type="text" v-model="text_footer" class="form-control mt-2" maxlength="30">
+                    <input v-if="template.headerVisible" type="text" v-model="text_header" class="form-control mt-2" maxlength="30" @input="onTextChange('header')">
                 </div>
 
                 <div class="form-group">
@@ -159,38 +161,19 @@
                     </div>
                 </div>
 
-                <div class="form-group d-flex justify-content-between align-items-center form-group-mh">
-                    <label class="mb-0 label-w-50">Line Spacing</label>
-                    <input type="range" v-model="template.lineHeight" step="0.1" min="0.6" max="2" class="form-control-range">
-                    <span class="ml-1r range-value">{{ template.lineHeight }}</span>
-                </div>
 
-                <div class="form-group d-flex justify-content-between align-items-center form-group-mh">
+
+                <!-- <div class="form-group d-flex justify-content-between align-items-center form-group-mh">
                     <label class="mb-0 label-w-50">Font Size</label>
                     <input type="range" v-model="template.fontSize" step="2" min="10" max="80" class="form-control-range">
                     <span class="ml-1r range-value">{{ template.fontSize }}</span>
-                </div>
+                </div> -->
 
-                <div class="form-group d-flex justify-content-between align-items-center form-group-mh">
+                <!-- <div class="form-group d-flex justify-content-between align-items-center form-group-mh">
                     <label class="mb-0 label-w-50">Text Width</label>
                     <input type="range" v-model="template.boxWidth" min="45" max="100" @mousedown="onShowTextBoxDimensions(true)" @mouseup="onShowTextBoxDimensions(false)">
                     <span class="ml-1r range-value">{{ template.boxWidth }}</span>
-                </div>
-
-                <div class="form-group d-flex justify-content-between align-items-center form-group-mh">
-                    <label class="mb-0 label-w-50">Letter Spacing</label>
-                    <input type="range" v-model="template.letterSpacing" step="1" min="-2" max="5">
-                    <span class="ml-1r range-value">{{ template.letterSpacing }}</span>
-                </div>
-
-                <div class="form-group">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label class="mb-0 label-w-50">Uppercase Text</label>
-                        <div>
-                            <input type="checkbox" class="form-controla" v-model="template.textUppercase">
-                        </div>
-                    </div>
-                </div>
+                </div> -->
 
                 <div class="form-group clickeable" @click="openSidebar('images')">
                     <div class="d-flex justify-content-between align-items-center">
@@ -208,13 +191,16 @@
                 <div class="form-group clickeable" @click="openSidebar('filters')">
                     <div class="d-flex justify-content-between align-items-center">
                         <label class="mb-0 label-w-50">Filters</label>
-                        <div v-if="template.filter" class="gradient-item sm">
-                            <div class="gradient-preview">
-                                <div class="gradient-preview-inner">
-                                    <div class="gradient-image"></div>
-                                    <div class="gradient-color" :style="{background: template.filter }"></div>
+                        <div class="d-flex flex-row align-items-center" v-if="template.filter">
+                            <div class="gradient-item sm">
+                                <div class="gradient-preview">
+                                    <div class="gradient-preview-inner">
+                                        <div class="gradient-image"></div>
+                                        <div class="gradient-color" :style="{background: template.filter }"></div>
+                                    </div>
                                 </div>
                             </div>
+                            <i class="bi bi-x-lg ml-2" data-toggle="tooltip" data-title="Remove" @click.stop="template.filter=''"></i>
                         </div>
                         <div v-else>
                             <i class="bi bi-chevron-double-right"></i>
@@ -222,15 +208,96 @@
                     </div>
                 </div>
 
+                <div class="form-group clickeable d-flex justify-content-between align-items-center" @click="onRemoveWatermark()" v-if="is_free">
+                    <label class="mb-0" style="width: 180px;">
+                    <i class="bi bi-lock-fill mr-1"></i> Remove Watermark</label>
+                    <div>
+                    <i class="bi bi-chevron-double-right"></i>
+                    </div>
+                </div>
+
+                <div class="form-group clickeable d-flex justify-content-between align-items-center" @click="onAddLogo()">
+                    <label class="mb-0" style="width: 180px;">
+                        <i class="bi bi-lock-fill mr-1" v-if="is_free"></i>
+                        <i class="bi bi-lightning-charge-fill mr-1" v-else></i>
+
+                        Add Brand Logo
+                    </label>
+                    <div v-if="template.logoImage" class="d-flex flex-row align-items-center">
+                        <img class="bg-thumb" :src="template.logoImage" alt="">
+                        <i class="bi bi-x-lg ml-2" data-toggle="tooltip" data-title="Remove" @click.stop="template.logoImage=''"></i>
+                    </div>
+                    <div v-else>
+                        <i class="bi bi-chevron-double-right"></i>
+                    </div>
+                    <input type="file" ref="upload_logo_image_input" @change="onLogoImageSelected($event)" class="form-control-hidden-file">
+                </div>
+
+                <div class="more-options mb-4" v-if="!is_free && template.logoImage">
+                    <div class="form-group d-flex justify-content-between align-items-center">
+                        <label>Logo Position</label>
+                        <div class="text-position-selector">
+                            <div class="text-position-selector-item" @click="template.watermarkPosition='1'" :class="{active: template.watermarkPosition==='1'}"><div class="dot"></div></div>
+                            <div class="text-position-selector-item" @click="template.watermarkPosition='5'" :class="{active: template.watermarkPosition==='5'}"><div class="dot"></div></div>
+                            <div class="text-position-selector-item" @click="template.watermarkPosition='2'" :class="{active: template.watermarkPosition==='2'}"><div class="dot"></div></div>
+                            <div class="text-position-selector-item disabled"><div class="dot"></div></div>
+                            <div class="text-position-selector-item disabled"><div class="dot"></div></div>
+                            <div class="text-position-selector-item disabled"><div class="dot"></div></div>
+                            <div class="text-position-selector-item" @click="template.watermarkPosition='3'" :class="{active: template.watermarkPosition==='3'}"><div class="dot"></div></div>
+                            <div class="text-position-selector-item" @click="template.watermarkPosition='6'" :class="{active: template.watermarkPosition==='6'}"><div class="dot"></div></div>
+                            <div class="text-position-selector-item" @click="template.watermarkPosition='4'" :class="{active: template.watermarkPosition==='4'}"><div class="dot"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 d-flex justify-content-between align-items-center">
+                        <label class="mb-0" style="width: 180px;">Logo Rounded</label>
+                        <input type="range" v-model="template.logoBorderRadius" step="1" min="0" max="50" style="max-width: 100px;" class="form-control-range">
+                        <span class="ml-1r range-value">{{ template.logoBorderRadius }}</span>
+                    </div>
+
+                    <div class="form-group mb-3 d-flex justify-content-between align-items-center">
+                        <label class="mb-0" style="width: 180px;">Logo Size</label>
+                        <input type="range" v-model="template.logoSize" step="1" min="20" max="180" style="max-width: 100px;" class="form-control-range">
+                        <span class="ml-1r range-value">{{ template.logoSize }}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <label class="mb-0 label-w-50">Uppercase Text</label>
+                        <div>
+                            <input type="checkbox" class="form-controla" v-model="template.textUppercase">
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group d-flex justify-content-between align-items-center">
+                    <label class="mb-0" style="width: 180px;">Show Advanced Options</label>
+                    <div>
+                        <input type="checkbox" class="form-controla" v-model="show_advanced_options">
+                    </div>
+                </div>
+
+                <div class="form-group d-flex justify-content-between align-items-center form-group-mh" v-if="show_advanced_options">
+                    <label class="mb-0 label-w-50">Line Spacing</label>
+                    <input type="range" v-model="template.lineHeight" step="0.1" min="0.6" max="2" class="form-control-range">
+                    <span class="ml-1r range-value">{{ template.lineHeight }}</span>
+                </div>
+
+                <div class="form-group d-flex justify-content-between align-items-center form-group-mh" v-if="show_advanced_options">
+                    <label class="mb-0 label-w-50">Letter Spacing</label>
+                    <input type="range" v-model="template.letterSpacing" step="1" min="-2" max="5">
+                    <span class="ml-1r range-value">{{ template.letterSpacing }}</span>
+                </div>
+
+                <div class="form-group d-flex justify-content-between align-items-center" v-if="show_advanced_options">
                     <label class="mb-0" style="width: 180px;">Text Box</label>
                     <div>
                         <input type="checkbox" class="form-controla" v-model="template.boxVisible">
                     </div>
                 </div>
 
-                <div class="more-options mb-4" v-if="template.boxVisible">
+                <div class="more-options mb-4" v-if="show_advanced_options && template.boxVisible">
                     <div class="form-group d-flex justify-content-between align-items-center">
                         <label class="mb-0" style="width: 180px;">Box Color</label>
                         <div class="color-picker">
@@ -286,6 +353,7 @@
 
             </div>
 
+            <!-- Editor Sidebar: Images -->
             <div class="sidebar" v-if="sidebar_open === 'images'">
                 <div class="sidebar__content">
                     <div class="sidebar__header">
@@ -315,6 +383,7 @@
                 </div>
             </div>
 
+            <!-- Editor Sidebar: Filters -->
             <div class="sidebar" v-if="sidebar_open === 'filters'">
                 <div class="sidebar__content">
                     <div class="sidebar__header">
@@ -350,32 +419,24 @@
                 </div>
             </div>
 
+            <!-- Editor Canvas -->
             <div class="studio__editor" ref="studio">
-                <div class="studio__canvas" ref="canvas" :style="getEditorStyles()" @mouseleave="onTextMouseLeave($event)">
-
+                <div id="StudioCanvas" class="studio__canvas" ref="canvas" :style="getEditorStyles()" @mouseleave="onTextMouseLeave($event)" >
                     <div class="studio__filter" v-if="template.filter" :style="{background: template.filter, opacity: template.filterOpacity}"></div>
                     <div class="studio__canvas__inner" :style="getBoxStyles()">
-                        <div class="studio__canvas__text" :style="getTextStyles()" @mouseover="onTextMouseHover()"  @click="onTextMouseHover()">
-                            <div v-html="getHeader()" v-if="template.headerVisible && text_header" class="studio__canvas__text-header"></div>
-                            <div v-html="getText()" class="studio__canvas__text-main"></div>
-                            <div v-html="getFooter()" v-if="template.footerVisible && text_footer" class="studio__canvas__text-footer"></div>
+                        <div id="StudioCanvasText" class="studio__canvas__text" :style="getTextStyles()" @mouseover="updateResizerPosition()">
+                            <div class="studio__canvas__text__container" id="StudioCanvasTextContainer">
+                                <div v-html="getHeader()" v-if="template.headerVisible && text_header" class="studio__canvas__text-header"></div>
+                                <div v-html="getText()" class="studio__canvas__text-main"></div>
+                                <div v-html="getFooter()" v-if="template.footerVisible && text_footer" class="studio__canvas__text-footer"></div>
+                            </div>
                         </div>
+                        <div id="StudioCanvasTextResizer" class="studio__canvas_resizer" @click="onTextMouseHover()" @mouseover="updateResizerPosition()"></div>
                     </div>
 
-                    <div class="studio__watermark" :class="'pos-' + template.watermarkPosition">QUOOOTES.COM</div>
-
-                    <div class="studio__canvas__overlay">
-                        <!-- <div class="text-position" @click="template.boxPosition = 'left-top'" data-toggle="tooltip" data-title="Move Text Here" data-placement="top"></div>
-                        <div class="text-position" @click="template.boxPosition = 'center-top'"><div class="pointer"></div></div>
-                        <div class="text-position" @click="template.boxPosition = 'right-top'"></div>
-
-                        <div class="text-position" @click="template.boxPosition = 'left-center'"></div>
-                        <div class="text-position" @click="template.boxPosition = 'center-center'"></div>
-                        <div class="text-position" @click="template.boxPosition = 'right-center'"></div>
-
-                        <div class="text-position" @click="template.boxPosition = 'left-bottom'"></div>
-                        <div class="text-position" @click="template.boxPosition = 'center-bottom'"></div>
-                        <div class="text-position" @click="template.boxPosition = 'right-bottom'"></div> -->
+                    <div class="studio__watermark" v-if="is_free" :class="'pos-' + template.watermarkPosition">QUOOOTES.COM</div>
+                    <div v-if="!is_free && template.logoImage" class="studio__logo" :class="'pos-' + template.watermarkPosition" :style="getLogoStyles()">
+                        <img :src="template.logoImage" :style="getLogoStyles()">
                     </div>
                 </div>
             </div>
@@ -483,8 +544,21 @@
                 </div>
             </div>
         </div>
+
+        <?= $this->element('studio/upgrade'); ?>
+        <?= $this->element('studio/login-modal'); ?>
+        <?= $this->element('studio/payment-success-modal'); ?>
+
+        <!-- <pre class="template-debugger">{{ template }}</pre> -->
     </div>
 
+    <?php if (!$user): ?>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <div id="g_id_onload"
+        data-client_id="443859332061-cl9dab1raicl1ernph96mot32jpkhlk2.apps.googleusercontent.com"
+        data-login_uri="<?= Router::url('/google/callback?redirect_to=/studio', true); ?>">
+    </div>
+    <?php endif; ?>
 </body>
 </html>
 
@@ -498,6 +572,22 @@
 .vc-chrome-hue-wrap,.vc-chrome-alpha-wrap{height:16px}
 .vc-hue-picker,.vc-alpha-picker{width:18px!important;height:18px!important;border-radius:30px!important}
 .vc-chrome-saturation-wrap{border-radius:6px}
+
+.form-control-hidden-file{width:0;height:0;opacity:0;position:absolute;overflow:hidden;padding:0;border:0}
+.upgrade-modal .modal-title span{color:#ef7907;background:-webkit-linear-gradient(#ef7907,#f34200);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.upgrade-modal .modal-title{font-size:36px;font-weight:900;line-height:31px;margin:32px 0 14px;padding:4px}
+.upgrade-modal .modal-title p{margin-bottom:30px}
+.upgrade-modal .modal-content{border-radius:8px}
+.upgrade-modal .modal-dialog{max-width:460px}
+.payment-success-modal .modal-dialog{max-width:400px}
+.login-modal .modal-dialog{max-width:430px}
+.login-modal .modal-title{font-size:34px;font-weight:900;line-height:31px;margin:32px 0 20px;padding:4px}
+.upgrade-modal .close{position:absolute;right:10px;top:10px;z-index:9999}
+.upgrade-modal .features{display:flex;justify-content:center}
+.upgrade-modal .features-list{display:inline-block}
+.upgrade-modal .features-list li{padding:7px 0}
+.upgrade-modal .features-list li>i{color:#1d9739;color:#f25603}
+.upgrade-modal .btn-upgrade{border-bottom:3px solid #13772a;font-weight:700;padding:11px 27px;font-size:18px;margin-top:28px;margin-bottom:16px}
 </style>
 <script>
     var __NEXT_DATA__ = {
@@ -505,6 +595,7 @@
         design: <?php echo json_encode($design); ?>,
         text: "<?= $text; ?>",
         backgrounds: <?php echo json_encode($backgrounds); ?>,
+        templates: <?php echo json_encode($templates); ?>,
         tags: <?php echo json_encode($category_list); ?>,
         user: <?php echo json_encode($user); ?>,
     }
@@ -517,7 +608,7 @@
 <?php
 if ($env === 'DEV') {
     echo $this->Html->script([
-        'studio/vue.min.js',
+        'studio/vue.js',
         'studio/moveable.min.js',
         'vendor/jquery.min.js',
         'vendor/popper.min.js',

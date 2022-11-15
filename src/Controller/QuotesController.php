@@ -2,13 +2,13 @@
 namespace App\Controller;
 
 use App\Lib\BackgroundService;
-use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Event\EventInterface;
+use Cake\Routing\Router;
 
 use App\Lib\DesignService;
+use App\Lib\UserService;
 use App\Lib\TemplatesService;
-use Cake\Routing\Router;
 
 class QuotesController extends AppController
 {
@@ -151,14 +151,24 @@ class QuotesController extends AppController
             $Design->template = unserialize($Design->template);
         }
 
+        UserService::setLastSeen($this->user_id);
+
         $text = $this->request->getQuery('text', "");
         $action = $this->request->getQuery('action', null);
+
+        $templates = TemplatesService::all();
+
+        if (!$Template && !$Design) {
+            $random_template = array_rand($templates);
+            $Template = TemplatesService::get($templates[$random_template]['hash']);
+        }
 
         $this->set('title', 'Studio');
         $this->set('template', $Template);
         $this->set('design', $Design);
         $this->set('text', $text);
         $this->set('action', $action);
+        $this->set('templates', $templates);
         $this->set('backgrounds', BackgroundService::list(null, 1, 150));
         $this->render('studio');
     }
