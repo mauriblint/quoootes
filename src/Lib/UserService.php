@@ -31,6 +31,8 @@ class UserService {
         $UsersTable = TableRegistry::getTableLocator()->get('Users');
         return $UsersTable->find()
             ->enableHydration(false)
+            ->contain(['Subscriptions'])
+            ->order(['Users.created' => 'DESC'])
             ->all()
             ->toArray();
     }

@@ -203,6 +203,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Designs</th>
+                                <th scope="col">Plan</th>
                                 <th scope="col">Signup</th>
                                 <th scope="col">Last Seen</th>
                                 <th class="text-right" scope="col"></th>
@@ -219,6 +220,7 @@
                                 </td>
                                 <td class="text-left">{{ user.email }}</td>
                                 <td class="text-left">{{ user.designs_count }}</td>
+                                <td class="text-left">{{ (user.subscription) ? user.subscription.plan_id : '1' }}</td>
                                 <td class="text-left">{{ user.created.split('T')[0] }}</td>
                                 <!-- user.created.replace('T', ' ').split('+')[0] -->
                                 <td class="text-left">{{ user.last_login.split('T')[0] }}</td>

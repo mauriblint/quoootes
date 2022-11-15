@@ -8,7 +8,7 @@ Vue.use(Toasted, {
 var app = new Vue({
     el: '#admin',
     data: {
-        page: 'designs',
+        page: 'users',
         templates: [],
         backgrounds: [],
         designs: [],
