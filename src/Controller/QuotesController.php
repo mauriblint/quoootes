@@ -151,7 +151,9 @@ class QuotesController extends AppController
             $Design->template = unserialize($Design->template);
         }
 
-        UserService::setLastSeen($this->user_id);
+        if ($this->user_id) {
+            UserService::setLastSeen($this->user_id);
+        }
 
         $text = $this->request->getQuery('text', "");
         $action = $this->request->getQuery('action', null);
