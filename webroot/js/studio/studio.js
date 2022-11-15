@@ -990,6 +990,7 @@ var app = new Vue({
 
         restoreWorkSession: function () {
             var session_data = localStorage.getItem('quoootes::design');
+            var _this = this;
 
             if (session_data) {
                 var data = JSON.parse(session_data);
@@ -999,7 +1000,11 @@ var app = new Vue({
                 this.template = data.template;
 
                 if (data.upgrade_showed) {
-                    this.showUpgrade(data.upgrade_showed);
+                    if (window.location.search && window.location.search.indexOf('payment_cancel') === -1) {
+                        setTimeout(function () {
+                            _this.showUpgrade(data.upgrade_showed);
+                        }, 1000);
+                    }
                 }
 
                 localStorage.removeItem('quoootes::design');
