@@ -70,10 +70,16 @@ class AppController extends Controller
             $this->subscription = SubscriptionService::findByUserId($this->user_id);
             $this->is_customer = ($this->subscription['plan_id'] > 1 && $this->subscription['status'] === 'active');
             $this->is_free = !$this->is_customer;
-            $User->is_customer = $this->is_customer;
-            $User->is_free = $this->is_free;
-            $User->plan_id = $this->subscription['plan_id'];
+            $User['is_customer'] = $this->is_customer;
+            $User['is_free'] = $this->is_free;
+            $User['plan_id'] = $this->subscription['plan_id'];
+
             $this->user = $User;
+
+            if ($User['id'] === 3) {
+                print_r($User);
+                die;
+            }
         }
 
         $this->set('user', $User);
