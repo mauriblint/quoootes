@@ -30,6 +30,12 @@ class SubscriptionService {
             $Subscription->plan_id = 1;
             $Subscription->status = SubscriptionService::STATUS_ACTIVE;
             $SubscriptionTable->save($Subscription);
+
+            $Subscription = $SubscriptionTable
+                ->find()
+                ->where(['user_id' => $user_id])
+                ->contain('Plans')
+                ->first();
         }
 
         return $Subscription;
