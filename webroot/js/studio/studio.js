@@ -61,6 +61,7 @@ var app = new Vue({
         search_image_query: '',
         photos: [],
         loading: false,
+        debug: false,
 
         popovers: {
             color_picker_1_open: false,
@@ -418,6 +419,9 @@ var app = new Vue({
                 template.textboxLeft = ((template_layout.width - template_layout.textboxWidth) / 2);
                 template.textboxTop = ((template_layout.height - template_layout.textboxHeight) / 2);
             }
+
+            this.canvas_width = template_layout.width;
+            this.canvas_height = template_layout.height;
 
             if (this.template.footerVisible) {
                 template.footerVisible = true;
@@ -789,40 +793,45 @@ var app = new Vue({
         },
 
         centerTextOnCanvas: function (_position) {
-            var position = (_position || this.template.boxPosition || 'center-center').split('-');
-            var position_x = position[0];
-            var position_y = position[1];
-            var left = 0;
-            var top = 0;
-            var $StudioCanvas = $('#StudioCanvas');
-            var $StudioCanvasText = $('#StudioCanvasText');
 
-            if (position_x === 'center') {
-                left = ($StudioCanvas.outerWidth()/2 - $StudioCanvasText.outerWidth()/2)
-            }
-            if (position_x === 'left') {
-                left = 20;
-            }
-            if (position_x === 'right') {
-                left = (($StudioCanvas.outerWidth()/2 - $StudioCanvasText.outerWidth()/2)*2)-20;
-            }
 
-            if (position_y === 'center') {
-                top = ($StudioCanvas.outerHeight()/2 - $StudioCanvasText.outerHeight()/2);
-            }
-            if (position_y === 'top') {
-                top = 20;
-            }
-            if (position_y === 'bottom') {
-                top = (($StudioCanvas.outerHeight()/2 - $StudioCanvasText.outerHeight()/2)*2)-20;
-            }
+            this.template.textboxTop = (this.canvas_height/2 - this.template.textboxHeight/2);
+            this.template.textboxLeft = (this.canvas_width/2 - this.template.textboxWidth/2);
 
-            $StudioCanvasText.css({
-                top: top,
-                left: left
-            }) ;
+            // var position = (_position || this.template.boxPosition || 'center-center').split('-');
+            // var position_x = position[0];
+            // var position_y = position[1];
+            // var left = 0;
+            // var top = 0;
+            // var $StudioCanvas = $('#StudioCanvas');
+            // var $StudioCanvasText = $('#StudioCanvasText');
 
-            this.destroyMoveable();
+            // if (position_x === 'center') {
+            //     left = ($StudioCanvas.outerWidth()/2 - $StudioCanvasText.outerWidth()/2)
+            // }
+            // if (position_x === 'left') {
+            //     left = 20;
+            // }
+            // if (position_x === 'right') {
+            //     left = (($StudioCanvas.outerWidth()/2 - $StudioCanvasText.outerWidth()/2)*2)-20;
+            // }
+
+            // if (position_y === 'center') {
+            //     top = ($StudioCanvas.outerHeight()/2 - $StudioCanvasText.outerHeight()/2);
+            // }
+            // if (position_y === 'top') {
+            //     top = 20;
+            // }
+            // if (position_y === 'bottom') {
+            //     top = (($StudioCanvas.outerHeight()/2 - $StudioCanvasText.outerHeight()/2)*2)-20;
+            // }
+
+            // $StudioCanvasText.css({
+            //     top: top,
+            //     left: left
+            // }) ;
+
+            // this.destroyMoveable();
         },
 
         resizeText: function () {
@@ -1062,6 +1071,11 @@ initMovable = function() {
         top: parent.top,
         bottom: parent.top + parent.height,
     };
+    var guideline_vertical = (parent.y + (parent.height/2));
+    var guideline_horizontal = (parent.x + (parent.width/2));
+
+    console.log(bounds);
+    console.log(guideline_vertical, guideline_horizontal);
 
     const moveable = new Moveable(document.body, {
         target: document.getElementById("StudioCanvasTextResizer"),
@@ -1069,6 +1083,11 @@ initMovable = function() {
         draggable: true,
         resizable: true,
         snappable: true,
+        snappable: true,
+        snapCenter: true,
+        snapDirections:  { center: true, middle: true },
+        horizontalGuidelines: [guideline_vertical],
+        verticalGuidelines: [guideline_horizontal],
         zoom: 1,
         renderDirections: ["e", "w"],
         renderDirections: ["e", "se"],

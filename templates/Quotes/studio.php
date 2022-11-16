@@ -549,7 +549,7 @@
         <?= $this->element('studio/login-modal'); ?>
         <?= $this->element('studio/payment-success-modal'); ?>
 
-        <!-- <pre class="template-debugger">{{ template }}</pre> -->
+        <pre class="template-debugger" v-if="debug">{{ template }}</pre>
     </div>
 
     <?php if (!$user): ?>
