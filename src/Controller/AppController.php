@@ -73,13 +73,7 @@ class AppController extends Controller
             $User['is_customer'] = $this->is_customer;
             $User['is_free'] = $this->is_free;
             $User['plan_id'] = $this->subscription['plan_id'];
-
             $this->user = $User;
-
-            if ($User['id'] === 3) {
-                print_r($User);
-                die;
-            }
         }
 
         $this->set('user', $User);
