@@ -68,7 +68,7 @@ class AppController extends Controller
         if ($User = $this->Auth->user()) {
             $this->user_id = (isset($User['id'])) ? $User['id'] : null;
             $this->subscription = SubscriptionService::findByUserId($this->user_id);
-            $this->is_customer = ($this->subscription['plan_id'] > 1 && $this->subscription['status'] === 'active');
+            $this->is_customer = ($this->subscription['plan_id'] > 1 && $this->subscription['status'] === 'active') ? true : false;
             $this->is_free = !$this->is_customer;
             $User['is_customer'] = $this->is_customer;
             $User['is_free'] = $this->is_free;
