@@ -124,10 +124,11 @@
                         <button class="btn btn-dark btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span :style="{fontFamily: template.fontFamily}" >{{ template.fontFamily }}</span>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu font-picker-dropdown-menu">
                             <a class="dropdown-item" v-for="font in fonts" style="position:relative;font-size: 18px;" href="#" :style="{fontFamily: font.name, fontWeight: (font.weight) ? font.weight : 400}" @click="onSelectFont(font)">
                                 {{ font.title || font.name }}
-                                <i class="bi bi-lock-fill ml-2" v-if="font.premium"></i>
+                                <i class="bi bi-lock-fill ml-2" v-if="is_free && font.premium"></i>
+                                <i class="bi bi-lightning-charge-fill mr-2" v-if="!is_free && font.premium"></i>
                             </a>
                         </div>
                     </div>
@@ -603,6 +604,9 @@
 .template-card-inner .is-premium{position:absolute;left:10px;top:10px;padding:7px 10px}
 .template-card img{border-radius:4px}
 .template-card:hover{cursor:pointer;background-color:#d9deea}
+
+.font-picker-dropdown-menu .dropdown-item { position:relative;}
+.font-picker-dropdown-menu .dropdown-item .bi { position: absolute; right: 0; top: 8px;}
 </style>
 <script>
     var __NEXT_DATA__ = {
