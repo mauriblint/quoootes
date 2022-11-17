@@ -207,6 +207,24 @@ var app = new Vue({
             })
         },
 
+        onChangeIsPremium: function (template, status) {
+            console.log(status);
+            var _this = this;
+
+            $.ajax({
+                url: "/ajax/update-template",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    template_id: template.id,
+                    is_premium: status
+                }
+            })
+            .done((response) => {
+                template.is_premium = status;
+            })
+        },
+
         onChangeDesignStatus: function (design, status) {
             var _this = this;
 

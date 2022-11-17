@@ -349,7 +349,7 @@ var app = new Vue({
                 return this.showUpgrade('premium_template');
             }
 
-            this.loadTemplate(id);
+            this.loadTemplate(template.id);
             this.page = 'editor';
         },
 
