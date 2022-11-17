@@ -77,6 +77,19 @@
         justify-content: center;
     }
 </style>
+<style>
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+.badge {
+    padding: 5px 10px;
+}
+.badge.clickeable {
+    cursor: pointer;
+    opacity: .8;
+}
+</style>
 </body>
 
 </html>

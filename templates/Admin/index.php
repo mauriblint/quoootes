@@ -23,6 +23,7 @@
                                 <th scope="col">Preview</th>
                                 <th scope="col">Size</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Premium</th>
                                 <th class="text-right" scope="col" style="width: 100%;"></th>
                             </tr>
                         </thead>
@@ -34,6 +35,10 @@
                                 <td>
                                     <span v-if="template.active" class="badge badge-success">Active</span>
                                     <span v-else class="badge badge-danger">Disabled</span>
+                                </td>
+                                <td>
+                                    <span v-if="template.is_premium" class="badge badge-info clickeable" @click="onChangeIsPremium(template, 0)">Premium</span>
+                                    <span v-else class="badge badge-light clickeable" @click="onChangeIsPremium(template, 1)">Free</span>
                                 </td>
                                 <td class="text-right">
                                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -277,10 +282,3 @@
     </div>
   </div>
 </div>
-
-<style>
-th, td {
-    text-align: center;
-    vertical-align: middle;
-}
-</style>

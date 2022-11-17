@@ -176,6 +176,12 @@ var app = new Vue({
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.templates) {
             this.templates = window.__NEXT_DATA__.templates;
+            var templates_orders = ['landscape', 'square', 'story', 'portrait'];
+            this.templates.sort(function (a,b) {
+                var a_weight = templates_orders.indexOf(a.layout);
+                var b_weight = templates_orders.indexOf(b.layout);
+                return (a_weight - b_weight);
+            });
         }
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.template) {
@@ -314,6 +320,7 @@ var app = new Vue({
         },
 
         onViewTemplates: function () {
+            mixpanel.track('ViewStudioTemplates');
             this.fetchTemplates();
             this.page = 'templates';
         },
@@ -337,7 +344,11 @@ var app = new Vue({
             }
         },
 
-        onTemplateSelected: function (id) {
+        onTemplateSelected: function (template) {
+            if (template.is_premium) {
+                return this.showUpgrade('premium_template');
+            }
+
             this.loadTemplate(id);
             this.page = 'editor';
         },
@@ -682,8 +693,8 @@ var app = new Vue({
             mixpanel.track("StudioWizardSkipped");
         },
 
-        onWizardTemplateSelected: function (template_id) {
-            this.onTemplateSelected(template_id);
+        onWizardTemplateSelected: function (template) {
+            this.onTemplateSelected(template);
             mixpanel.track("StudioWizardTemplateSelected");
         },
 
@@ -988,6 +999,7 @@ var app = new Vue({
         },
 
         goToCheckout: function () {
+            mixpanel.track("ClickedOnUpgrade");
             if (this.user && this.user.id) {
                 window.location.href = "/subscriptions/pay/pro";
             } else {
@@ -1039,6 +1051,13 @@ var app = new Vue({
 
         closeModal: function (modal_id) {
             $('#' + modal_id).modal('hide');
+        },
+
+        onSelectFont: function (font) {
+            if (this.is_free && font.premium) {
+                return this.showUpgrade('premium_font');
+            }
+            template.fontFamily = font.name;
         }
     },
 });

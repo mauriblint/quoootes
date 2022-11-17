@@ -8,8 +8,6 @@
     // echo json_encode($template, JSON_UNESCAPED_UNICODE);
     // die;
     $env = env('ENV', 'DEV');
-
-
 ?>
 
 
@@ -26,7 +24,7 @@
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="icon"/>
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.0/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
     <link rel="stylesheet" href="/fonts/kredit/styles.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="/fonts/1942/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="/fonts/team_spirit/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
@@ -97,7 +95,7 @@
                 <!--  Text -->
                 <div class="form-group">
                     <label for="">Text</label>
-                    <textarea rows="3" v-model="text" ref="textInput" class="form-control" @input="onTextChange('text')" maxlength="400" @paste="onTextChange('text_paste')"></textarea>
+                    <textarea rows="4" v-model="text" ref="textInput" class="form-control" @input="onTextChange('text')" maxlength="400" @paste="onTextChange('text_paste')"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -127,7 +125,10 @@
                             <span :style="{fontFamily: template.fontFamily}" >{{ template.fontFamily }}</span>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" v-for="font in fonts" style="font-size: 18px;" href="#" :style="{fontFamily: font.name, fontWeight: (font.weight) ? font.weight : 400}" @click="template.fontFamily = font.name;">{{ font.title || font.name }}</a>
+                            <a class="dropdown-item" v-for="font in fonts" style="position:relative;font-size: 18px;" href="#" :style="{fontFamily: font.name, fontWeight: (font.weight) ? font.weight : 400}" @click="onSelectFont(font)">
+                                {{ font.title || font.name }}
+                                <i class="bi bi-lock-fill ml-2" v-if="font.premium"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -445,14 +446,20 @@
         <div class="studio__body" v-if="page === 'templates'">
             <div class="container mt-5">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 templates-page-header mb-4">
                         <h1>Templates</h1>
+                        <i class="bi bi-x-lg" @click="page = 'editor'"></i>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div v-for="template in templates" class="col-6 col-md-3">
-                        <img :src="template.preview_url" class="img-fluid" @click="onTemplateSelected(template.id)">
+                    <div v-for="template in templates" class="col-6 col-md-3 mb-2">
+                        <div class="template-card">
+                            <div class="template-card-inner">
+                                <img :src="template.preview_url" class="img-fluid" @click="onTemplateSelected(template)">
+                                <div class="is-premium badge badge-light" v-if="template.is_premium"><i class="bi bi-star-fill mr-1"></i> Premium</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -498,7 +505,7 @@
                     </div>
                     <div class="templates-grid scrollable mt-4">
                         <div v-for="template in templates" class="template template__square">
-                            <img :src="template.preview_url" class="img-fluid" @click="onWizardTemplateSelected(template.id)">
+                            <img :src="template.preview_url" class="img-fluid" @click="onWizardTemplateSelected(template)">
                         </div>
                     </div>
                 </div>
@@ -588,6 +595,14 @@
 .upgrade-modal .features-list li{padding:7px 0}
 .upgrade-modal .features-list li>i{color:#1d9739;color:#f25603}
 .upgrade-modal .btn-upgrade{border-bottom:3px solid #13772a;font-weight:700;padding:11px 27px;font-size:18px;margin-top:28px;margin-bottom:16px}
+
+.templates-page-header .bi{font-size:30px;position:absolute;right:24px;top:6px}
+.templates-page-header .bi:hover{cursor:pointer;opacity:.9;color:#eb5956}
+.template-card{background-color:#eef0f6;text-align:center;border-radius:4px;padding:8px;position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.template-card-inner{position:relative;display:flex;align-items:center;justify-content:center}
+.template-card-inner .is-premium{position:absolute;left:10px;top:10px;padding:7px 10px}
+.template-card img{border-radius:4px}
+.template-card:hover{cursor:pointer;background-color:#d9deea}
 </style>
 <script>
     var __NEXT_DATA__ = {

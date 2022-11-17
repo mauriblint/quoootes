@@ -44,6 +44,10 @@ class TemplatesService {
             $Template->active = (bool) $data['active'];
         }
 
+        if (isset($data['is_premium'])) {
+            $Template->is_premium = (bool) $data['is_premium'];
+        }
+
         $id = $TemplatesTable->save($Template);
 
         return $Template;
