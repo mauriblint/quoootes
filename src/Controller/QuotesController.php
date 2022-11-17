@@ -160,7 +160,7 @@ class QuotesController extends AppController
 
         $templates = TemplatesService::all();
 
-        if (!$Template && !$Design) {
+        if (!$Template && !$Design && $action !== 'create_template') {
             $random_template = array_rand($templates);
             $Template = TemplatesService::get($templates[$random_template]['hash']);
         }
