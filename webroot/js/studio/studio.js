@@ -1057,7 +1057,7 @@ var app = new Vue({
             if (this.is_free && font.premium) {
                 return this.showUpgrade('premium_font');
             }
-            template.fontFamily = font.name;
+            this.template.fontFamily = font.name;
         }
     },
 });
