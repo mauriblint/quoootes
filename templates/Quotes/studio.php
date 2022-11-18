@@ -94,8 +94,11 @@
 
                 <!--  Text -->
                 <div class="form-group">
-                    <label for="">Text</label>
-                    <textarea rows="4" v-model="text" ref="textInput" class="form-control" @input="onTextChange('text')" maxlength="400" @paste="onTextChange('text_paste')"></textarea>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="mb-0">Text</label>
+                        <span class="label-count">{{ text.length }}/500</span>
+                    </div>
+                    <textarea rows="4" v-model="text" ref="textInput" class="form-control" @input="onTextChange('text')" maxlength="500" @paste="onTextChange('text_paste')"></textarea>
                 </div>
 
                 <div class="form-group">

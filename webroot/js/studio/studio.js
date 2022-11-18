@@ -123,10 +123,14 @@ var app = new Vue({
 
             textboxWidth: 250,
             textboxHeight: 250,
+            textboxTop: 125,
+            textboxLeft: 125,
         },
 
-        canvas_width: 0,
-        canvas_height: 0,
+        canvas_width: 250,
+        canvas_height: 250,
+        initial_textbox_width: 250,
+        initial_textbox_height: 250,
 
         // text_max_width: 0,
         // text_min_width: 0,
@@ -134,6 +138,7 @@ var app = new Vue({
         // text_min_height: 0,
 
         show_advanced_options: false,
+        is_automatic_layout: true,
 
         layouts: [
             { name: 'Square', key: 'square', width: 500, height: 500, textboxWidth: 290, textboxHeight: 290, text_min_width: 0.3, text_min_height: 0.3, text_max_width: 0.8, text_max_height: 0.8 },
@@ -208,6 +213,7 @@ var app = new Vue({
         if (this.mode === 'create_template' || this.mode === 'edit_template') {
             this.text = 'Life is what happens when you’re busy making other plans.';
             this.page = 'editor';
+            this.debug = true;
         }
 
         if (this.mode === 'edit_design') {
@@ -377,10 +383,11 @@ var app = new Vue({
         },
 
         setTemplate: function (data, back_to_editor) {
+            console.log('setTemplate');
+            this.is_automatic_layout = true;
             var template_styles = (data.styles) ? data.styles : data;
             this.template = Object.assign({}, this.initial_template, this._parseTemplateJSON(template_styles));
             this.template_id = data.id;
-
             setTimeout(this.updateResizerPosition, 200);
             setTimeout(this.resizeText, 50);
             setTimeout(this.resizeText, 150);
@@ -393,10 +400,56 @@ var app = new Vue({
         setLayout: function (layout) {
             this.template.layout = layout.key;
             var layout = this._getLayout(layout.key);
-            this.template.textboxWidth = layout.textboxWidth;
-            this.template.textboxHeight = layout.textboxHeight;
-            this.template.textboxLeft = ((layout.width - layout.textboxWidth) / 2);
-            this.template.textboxTop = ((layout.height - layout.textboxHeight) / 2);
+            this.is_automatic_layout = true;
+            // this.resizeTextbox(layout);
+        },
+
+        resizeTextbox: function (_layout) {
+            // console.log('resizeTextbox');
+            return false;
+            if (!this.is_automatic_layout || !this.template || this.mode === 'create_template') {
+                return false;
+            }
+
+            // var layout = _layout || this._getLayout(this.template.layout);
+            var box_scale_factor = 1;
+
+            if (this.text.length < 20) { box_scale_factor = 0.6; }
+            else if (this.text.length < 40) { box_scale_factor = 0.7; }
+            else if (this.text.length < 50) { box_scale_factor = 0.75; }
+            else if (this.text.length < 100) { box_scale_factor = 0.85; }
+            else if (this.text.length < 200) { box_scale_factor = 1; }
+            else if (this.text.length < 300) { box_scale_factor = 1.1; }
+            else if (this.text.length < 400) { box_scale_factor = 1.2; }
+            else { box_scale_factor = 1.3; };
+
+            console.log('box_scale_factor', box_scale_factor);
+
+            var currentTextboxWidth = this.template.textboxWidth;
+            var currentTextboxHeight= this.template.textboxHeight;
+            var newTextboxWidth = (this.initial_textbox_width*box_scale_factor);
+            var newTextboxHeight = (this.initial_textbox_height*box_scale_factor);
+            var diffTextboxWidth = (currentTextboxWidth - newTextboxWidth) / 2;
+            var diffTextboxHeight = (currentTextboxHeight - newTextboxHeight) / 2;
+            var newTextboxLeft = this.template.textboxLeft + diffTextboxWidth;
+            var newTextboxTop = this.template.textboxTop + diffTextboxHeight;
+
+            // console.log('current size: ', currentTextboxWidth, currentTextboxHeight);
+            // console.log('new size: ', newTextboxWidth, newTextboxHeight);
+            // console.log('diff: ', diffTextboxWidth, diffTextboxHeight);
+
+            this.template.textboxWidth = newTextboxWidth;
+            this.template.textboxHeight = newTextboxHeight;
+            this.template.textboxLeft = newTextboxLeft;
+            this.template.textboxTop = newTextboxTop;
+
+            return false;
+
+
+            this.template.textboxWidth = textboxWidth;
+            this.template.textboxHeight = textboxHeight;
+            this.template.textboxLeft = ((layout.width - textboxWidth) / 2);
+            this.template.textboxTop = ((layout.height - textboxHeight) / 2);
         },
 
         _parseTemplateJSON: function (template) {
@@ -424,7 +477,8 @@ var app = new Vue({
 
             var template_layout = this._getLayout(template.layout);
 
-            if (!template.textboxWidth) {
+            if (!template.textboxWidth || !template.textboxLeft) {
+                // this.resizeTextbox(template_layout);
                 template.textboxWidth = template_layout.textboxWidth;
                 template.textboxHeight = template_layout.textboxHeight;
                 template.textboxLeft = ((template_layout.width - template_layout.textboxWidth) / 2);
@@ -433,6 +487,8 @@ var app = new Vue({
 
             this.canvas_width = template_layout.width;
             this.canvas_height = template_layout.height;
+            this.initial_textbox_width = template.textboxWidth;
+            this.initial_textbox_height = template.textboxHeight;
 
             if (this.template.footerVisible) {
                 template.footerVisible = true;
@@ -440,6 +496,8 @@ var app = new Vue({
             if (this.template.headerVisible) {
                 template.headerVisible = true;
             }
+
+            // this.resizeTextbox(template_layout);
 
             return template;
         },
@@ -472,17 +530,23 @@ var app = new Vue({
                 var ft = this.text_footer;
                 var ft_start = '— ';
                 var ft_end = ' —';
+                ft_end = '';
+                ft_start = '';
+                var ft_fz = 16;
 
                 if (this.template.textUppercase) {
                     ft = this.text_footer.toUpperCase();
                 }
-                if (this.template.textAlign === 'left') {
-                    ft_end = '';
-                }
-                if (this.template.textAlign === 'right') {
-                    ft_start = '';
-                }
-                return ft_start + ft + ft_end;
+                // if (this.template.textAlign === 'left') {
+                //     ft_end = '';
+                // }
+                // if (this.template.textAlign === 'right') {
+                //     ft_start = '';
+                // }
+
+                if (ft.length > 14) { ft_fz = 14; }
+                if (ft.length > 20) { ft_fz = 12; }
+                return '<span style="font-size: ' + ft_fz + 'px;">' + ft_start + ft + ft_end + '</span>';
             }
 
             return '';
@@ -846,6 +910,7 @@ var app = new Vue({
         },
 
         resizeText: function () {
+            // this.resizeTextbox();
             var a = document.getElementById('StudioCanvasText');
             var b = document.getElementById('StudioCanvasTextContainer');
 
@@ -864,14 +929,14 @@ var app = new Vue({
             }
 
             var MAX_FONT_SIZE = 60;
-            var MIN_FONT_SIZE = 8;
-            var new_font_size = 0;
+            var MIN_FONT_SIZE = 7;
+            var new_font_size = MIN_FONT_SIZE;
 
             var is_h_overflown = get_is_h_overflown();
             var while_steps = 0;
 
-            while (is_h_overflown && while_steps < 1000 && new_font_size < MAX_FONT_SIZE) {
-                console.log('while_steps', while_steps, 'is_h_overflown', is_h_overflown);
+            while (is_h_overflown && while_steps < 1000 && new_font_size >= MIN_FONT_SIZE) {
+                // console.log('while_steps', while_steps, 'is_h_overflown', is_h_overflown);
                 new_font_size = (parseFloat(a.style.fontSize.replace('px')) - 0.2);
                 a.style.fontSize = (new_font_size + 'px');
                 is_h_overflown = get_is_h_overflown();
@@ -882,7 +947,7 @@ var app = new Vue({
             var while_steps = 0;
 
             while (is_h_subbflown && while_steps < 1000 && new_font_size < MAX_FONT_SIZE) {
-                console.log('while_steps', while_steps, 'is_h_subbflown', is_h_subbflown);
+                // console.log('while_steps', while_steps, 'is_h_subbflown', is_h_subbflown);
                 new_font_size = (parseFloat(a.style.fontSize.replace('px')) + 0.2);
                 a.style.fontSize = (new_font_size + 'px');
 
@@ -903,7 +968,7 @@ var app = new Vue({
 
             // console.log('Done in ' + while_steps + ' steps! New font size is: ' + new_font_size);
 
-            if (new_font_size) {
+            if (new_font_size && new_font_size !== MIN_FONT_SIZE) {
                 this.template.fontSize = new_font_size;
             }
         },
@@ -1126,36 +1191,35 @@ initMovable = function() {
         $target = document.getElementById("StudioCanvasText");
         $target.style.left = left + 'px';
         $target.style.top = top + 'px';
-        // console.log("onDrag translate", dist);
-        // target!.style.transform = transform;
     });
     moveable.on("dragEnd", (e) => {
         window.MoveableDragging = false;
-        // console.log(e);
-        Vue.set(app.template, 'textboxTop', Math.max(0, e.lastEvent.top));
-        Vue.set(app.template, 'textboxLeft', Math.max(0, e.lastEvent.left));
-        // app.updateCanvasTextboxSizeAndPosition();
+        if (e.lastEvent) {
+            Vue.set(app.template, 'textboxTop', Math.max(0, e.lastEvent.top));
+            Vue.set(app.template, 'textboxLeft', Math.max(0, e.lastEvent.left));
+            app.is_automatic_layout = false;
+        }
     });
 
     /* resizable */
     moveable.on("resizeStart", (e) => {
-        // e.setMin([app.text_min_width, app.text_min_height]);
-        // e.setMax([app.text_max_width, app.text_max_height]);
         e.setMin([100, 100]);
         window.MoveableDragging = true;
     });
 
     moveable.on("resize", ({target,width,height,dist,delta}) => {
-        // console.log("onResize", width, height);
         $target = document.getElementById("StudioCanvasTextResizer");
         delta[0] && ($target.style.width = width + 'px');
         delta[1] && ($target.style.height = height + 'px');
     });
     moveable.on("resizeEnd", (e) => {
-        // console.log("onResizeEnd", e);
         window.MoveableDragging = false;
-        Vue.set(app.template, 'textboxWidth', e.lastEvent.width);
-        Vue.set(app.template, 'textboxHeight', e.lastEvent.height);
+
+        if (e.lastEvent) {
+            Vue.set(app.template, 'textboxWidth', e.lastEvent.width);
+            Vue.set(app.template, 'textboxHeight', e.lastEvent.height);
+            app.is_automatic_layout = false;
+        }
 
         Vue.nextTick(() => {
             app.resizeText();

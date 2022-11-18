@@ -35,6 +35,7 @@ javascript-obfuscator webroot/js/studio.soft.build.js \
 
 echo "Soft bundle obfuscated!"
 
+git add webroot/js/studio/studio.js
 git add webroot/js/studio.soft.build.js
 
 echo "Soft bundle ready to commit!"
