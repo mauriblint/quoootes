@@ -53,8 +53,8 @@ class GoogleController extends AppController
                 $google_account_info = [
                     'id' => $payload['sub'],
                     'name' => $payload['name'],
-                    'given_name' => $payload['given_name'],
-                    'family_name' => $payload['family_name'],
+                    'given_name' => isset($payload['family_name']) ? $payload['given_name'] : null,
+                    'family_name' => isset($payload['family_name']) ? $payload['family_name'] : null,
                     'picture' => $payload['picture'],
                     'email' => $payload['email'],
                     'email_verified' => $payload['email_verified'],
@@ -71,8 +71,8 @@ class GoogleController extends AppController
             $google_account_info = [
                 'id' => $payload['id'],
                 'name' => $payload['name'],
-                'given_name' => $payload['givenName'],
-                'family_name' => $payload['familyName'],
+                'given_name' => isset($payload['givenName']) ? $payload['givenName'] : null,
+                'family_name' => isset($payload['familyName']) ? $payload['familyName'] : null,
                 'picture' => $payload['picture'],
                 'email' => $payload['email'],
                 'email_verified' => $payload['verifiedEmail'],
