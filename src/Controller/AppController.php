@@ -47,7 +47,7 @@ class AppController extends Controller
 
         $this->checkSSL();
 
-        $this->set('category_list', TagService::getAll() );
+        $this->set('category_list', TagService::getPopularList() );
         $this->set('env', env('ENV', 'DEV') );
 
         $this->loadComponent('RequestHandler');

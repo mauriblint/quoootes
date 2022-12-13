@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Lib\BackgroundService;
 use App\Lib\UploadService;
 use App\Lib\DesignService;
+use App\Lib\QuoteService;
 use App\Lib\TemplatesService;
 
 class AjaxController extends AppController
@@ -137,6 +138,21 @@ class AjaxController extends AppController
 
 
     	return $this->renderJSON(true, $designs['data'], $designs['pagination']);
+    }
+
+    public function quotes()
+    {
+        $tag = $this->request->getQuery('tag', 'all');
+        $page = $this->request->getQuery('page', 1);
+        $count = $this->request->getQuery('count', 12);
+        $query = $this->request->getQuery('query', '');
+
+        $tag = ($tag==='all') ? null : $tag;
+
+        $result = QuoteService::search($query, $tag, $page, $count);
+
+
+    	return $this->renderJSON(true, $result);
     }
 
     public function uploadBackground()

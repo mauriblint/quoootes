@@ -69,7 +69,17 @@
             </div>
             <div class="studio__header-options">
                 <button @click="onViewTemplates()" class="btn btn-light mb-0 btn-upper" v-if="mode === 'create' || mode === 'edit_design'"><i class="bi bi-star-fill mr-1 text-warning"></i> Templates</button>
-                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create' || mode === 'edit_design'" :disabled="!text && !text_footer && !text_header">Save</button>
+                <button @click="onViewQuotes()" class="btn btn-light mb-0 btn-upper mx-2" v-if="mode === 'create' || mode === 'edit_design'"><i class="bi bi-quote mr-1"></i> Quotes</button>
+
+                <!-- <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveDesign" v-if="mode === 'create' || mode === 'edit_design'" :disabled="!text && !text_footer && !text_header">Save</button> -->
+                <div class="btn-group" role="group" v-if="mode === 'create' || mode === 'edit_design'">
+                    <button type="button" class="btn btn-primary btn-upper" @click="saveDesign()" :disabled="!text && !text_footer && !text_header">Save</button>
+                    <button type="button" class="btn btn-primary btn-upper btn-icon" style="margin-left: 1px;" @click="downloadDesign()" :disabled="!text && !text_footer && !text_header"
+                        data-toggle="tooltip" data-title="Download" data-placement="bottom">
+                        <i class="bi bi-download"></i>
+                    </button>
+                </div>
+
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'edit_template'">Save Changes</button>
                 <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'create_template'">Save Template</button>
 
@@ -443,10 +453,14 @@
                     <div v-if="!is_free && template.logoImage" class="studio__logo" :class="'pos-' + template.watermarkPosition" :style="getLogoStyles()">
                         <img :src="template.logoImage" :style="getLogoStyles()">
                     </div>
+                    <div class="studio__btoolbar">
+                        <button class="btn btn-link p-0 mr-2 small" @click="onViewQuotes()">Need inspiration? Explore quotes</button>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Templates -->
         <div class="studio__body" v-if="page === 'templates'">
             <div class="container mt-5">
                 <div class="row">
@@ -464,6 +478,71 @@
                                 <div class="is-premium badge badge-light" v-if="template.is_premium"><i class="bi bi-star-fill mr-1"></i> Premium</div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quotes -->
+        <div class="studio__body" v-if="page === 'quotes'">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 templates-page-header mb-4">
+                        <h1>Quotes</h1>
+                        <i class="bi bi-x-lg" @click="page = 'editor'"></i>
+                    </div>
+                    <div class="col-12 col-lg-2">
+                        <div class="tag-filter sticky-top" style="top: 20px;">
+                            <!-- <div class="badge mr-2 mt-y"
+                                @click="onTagFilterChange('all')"
+                                :class="(quotes_search_params.tag === 'all') ? 'badge-primary' : 'badge-light'">
+                                Random
+                            </div> -->
+                            <div class="badge mr-2 mt-y"
+                                @click="onTagFilterChange(tag)"
+                                :class="(quotes_search_params.tag === tag.id) ? 'badge-primary' : 'badge-light'"
+                                v-for="tag in popular_tags">
+                                {{ tag.name }} <i>({{ tag.quotes_count }})</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-10">
+                        <div class="row" v-if="quotes.length">
+                            <div class="col-12 text-center mb-3 d-flex justify-content-between">
+                                <h4>
+                                    {{ quotes_selected_tag.name_seo  }}
+                                </h4>
+                                <div class="">Showing 12 of {{ quotes_selected_tag.quotes_count }}</div>
+                            </div>
+                            <div v-for="quote in quotes" class="col-12">
+                                <div class="quote-card">
+                                    <div class="quote-card-inner" @click="onQuoteSelected(quote)">
+                                        <div class="quote-card__tag badge badge-primary" v-if="quote.tag">{{ quote.tag.name}}</div>
+                                        <div class="quote-card__content">{{ quote.content }}</div>
+                                        <div class="quote-card__author text-muted" v-if="quote.quotes_author">- {{ quote.quotes_author.name}}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="loader" v-if="loading_quotes"></div>
+
+                            <div class="col-12 mb-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-3">Showing {{ quotes.length }} of {{ quotes_selected_tag.quotes_count }}</div>
+                                    <button class="btn btn-primary btn-upper" :disabled="quotes_search_params.page >= quotes_total_pages" @click="onLoadMoreQuotes()">Load more quotes</button>
+                                </div>
+                                <!-- <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    </ul>
+                                </nav> -->
+                            </div>
+                        </div>
+                        <div class="loader" v-if="loading_quotes"></div>
                     </div>
                 </div>
             </div>
@@ -545,6 +624,15 @@
                             <label>Keywords</label>
                             <input type="text" v-model="keywords" class="form-control form-control-lg" style="height: 48px;" placeholder="#love #life #sad #instagram">
                         </div>
+                        <div class="form-group">
+                            <!-- <label>Visibility</label> -->
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1" v-model="is_private" @click="onSwitchPrivateDesign($event)">
+                                <label class="custom-control-label" for="customSwitch1">
+                                    Private Design <i class="bi bi-lock-fill mr-2" v-if="is_free"></i>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer" v-if="!saving">
                         <button type="button" class="btn btn-primary btn-upper btn-lg" @click="onSaveDesign()" :disabled="saving">
@@ -619,6 +707,7 @@
         backgrounds: <?php echo json_encode($backgrounds); ?>,
         templates: <?php echo json_encode($templates); ?>,
         tags: <?php echo json_encode($category_list); ?>,
+        popular_tags: <?php echo json_encode($popular_tags); ?>,
         user: <?php echo json_encode($user); ?>,
     }
 
@@ -632,6 +721,7 @@ if ($env === 'DEV') {
     echo $this->Html->script([
         'studio/vue.js',
         'studio/moveable.min.js',
+        'studio/filesaver.min.js',
         'vendor/jquery.min.js',
         'vendor/popper.min.js',
         '/bootstrap4/js/bootstrap.min.js',

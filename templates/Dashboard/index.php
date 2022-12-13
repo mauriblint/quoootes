@@ -18,6 +18,7 @@
                     <img class="img-fluid" :src="item.image_url">
                 </a>
                 <button class="btn btn-ligth btn-sm delete-btn btn-icon" @click.stop="onDelete($event, item, index)"><i class="bi bi-trash"></i></button>
+                <button class="btn btn-ligth btn-sm edit-btn btn-icon" @click.stop="onEdit($event, item, index)"><i class="bi bi-pencil"></i></button>
             </div>
         </div>
     </div>

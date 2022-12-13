@@ -56,7 +56,7 @@ class PagesController extends AppController
     	$recentImages = null;
 
     	$this->set('title', 'Quotes Templates');
-    	$this->set('templates', TemplatesService::list(null, 1, 30));
+    	$this->set('templates', TemplatesService::list(null, 1, 50));
         $this->render('templates');
     }
 

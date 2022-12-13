@@ -30,6 +30,10 @@ var app = new Vue({
     },
 
     methods: {
+        onEdit: function (event, item, index) {
+            var _this = this;
+            window.open('/studio/' + item.id + '?action=edit_design');
+        },
         onDelete: function (event, item, index) {
             var _this = this;
 
@@ -45,6 +49,6 @@ var app = new Vue({
                     }
                 })
             }
-        }
+        },
     }
 });

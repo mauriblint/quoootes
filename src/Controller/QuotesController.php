@@ -7,6 +7,7 @@ use Cake\Event\EventInterface;
 use Cake\Routing\Router;
 
 use App\Lib\DesignService;
+use App\Lib\TagService;
 use App\Lib\UserService;
 use App\Lib\TemplatesService;
 
@@ -171,6 +172,7 @@ class QuotesController extends AppController
         $this->set('text', $text);
         $this->set('action', $action);
         $this->set('templates', $templates);
+        $this->set('popular_tags', TagService::getPopularList());
         $this->set('backgrounds', BackgroundService::list(null, 1, 150));
         $this->render('studio');
     }

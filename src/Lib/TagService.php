@@ -15,6 +15,20 @@ class TagService {
         $TagsTable = TableRegistry::getTableLocator()->get('Tags');
 
         $query = $TagsTable->find()
+            ->where(['active' => 1])
+            ->order(['name' => 'ASC'])
+            ->enableHydration(false);
+
+        return $query->toArray();
+    }
+
+    public static function getPopularList() {
+
+        $TagsTable = TableRegistry::getTableLocator()->get('Tags');
+
+        $query = $TagsTable->find()
+            ->where(['active' => 1])
+            ->where(['is_popular' => 1])
             ->order(['name' => 'ASC'])
             ->enableHydration(false);
 

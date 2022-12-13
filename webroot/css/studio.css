@@ -138,6 +138,12 @@ textarea.initial-text{font-size:16px;padding:20px;min-height:150px;resize:none;b
 .studio__logo.pos-5{top:var(--watermark-offset);left:50%;margin-left:-50px}
 .studio__logo.pos-6{bottom:var(--watermark-offset);left:50%;margin-left:-50px}
 
+.studio__btoolbar {
+    position: absolute;
+    bottom: -38px;
+    left: 0;
+}
+
 .btn{border-radius:4px;border:0;padding:8px 16px}
 .btn-upper{text-transform:uppercase;font-size:12px;font-weight:600}
 .btn-lg.btn-upper{font-size:13px;padding:10px 20px}
@@ -146,6 +152,24 @@ textarea.initial-text{font-size:16px;padding:20px;min-height:150px;resize:none;b
 .btn-primary:hover{color:#fff;background-color:#23272b;border-color:#1d2124}
 .btn-primary.disabled, .btn-primary:disabled { color: #fff; background-color: var(--color-gray); border-color: var(--color-gray); opacity: .5;}
 .btn-lg { font-size: 18px; padding: 12px 30px; }
+.btn-icon { width: 40px; }
+.btn-icon > i {
+    font-size: 17px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.quote-card { text-align: left; padding: 14px 16px; margin-bottom: 20px; background-color: white; border-radius: 6px; }
+.quote-card-inner {  position: relative; }
+.quote-card__content {}
+.quote-card__author { margin-top: 10px;}
+.quote-card__tag { position: absolute; right: 0; bottom: 0; background-color: #4b3059;}
+.quote-card:hover {
+    cursor: pointer;
+    background-color: #f5f5f5;
+}
 
 input[type="checkbox"]{width:20px;height:20px}
 .label-w-50{width:250px}

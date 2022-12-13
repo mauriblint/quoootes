@@ -41,12 +41,22 @@ var app = new Vue({
         page: 'start',
         onboarding_step: 1,
         sidebar_open: null,
+        quotes: [],
         templates: [],
         backgrounds: [],
         user: null,
         tags: [],
+        popular_tags: [],
+        quotes_selected_tag: null,
+        quotes_total_pages: 0,
+        quotes_search_params: {
+            tag: 49, // Motivational
+            page: 1,
+            count: 12,
+        },
         tag_id: '',
         keywords: '',
+        is_private: false,
         saved_session: false,
         is_free: true,
 
@@ -61,6 +71,7 @@ var app = new Vue({
         search_image_query: '',
         photos: [],
         loading: false,
+        loading_quotes: false,
         debug: false,
 
         popovers: {
@@ -181,6 +192,7 @@ var app = new Vue({
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.templates) {
             this.templates = window.__NEXT_DATA__.templates;
+            this.popular_tags = window.__NEXT_DATA__.popular_tags;
             var templates_orders = ['landscape', 'square', 'story', 'portrait'];
             this.templates.sort(function (a,b) {
                 var a_weight = templates_orders.indexOf(a.layout);
@@ -258,6 +270,11 @@ var app = new Vue({
             mixpanel.track("OpenedSaveDesign");
         },
 
+        downloadDesign: function () {
+            this.generate(this.onDesignGeneratedForDownload, 1);
+            mixpanel.track("StudioDownloadedDesign");
+        },
+
         onSaveDesign: function () {
             if (!this.tag_id) {
                 this.error_tag = true;
@@ -265,6 +282,13 @@ var app = new Vue({
             }
             this.saving = true;
             this.generate(this.onDesignGenerated, 1);
+        },
+
+        onDesignGeneratedForDownload: function (imageData, width, height, canvas) {
+            canvas.toBlob(function(blob) {
+                var hash = new Date().toJSON().replace('T', ' ').slice(0,19);
+                window.saveAs(blob, 'quoootes.com_' + hash + '.jpg');
+            });
         },
 
         onDesignGenerated: function (imageData, width, height) {
@@ -289,6 +313,7 @@ var app = new Vue({
                     text_footer: (this.template.footerVisible) ? this.text_footer : '',
                     tag_id: this.tag_id,
                     keywords: this.keywords,
+                    is_private: this.is_private,
                     design_id: (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null
                 }
              })
@@ -347,6 +372,67 @@ var app = new Vue({
 
             if (!this.template_id && this.mode !== 'create_template'  && this.mode !== 'edit_design' && !this.saved_session) {
                 this.setRandomTemplate();
+            }
+        },
+
+        onViewQuotes: function () {
+            if (!this.quotes_selected_tag) {
+                var tag = this.popular_tags.find(function (t) { return (t.id === 49) });
+                this.onTagFilterChange(tag);
+                this.page = 'quotes';
+                return true;
+            }
+            this.fetchQuotes();
+            this.page = 'quotes';
+            mixpanel.track('ViewStudioQuotes');
+        },
+
+        fetchQuotes: function () {
+            // if (!this.quotes.length) {
+                this.loading_quotes = true;
+                $.ajax({
+                    type: "GET",
+                    url: '/ajax/quotes',
+                    data: this.quotes_search_params,
+                    dataType: 'json',
+                })
+                .done(this.onQuotesFetched);
+            // }
+        },
+
+        onQuotesFetched: function (response) {
+            this.quotes = this.quotes.concat(response.data);
+            this.loading_quotes = false;
+        },
+
+        onQuoteSelected: function (quote) {
+            this.text = quote.content;
+            if (quote.quotes_author && quote.quotes_author.name) {
+                this.text_footer = quote.quotes_author.name;
+                this.template.footerVisible = true;
+            }
+            this.page = 'editor';
+            setTimeout(this.onTextChange, 100);
+        },
+
+        onTagFilterChange: function (tag) {
+            this.quotes_selected_tag = tag;
+            this.quotes_total_pages = Math.ceil(tag.quotes_count / 12);
+            this.quotes_search_params.tag = tag.id;
+            this.quotes = [];
+            this.fetchQuotes();
+        },
+
+        onLoadMoreQuotes: function () {
+            if (this.is_free) {
+                this.showUpgrade('more_quotes');
+                return false;
+            }
+
+            if (this.quotes_search_params.page < this.quotes_total_pages) {
+                this.quotes_search_params.page++;
+                this.fetchQuotes();
+                mixpanel.track('StudioQuotesLoadNextPage', {page: this.quotes_search_params.page});
             }
         },
 
@@ -641,6 +727,9 @@ var app = new Vue({
 
         generate: function (callback, scaleFactor) {
             var _this = this;
+            if (this.page !== 'editor') {
+                return false;
+            }
             this.destroyMoveable();
             html2canvas($('.studio__canvas')[0], {
                 // useCORS: true,
@@ -664,12 +753,12 @@ var app = new Vue({
                  }
             }).then(function (canvas) {
 				var imgData = canvas.toDataURL("image/jpeg", 1);
-                var img = document.createElement('img');
-                img.src = imgData;
-                document.body.appendChild(img);
+                // var img = document.createElement('img');
+                // img.src = imgData;
+                // document.body.appendChild(img);
 
                 if (callback) {
-                    callback(imgData, canvas.width, canvas.height);
+                    callback(imgData, canvas.width, canvas.height, canvas);
                 }
             });
         },
@@ -1123,6 +1212,15 @@ var app = new Vue({
                 return this.showUpgrade('premium_font');
             }
             this.template.fontFamily = font.name;
+        },
+
+        onSwitchPrivateDesign: function (event) {
+            if (this.is_free) {
+                event.preventDefault();
+                $('#saveModal').modal('hide');
+                this.showUpgrade('private_design');
+                return false;
+            }
         }
     },
 });

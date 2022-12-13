@@ -1,5 +1,6 @@
 <?php
     use Cake\Routing\Router;
+
     $meta_title = isset($title) ? $title : 'Free Quote Maker and Generator';
     $meta_description = isset($description) ? $description : 'Simple Quote Maker and Generator. Create beautiful quotes for Instagram, Pinterest and social networks. Best images quote generator.';
     $meta_keywords = isset($keywords) ? $keywords : 'Free Quote Maker for Instagram & Pinterest';
