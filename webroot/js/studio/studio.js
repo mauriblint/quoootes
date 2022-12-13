@@ -313,7 +313,7 @@ var app = new Vue({
                     text_footer: (this.template.footerVisible) ? this.text_footer : '',
                     tag_id: this.tag_id,
                     keywords: this.keywords,
-                    is_private: this.is_private,
+                    is_private: this.is_private ? 1 : 0,
                     design_id: (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null
                 }
              })

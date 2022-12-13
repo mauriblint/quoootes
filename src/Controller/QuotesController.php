@@ -71,6 +71,10 @@ class QuotesController extends AppController
             return $this->redirect('/', 301);
         }
 
+        if ($quote->status === DesignService::STATUS_PRIVATE && $quote->user_id !== $this->user_id) {
+            return $this->redirect('/', 301);
+        }
+
         DesignService::incrementView($quote);
 
         $Session = $this->request->getSession();

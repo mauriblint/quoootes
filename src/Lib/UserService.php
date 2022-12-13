@@ -37,6 +37,24 @@ class UserService {
             ->toArray();
     }
 
+    public static function hasActiveSubscription ($user_id=null) {
+        if (!$user_id) {
+            return false;
+        }
+
+        $Subscription = SubscriptionService::findByUserId($user_id);
+
+        if (!$Subscription) {
+            return false;
+        }
+
+        if ($Subscription->plan_id > 1 && $Subscription->status === 'active') {
+            return true;
+        }
+
+        return false;
+    }
+
     public static function handleLoginWithGoogle ($google_data) {
         $UsersTable = TableRegistry::getTableLocator()->get('Users');
         $User = self::findByGoogleIdOrEmail($google_data['id'], $google_data['email']);

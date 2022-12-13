@@ -15,6 +15,9 @@ use Cake\I18n\FrozenTime;
 
 class DesignService {
 
+    const STATUS_PRIVATE = 7;
+    const STATUS_DELETED = 9;
+
     public static function get ($id) {
         $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
 
@@ -42,7 +45,7 @@ class DesignService {
     public static function delete ($Design) {
         $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
 
-        $Design->status = 9;
+        $Design->status = self::STATUS_DELETED;
         $Design->deleted = FrozenTime::now();
 
         $DesignsTable->save($Design);
@@ -56,6 +59,7 @@ class DesignService {
             $plain = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text']));
             $text_header = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_header']));
             $text_footer = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_footer']));
+            $status = ($requestData['is_private']) ? self::STATUS_PRIVATE : 0;
 
             $data = [
                 'user_id' => (isset($user_id) && !is_null($user_id) && is_numeric($user_id)) ? $user_id : null,
@@ -66,7 +70,7 @@ class DesignService {
                 'template' => isset($requestData['template']) ? serialize($requestData['template']) : NULL,
                 'template_id' => isset($requestData['template_id']) ? $requestData['template_id'] : NULL,
                 'keywords' => isset($requestData['keywords']) ? $requestData['keywords'] : NULL,
-                'status' => 0,
+                'status' => $status,
                 'layout' => isset($requestData['layout']) ? $requestData['layout'] : NULL,
                 'width' => isset($requestData['width']) ? (int) $requestData['width'] : NULL,
                 'height' => isset($requestData['height']) ? (int) $requestData['height'] : NULL,
@@ -105,7 +109,9 @@ class DesignService {
 
                 if ($env==='DEV') {
                     $result = UploadService::saveToLocalDisk($filename, $image_data, UploadService::BUCKET_UPLOADS);
-                    $Design->status = 1;
+                    if ($Design->status === 0) {
+                        $Design->status = 1;
+                    }
                 } else {
                     $result = UploadService::uploadFromData($image_data, $filename, UploadService::BUCKET_UPLOADS, UploadService::EXTENSION_JPG);
                 }

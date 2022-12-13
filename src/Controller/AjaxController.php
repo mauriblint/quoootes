@@ -6,6 +6,7 @@ use App\Lib\UploadService;
 use App\Lib\DesignService;
 use App\Lib\QuoteService;
 use App\Lib\TemplatesService;
+use App\Lib\UserService;
 
 class AjaxController extends AppController
 {
@@ -25,6 +26,17 @@ class AjaxController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $data['user_id'] = $this->user_id;
+            $has_active_subscription = UserService::hasActiveSubscription($this->user_id);
+
+            if (isset($data['is_private'])) {
+                if ($has_active_subscription) {
+                    $data['is_private'] = (bool) $data['is_private'];
+                } else {
+                    $data['is_private'] = false;
+                }
+            } else {
+                $data['is_private'] = false;
+            }
 
             $result = DesignService::save($data);
 
