@@ -12,6 +12,15 @@
     echo $this->Html->css('vendor/vue-loading.css');
 ?>
 
+    <link rel="stylesheet" href="/fonts/kredit/styles.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/1942/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/team_spirit/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/the-bold-font/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/cocogoose/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/brook/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/french-love-simplicity/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/obelix-pro/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/sifonn-basic-outline/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
 
 <div id="studio" v-cloak>
 
