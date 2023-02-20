@@ -10,6 +10,7 @@ use App\Lib\DesignService;
 use App\Lib\TagService;
 use App\Lib\UserService;
 use App\Lib\TemplatesService;
+use App\Model\Table\DesignsTable;
 
 class QuotesController extends AppController
 {
@@ -65,7 +66,14 @@ class QuotesController extends AppController
 
     public function view($id=null, $slug=null)
     {
-		$quote = DesignService::get($id);
+        if (is_numeric($id)) {
+		    $quote = DesignService::get($id);
+            if($quote->shortcode) {
+                return $this->redirect('/p/' . $quote->shortcode, 301);
+            }
+        } else {
+            $quote = DesignService::findByShortcode($id);
+        }
 
         if (!$quote) {
             return $this->redirect('/', 301);
@@ -94,10 +102,10 @@ class QuotesController extends AppController
             //     $Session->write('save_anon_design_id', $quote['id']);
             // }
         }
-
+        $description = $quote['views'] . ' likes &bull; ' . $quote['downloads'] .' downloads - ' . 'Your daily dose of beautiful quotes, create your own image with text quote.';
 		$this->set(compact('quote'));
         $this->set('title', $quote->text);
-        $this->set('description', htmlspecialchars($quote['text']));
+        $this->set('description', $description);
         $this->set('share_image', $quote['image_url']);
         $this->set('is_anon_owner', $is_anon_owner);
         $this->set('popularQuotes', DesignService::getPopularImagesQuotes());
@@ -140,6 +148,37 @@ class QuotesController extends AppController
 
         $this->set('title', 'Online Quote Maker');
         $this->render('creator');
+    }
+
+    public function quickStudio($hash=null)
+    {
+        $Template = null;
+
+        if ($hash && !is_numeric($hash)) {
+            $Template = TemplatesService::get($hash);
+        }
+
+        $templates = TemplatesService::all();
+        $text = $this->request->getQuery('text', "");
+        $author = $this->request->getQuery('author', "");
+        $action = $this->request->getQuery('action', null);
+
+        if (!$Template) {
+            $random_template = array_rand($templates);
+            $Template = TemplatesService::get($templates[$random_template]['hash']);
+        }
+
+        $this->set('title', 'Create Quote');
+    	$this->set('hide_header', 1);
+    	$this->set('hide_footer', 1);
+        $this->set('template', $Template);
+        $this->set('design', null);
+        $this->set('text', $text);
+        $this->set('author', $author);
+        $this->set('action', $action);
+        $this->set('templates', $templates);
+        $this->set('popular_tags', TagService::getPopularList());
+        $this->set('backgrounds', BackgroundService::list(null, 1, 150));
     }
 
     public function studio($hash=null)

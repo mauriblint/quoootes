@@ -86,7 +86,7 @@ class SubscriptionsController extends AppController
             $return_url = $this->referer();
         }
 
-        $return_url = Router::url('/studio?payment_cancel', true);
+        $return_url = Router::url('/quick-studio?payment_cancel', true);
 
         $subscription_metadata = array(
             'ip' => $this->getClientIP(),

@@ -33,6 +33,8 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/', ['controller' => 'Pages', 'action' => 'homepage'], ['_name' => 'Home']);
         $builder->connect('/login', ['controller' => 'Pages', 'action' => 'login'], ['_name' => 'Login']);
         $builder->connect('/logout', ['controller' => 'Google', 'action' => 'logout'], ['_name' => 'Logout']);
+        $builder->connect('/support', ['controller' => 'Pages', 'action' => 'support'], ['_name' => 'Support']);
+        $builder->connect('/contact-form', ['controller' => 'Pages', 'action' => 'contact'], ['_name' => 'Contact']);
         $builder->connect('/dashboard', ['controller' => 'Dashboard', 'action' => 'index'], ['_name' => 'Dashboard']);
         $builder->connect('/account', ['controller' => 'Account', 'action' => 'index'], ['_name' => 'Account']);
         $builder->connect('/templates', ['controller' => 'Pages', 'action' => 'templates'], ['_name' => 'Templates']);
@@ -50,10 +52,15 @@ return static function (RouteBuilder $routes) {
         $builder->connect('/quote-maker', ['controller' => 'Quotes', 'action' => 'studio'], ['_name' => 'Editor']);
         $builder->connect('/quote-maker/{hash}', ['controller' => 'Quotes', 'action' => 'studio'])->setPass(['hash']);
 
+        $builder->connect('/quick-studio', ['controller' => 'Quotes', 'action' => 'quickStudio'], ['_name' => 'QuickStudio']);
+        $builder->connect('/quick-studio/{hash}', ['controller' => 'Quotes', 'action' => 'quickStudio'])->setPass(['hash']);
+
         $builder->connect('/studio', ['controller' => 'Quotes', 'action' => 'studio'], ['_name' => 'Studio']);
         $builder->connect('/studio/{hash}', ['controller' => 'Quotes', 'action' => 'studio'])->setPass(['hash']);
 
         $builder->connect('/inspirational-quotes-maker', ['controller' => 'LandingPages', 'action' => 'inspirational']);
+
+        $builder->connect('/p/{shortcode}', ['controller' => 'Quotes', 'action' => 'view'])->setPass(['shortcode']);
 
         $builder->connect('/quote-{id}', ['controller' => 'Quotes', 'action' => 'view'],
             [

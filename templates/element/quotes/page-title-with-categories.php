@@ -12,7 +12,7 @@
     </div>
     <nav class="tags-hlist mb-5 d-flex justify-content-center">
         <?php foreach ($categories as $cat) {
-            echo '<a class="badge badge-light cat-badge" href="'.Router::url(['_name' => 'QuoteImagesTag']).$cat['slug'].'">'.$cat['name'].'</a>';
+            echo '<a class="badge text-bg-light cat-badge" href="'.Router::url(['_name' => 'QuoteImagesTag']).$cat['slug'].'">'.$cat['name'].'</a>';
         } ?>
     </nav>
 </div>

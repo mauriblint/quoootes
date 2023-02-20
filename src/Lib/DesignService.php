@@ -29,6 +29,20 @@ class DesignService {
         }
     }
 
+    public static function findByShortcode ($shortcode) {
+        $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
+
+        try {
+            $Design = $DesignsTable->find()
+                ->where(['shortcode' => $shortcode ])
+                ->contain(['Tags'])
+                ->first();
+            return $Design;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
     public static function setUserId ($design_id, $user_id) {
         $DesignsTable = TableRegistry::getTableLocator()->get('Designs');
         $Design = $DesignsTable->get($design_id);
@@ -57,11 +71,12 @@ class DesignService {
         // if ($this->request->is('post')) {
 
             $plain = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text']));
-            $text_header = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_header']));
+            $text_header = isset($requestData['text_header']) ? trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_header'])) : '';
             $text_footer = trim(preg_replace('/[\s\t\n\r\s]+/', ' ', $requestData['text_footer']));
             $status = ($requestData['is_private']) ? self::STATUS_PRIVATE : 0;
 
             $data = [
+                'shortcode' => self::generateHashId(11),
                 'user_id' => (isset($user_id) && !is_null($user_id) && is_numeric($user_id)) ? $user_id : null,
                 'text' => $plain,
                 'text_header' => $text_header,
@@ -336,6 +351,32 @@ class DesignService {
         $id = $DesignsTable->save($Design);
 
         return $Design;
+    }
+
+    public static function generateHashId ($length = 20, $prefix = '') {
+        $pool = str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
+        $crypto_rand_secure = function ( $min, $max ) {
+            $range = $max - $min;
+            if ( $range < 0 ) return $min; // not so random...
+            $log    = log( $range, 2 );
+            $bytes  = (int) ( $log / 8 ) + 1; // length in bytes
+            $bits   = (int) $log + 1; // length in bits
+            $filter = (int) ( 1 << $bits ) - 1; // set all lower bits to 1
+            do {
+                $rnd = hexdec( bin2hex( openssl_random_pseudo_bytes( $bytes ) ) );
+                $rnd = $rnd & $filter; // discard irrelevant bits
+            } while ( $rnd >= $range );
+            return $min + $rnd;
+        };
+
+        $token = "";
+        $max   = strlen( $pool );
+        for ( $i = 0; $i < $length; $i++ ) {
+            $token .= $pool[$crypto_rand_secure( 0, $max )];
+        }
+
+        return $prefix . $token;
     }
 }
 ?>

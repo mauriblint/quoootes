@@ -2,28 +2,35 @@
     use Cake\Routing\Router;
 ?>
 <?php $this->start('fluidcontent'); ?>
-<div class="hero">
-	<div class="jumbotron gr">
-		<div class="container">
-			<div class="row justify-content-center jumbotron-content">
-                <div class="col-12">
-                    <h1 class="text-white mb-5 mt-3">Quote Maker & Generator. <br/> Simple, online & free.</h1>
+<div class="container col-xl-10 col-xxl-8 px-4 py-3 py-md-5">
+    <div class="row align-items-center g-lg-5 py-3 py-md-5">
+        <div class="col-lg-7 text-center text-lg-start">
+            <h1 class="display-4 fw-bold lh-1 mb-3">Quote <b style="color: #f9384d;">Maker</b> and Generator. <b style="color: #f9384d;">Write</b> a Quote <span class="d-none d-md-inline">→</span><span class="d-inline d-md-none">↓</span></h1>
+            <p class="col-lg-10 fs-5 text-muted">Create images with text using our <strong>quotes creator app</strong>. Discover and get Inspired, create your own images with quotes. Ready to download or share.</p>
+        </div>
+        <div class="col-md-10 mx-auto col-lg-5">
+            <div class="blurry-bg"></div>
+            <form class="p-4 p-md-4 border rounded-3 bg-light write-quote-form" action="<?=Router::url(['_name' => 'QuickStudio']);?>" method="GET">
+                <div class="form-floating">
+                    <textarea class="form-control" placeholder="Enter your quote" name="text" style="height: 100px"></textarea>
+                    <label for="floatingTextarea2">Enter your quote</label>
                 </div>
-				<div class="col-md-8">
-					<p class="lead text-white">Create images with text using our <strong>quotes creator app</strong>. Discover and get Inspired, create your own images with quotes. Ready to download or share.</p>
-                    <div class="text-centear mt-5">
-                        <a href="<?=Router::url(['_name' => 'Studio']);?>" class="btn btn-dark py-3 px-4 btn-lg">Create Quote Images</a>
-                    </div>
-				</div>
-			</div>
-		</div>
-	</div>
-    <!-- <img src="https://pixelied.com/assets/img/landing-page/curve-section-process-info.svg" style="position: absolute; bottom: 0; left: 0; width: 100%;"> -->
-    <img src="/img/curve.svg" style="position: absolute; bottom: 0; left: 0; width: 100%;">
+                <div class="form-floating mb-3 mt-2">
+                    <input type="phone" class="form-control" id="phone" placeholder="Author (optional)" name="author">
+                    <label for="floatingInput">Author (optional)</label>
+                </div>
+
+                <button class="w-100 btn btn-lg btn-brand" onclick="sendMessage()" type="submit">Create Quote</button>
+                <!-- <hr class="my-4">
+                <small class="text-muted">Quote text and author can be modified later</small> -->
+            </form>
+        </div>
+    </div>
 </div>
 <?php $this->end(); ?>
-<div class="row">
-    <div class="col-12">
+
+<div class="row justify-content-center py-5">
+    <div class="col-12 col-lg-9">
         <div class="create-account-banner">
             Starting today, you can create an account to <strong>save your designs</strong>!
             <div class="mt-4 mx-auto d-flex justify-content-center">
@@ -39,6 +46,7 @@
         </div>
     </div>
 </div>
+
 <div class="row home-section">
 	<div class="col-md-4">
         <div class="featured">
@@ -74,6 +82,7 @@
         </div>
 	</div>
 </div>
+
 <div class="row home-section">
 	<div class="col-md-12">
 		<section class="mt-6">
@@ -90,24 +99,6 @@
 		</section>
 	</div>
 </div>
-
-<!-- <div class="row d-none">
-	<div class="col-md-12">
-		<section class="mt-5">
-            <div class="text-center mb-5">
-			    <h2>Recents Images with Quotes</h2>
-                <p>Check out this images with text recently created with our <a href="/quote-maker">quote maker app</a> online.</p>
-            </div>
-            <div class="row">
-			    <?php echo $this->element('ui/wall', ['quotes' => $recentImages]) ?>
-            </div>
-
-            <div class="text-center mt50">
-                <a href="<?=Router::url(['_name' => 'QuoteImages']);?>" class="btn btn-primary btn-lg">Explore more Quotes</a>
-            </div>
-		</section>
-	</div>
-</div> -->
 
 <div class="row home-section">
 	<div class="col-md-12 mb-5">
@@ -134,6 +125,17 @@
         <p class="lead mt-4">This <strong>free quote maker</strong> works on all web browers (desktop computer or phone), just open Quoootes.com using your browser and start designing.
         By entering any text, you will be able to downlod a beatuful designed <strong>quotes for Instagram</strong> and any social network.</p>
 	</div>
+</div>
+
+<div class="row home-section justify-content-center">
+	<div class="col-12 col-md-10 col-lg-8 text-center">
+        <h2>Quoootes Maker <br> Frequently Asked Questions</h2>
+        <p class="lead mt-4"></p>
+	</div>
+
+    <div class="col-12 col-xl-10 col-xxl-8 px-4 py-5">
+        <?php echo $this->element('general/faqs'); ?>
+    </div>
 </div>
 
 <div class="row">

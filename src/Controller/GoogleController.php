@@ -92,9 +92,13 @@ class GoogleController extends AppController
             $redirect_url = $Session->read('redirect_after_google_login');
             $save_anon_design_id = $Session->read('save_anon_design_id');
 
-            // var_dump($redirect_url);
-            // var_dump($save_anon_design_id);
-            // die;
+            $redirect_to_checkout = (isset($_COOKIE['redirect_to_checkout'])) ? true : false;
+
+            // TODO: check if user have already a plan
+            if ($redirect_to_checkout) {
+                $redirect_to = '/subscriptions/pay/pro';
+                unset($_COOKIE['redirect_to_checkout']);
+            }
 
             if ($save_anon_design_id) {
                 DesignService::setUserId($save_anon_design_id, $User['id']);

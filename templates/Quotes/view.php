@@ -21,16 +21,30 @@ $quoteFix = array(
 // // print_r($quote);
 // die();
 
-function getEmbedCode($id, $w, $h)
-{
+$aspect_ratio = 1;
+$is_portrait = false;
+
+if ($quote->width && $quote->height) {
+	$aspect_ratio = ($quote->width / $quote->height);
+}
+
+if ($aspect_ratio<1) {
+	$is_portrait = true;
+}
+
+$is_portrait = true;
+
+
+function getEmbedCode($id, $w, $h) {
 	return '&lt;iframe style="margin: 20px auto;" src="' . Router::url('/embed/' . $id . '?v=1.0', true) . '" height="' . $h . '" width="' . $w . '" frameborder="0" scrolling="no"&gt;&lt;/iframe&gt;';
 }
 
 ?>
 
-<div class="row justify-content-md-center mt-5">
+<div class="ooo-view row justify-content-md-center mt-3 mt-md-5">
 
-	<div class="col-md-9">
+	<div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-9 justify-content-center">
+
 		<?php if ($is_anon_owner) : ?>
 			<div class="row d-none">
 				<div class="col-12">
@@ -40,14 +54,17 @@ function getEmbedCode($id, $w, $h)
 				</div>
 			</div>
 		<?php endif; ?>
+
 		<div class="row">
-			<div class="col-md-6">
+
+			<!-- Image -->
+			<div class="col-md-6 ooo-view__preview">
 				<div class="card mb-0">
 					<div class="card-top">
-						<img class="card-img-top" src="<?= $quote['image_url']; ?>" />
+						<img class="card-img-top full-radius" src="<?= $quote['image_url']; ?>" alt="Image with text about <?= $quote['text']; ?>" />
 					</div>
-					<div class="card-body">
-						<div class="card-stats">
+					<div class="card-body d-none">
+						<div class="card-stats ">
 							<span> <i class="bi bi-heart"></i><?= $quote['likes'] ?></span>
 							<span> <i class="bi bi-download"></i> <?= $quote['downloads'] ?></span>
 							<span> <i class="bi bi-eye"></i> <?= Helpers::formatNumber($quote['views']); ?></span>
@@ -55,11 +72,19 @@ function getEmbedCode($id, $w, $h)
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="design__label">
-					<a href="<?= Router::url(['_name' => 'QuoteImagesTag']) . $quote['tag']['slug'] ?>"><?= $quote['tag']['name_seo']; ?></a>
-				</div>
-				<h4 class="mb-4"><?= $quote['text']; ?></h4>
+
+			<!-- Sidebar -->
+			<div class="col-md-5 ooo-view__sidebar mt-3 mt-md-0">
+				<div class="card">
+					<div class="card-body p-0">
+						<h1><?= $quote['text']; ?></h1>
+					</div>
+					<div class="card-body">
+					<?php if (isset($quote['tag'])): ?>
+						<div class="design__label">
+							<a href="<?= Router::url(['_name' => 'QuoteImagesTag']) . $quote['tag']['slug'] ?>"><?= $quote['tag']['name_seo']; ?></a>
+						</div>
+					<?php endif; ?>
 
 				<div class="single-quote__share">
 					<div class="sharethis-inline-share-buttons my-3"></div>
@@ -72,22 +97,20 @@ function getEmbedCode($id, $w, $h)
 						</a>
 					</div>
 					<div>
-						<button data-toggle="modal" data-target="#embedCodeModal" class="btn btn-light mt-3" onclick="trackEmbed()">
+						<button data-bs-toggle="modal" data-bs-target="#embed-code-modal" class="btn btn-light mt-3" onclick="trackEmbed()">
 							<i class="bi bi-code-slash mr-1"></i> Embed on your Site
-							</a>
+						</button>
 					</div>
 				</div>
-
+					</div>
+				</div>
 			</div>
 
-			<div class="col-12 text-center my-5">
-				<div class="sharethis-inline-share-buttons"></div>
-			</div>
 		</div>
 	</div>
 </div>
 
-<div class="modal modal-v2 signup-modal" tabindex="-1" role="dialog" id="createAccountModal">
+<div class="modal modal-v2 signup-modal" tabindex="-1" role="dialog" id="s-modal">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -114,60 +137,14 @@ function getEmbedCode($id, $w, $h)
 	</div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="embedCodeModal">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Get Embed Code</h5>
-			</div>
-			<div class="modal-body">
-				<!-- Nav tabs -->
-				<ul class="nav nav-pills nav-fill" id="myTab" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link" id="home-tab" data-toggle="tab" href="#code-sm" role="tab">Small</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#code-md" role="tab">Medium</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="messages-tab" data-toggle="tab" href="#code-lg" role="tab">Large</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="settings-tab" data-toggle="tab" href="#code-rs" role="tab">Responsive</a>
-					</li>
-				</ul>
-			</div>
+<?php echo $this->element('modals/embed-code'); ?>
 
-			<div class="modal-body">
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div class="tab-pane" id="code-sm" role="tabpanel" aria-labelledby="home-tab">
-						<div class="code"><samp><?= getEmbedCode($quote['id'], 250, 440) ?></samp></div>
-					</div>
-					<div class="tab-pane active" id="code-md" role="tabpanel" aria-labelledby="profile-tab">
-						<div class="code"><samp><?= getEmbedCode($quote['id'], 400, 440) ?></samp></div>
-					</div>
-					<div class="tab-pane" id="code-lg" role="tabpanel" aria-labelledby="messages-tab">
-						<div class="code"><samp><?= getEmbedCode($quote['id'], 600, 440) ?></samp></div>
-					</div>
-					<div class="tab-pane" id="code-rs" role="tabpanel" aria-labelledby="settings-tab">
-						<div class="code"><samp><?= getEmbedCode($quote['id'], '100%', 440) ?></samp></div>
-					</div>
-				</div>
-			</div>
-
-			<div class="modal-footer p-4">
-				<button type="button" class="btn btn-light btn-block" data-dismiss="modal">Got it!</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row justify-content-md-center">
+<div class="row justify-content-md-center mt-5">
 	<div class="col-md-10">
-		<h1 class="h4 color-lite">More images with quotes</h1>
+		<h3 class="h4 color-lite">More images with quotes</h3>
 	</div>
 </div>
+
 <div class="card-columns card-columns-quotes">
 	<?php foreach ($popularQuotes as $quote) { ?>
 		<?php
@@ -183,21 +160,25 @@ function getEmbedCode($id, $w, $h)
 		<div class="card">
 			<a href="/quote-<?= $quote['id'] ?>">
 				<div class="card-top">
-					<img class="card-img-top" src="<?= $__q_thu ?>" alt="<?= htmlspecialchars($quote['text']) ?>" title="<?= htmlspecialchars($quote['text']) ?>" />
+					<img class="card-img-top full-radius" src="<?= $__q_thu ?>" alt="<?= htmlspecialchars($quote['text']) ?>" title="<?= htmlspecialchars($quote['text']) ?>" />
 				</div>
-				<div class="card-body">
+				<!-- <div class="card-body">
 					<p class="card-text"><?= wordwrap($quote['text'], 25, "<br />\n"); ?></p>
-				</div>
-				<div class="card-statss">
+				</div> -->
+				<!-- <div class="card-statss">
 					<span><i class="fa fa-heart"></i> <?= $quote['likes']; ?></span>
 					<span><i class="fa fa-eye"></i> <?= Helpers::formatNumber($quote['views']); ?></span>
 					<span><i class="fa fa-download"></i> <?= $quote['downloads']; ?></span>
-				</div>
+				</div> -->
 			</a>
 		</div>
 	<?php } ?>
 </div>
-<!-- /.col -->
+<style>
+	/* .ooo-view__sidebar { max-width: 380px; } */
+	/* .ooo-view__sidebar .card-body { padding: 0; } */
+	.ooo-view__sidebar h1 { font-style: italic; font-size: 18px; font-weight: 300; text-align: center; border-bottom: 1px solid rgba(0, 0, 0, .1); padding: 20px; }
+</style>
 <style>
 	.design_image-content {
 		background-color: #fdfdfd;
@@ -245,7 +226,7 @@ function getEmbedCode($id, $w, $h)
 <?php if ($is_anon_owner) : ?>
 <script>
 setTimeout(function () {
-	$('#createAccountModal').modal();
+	get_modal('create-account').show();
 }, 5000);
 </script>
 <?php endif; ?>

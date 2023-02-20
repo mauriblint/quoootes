@@ -1192,6 +1192,10 @@ var app = new Vue({
         },
 
         saveCurrentWorkSession: function (upgrade_showed) {
+            if (this.mode === 'create_template' || this.mode === 'edit_template') {
+                return false;
+            }
+
             var work_data = {
                 text: this.text,
                 text_footer: this.text_footer,

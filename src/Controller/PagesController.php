@@ -51,6 +51,22 @@ class PagesController extends AppController
         $this->render('login');
     }
 
+    public function support()
+    {
+    	$this->set('title', 'Support');
+    	$this->set('hide_share_buttons', 1);
+        $this->render('support');
+    }
+
+    public function contact()
+    {
+        $this->set('hide_header', 1);
+    	$this->set('hide_footer', 1);
+    	$this->set('title', 'Support');
+    	$this->set('hide_share_buttons', 1);
+        $this->render('contact_form');
+    }
+
     public function templates()
     {
     	$recentImages = null;
