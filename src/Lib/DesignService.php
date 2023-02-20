@@ -89,6 +89,7 @@ class DesignService {
                 'layout' => isset($requestData['layout']) ? $requestData['layout'] : NULL,
                 'width' => isset($requestData['width']) ? (int) $requestData['width'] : NULL,
                 'height' => isset($requestData['height']) ? (int) $requestData['height'] : NULL,
+                'source' => isset($requestData['source']) ? $requestData['source'] : NULL,
                 'slug' => Helpers::slugify($plain),
             ];
 

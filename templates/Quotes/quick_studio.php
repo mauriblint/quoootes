@@ -216,7 +216,7 @@ if ($env === 'DEV') {
     ], ['defer' => true]);
 }
 
-if ($env === 'DEVa') {
+if ($env === 'PROD') {
     echo $this->Html->script([
         'qs.vendors.build.js',
         'qs.app.build.js',

@@ -934,6 +934,7 @@ var app = new Vue({
                     text: this.text,
                     text_footer: this.text_footer,
                     text_header: '',
+                    source: 'quick-editor',
                 }
             })
             .done(function (response) {

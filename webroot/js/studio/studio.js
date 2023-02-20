@@ -314,7 +314,8 @@ var app = new Vue({
                     tag_id: this.tag_id,
                     keywords: this.keywords,
                     is_private: this.is_private ? 1 : 0,
-                    design_id: (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null
+                    design_id: (__NEXT_DATA__.design && __NEXT_DATA__.design.id) ? __NEXT_DATA__.design.id : null,
+                    source: 'studio'
                 }
              })
              .done(function (response) {
