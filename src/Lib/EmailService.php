@@ -100,7 +100,7 @@ class EmailService {
             ->setViewVars($data)
             ->viewBuilder()
             ->disableAutoLayout()
-            ->setTemplate('/Email/html/contact_form');
+            ->setTemplate('/email/html/contact_form');
 
             if ($preview) {
                 echo $mailer->viewBuilder()->build()->render();
