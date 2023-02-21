@@ -9,7 +9,7 @@
     <title>Quoootes - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex" />
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/satoshi" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.0/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
     <?= $this->Html->css('/bootstrap4/css/bootstrap.min.css') ?>
     <?= $this->Html->css('styles.css') ?>
@@ -20,7 +20,7 @@
     <div id="admin" v-cloak>
         <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
             <a class="navbar-brand" href="/">
-                <img src="/img/logo.png?new3" alt="Crea Tu Frase" title="Crea Tu Frase - Crea frases para compartir">
+                <img src="/img/logo.png?new3" width="160" alt="Crea Tu Frase" title="Crea Tu Frase - Crea frases para compartir">
             </a>
             <div class="navbar-collapse">
                 <ul class="navbar-nav ml-auto">

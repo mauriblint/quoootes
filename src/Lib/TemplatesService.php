@@ -48,6 +48,10 @@ class TemplatesService {
             $Template->is_premium = (bool) $data['is_premium'];
         }
 
+        if (isset($data['category'])) {
+            $Template->category = $data['category'];
+        }
+
         $id = $TemplatesTable->save($Template);
 
         return $Template;

@@ -18,6 +18,7 @@ namespace App\Controller;
 
 use App\Lib\DesignService;
 use App\Lib\TemplatesService;
+use App\Lib\EmailService;
 
 /**
  * Static content controller
@@ -53,9 +54,26 @@ class PagesController extends AppController
 
     public function support()
     {
+        if ($this->getRequest()->is('post')) {
+            return $this->submitContactForm();
+        }
+
     	$this->set('title', 'Support');
     	$this->set('hide_share_buttons', 1);
         $this->render('support');
+    }
+
+    private function submitContactForm () {
+        $data = $this->getRequest()->getData();
+
+        $result = EmailService::sendContacForm($data);
+
+        if ($result) {
+            $this->set('title', 'Support');
+            $this->set('hide_share_buttons', 1);
+            $this->set('sent_to', $data['email']);
+            $this->render('support_success');
+        }
     }
 
     public function contact()
