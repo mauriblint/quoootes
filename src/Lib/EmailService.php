@@ -92,9 +92,9 @@ class EmailService {
         $mailer = new Mailer('default');
         $mailer
             ->setTransport('gmail')
-            ->setFrom(['no-reply@quoootes.com' => 'Quoootes'])
+            ->setFrom(['quoootes@gmail.com' => 'Quoootes'])
             ->setReplyTo($data['email'], $data['name'])
-            ->setTo('support@quoootes.com', 'Quoootes')
+            ->setTo('quoootes@gmail.com', 'Quoootes')
             ->setEmailFormat('html')
             ->setSubject($data['topic'])
             ->setViewVars($data)
@@ -110,7 +110,7 @@ class EmailService {
             try {
                 $mailer->deliver();
             } catch (\Exception $e) {
-                // echo $e->getMessage();
+                echo $e->getMessage(); die;
                 return false;
             }
         // $mailer = self::getMailer();
