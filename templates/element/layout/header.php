@@ -80,6 +80,15 @@ use Cake\Routing\Router;
                         Explore
                     </a>
                 </li>
+                <li class="nav-item dropdown hidden-xs-down">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Help
+                    </a>
+                    <div class="dropdown-menu" id="TopicsDropdownMenu">
+                        <a href="/support" class="dropdown-item">Support</a>
+                        <a href="/blog" class="dropdown-item">Blog</a>
+                    </div>
+                </li>
                 <?php endif; ?>
 
                 <li class="nav-item active">
