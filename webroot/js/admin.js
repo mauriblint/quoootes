@@ -11,6 +11,12 @@ var app = new Vue({
         page: 'users',
         templates: [],
         backgrounds: [],
+        categories: [
+            'love',
+            'nature',
+            'clouds',
+            'animals',
+        ],
         designs: [],
         tags: [],
         users: [],
@@ -107,6 +113,10 @@ var app = new Vue({
 
         onEditTemplate: function (template) {
             window.open('/studio/' + template.hash + '?action=edit_template');
+        },
+
+        onCloneTemplate: function (template) {
+            window.open('/studio/' + template.hash + '?action=clone_template');
         },
 
         onTemplateLoaded: function (response) {
@@ -322,6 +332,26 @@ var app = new Vue({
             textBox.select();
             document.execCommand("copy");
             app.$toasted.show('Code copied to clipboard!');
+        },
+
+        onTemplateCategoryChanged: function (item, e) {
+            this.__updateTemplate({
+                template_id: item.id,
+                category: item.category,
+            })
+        },
+
+        __updateTemplate: function (data) {
+            $.ajax({
+                url: "/ajax/update-template",
+                type: 'POST',
+                dataType: 'json',
+                data: data
+            })
+            .done((response) => {
+                console.log('__updateTemplate', response);
+                app.$toasted.show('Template updated!');
+            })
         }
     },
 });

@@ -963,5 +963,28 @@ var app = new Vue({
                 this.vue_loader.hide();
             }
         },
+
+        goToAdvancedEditor: function () {
+
+            localStorage.removeItem('quoootes::quick');
+
+            var _this = this;
+
+            var template = this.templates.find(function (item) {
+                return item.id === _this.template_id
+            });
+
+            var url = '/studio';
+
+            if (template) {
+                url += '/' + template.hash;
+            }
+
+            url += '?text=' + this.text
+                + '&author=' + this.text_footer
+                + 'ref=quick-editor';
+
+            window.location.href = url;
+        }
     },
 });

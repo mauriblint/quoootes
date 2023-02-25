@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'MuseoSans500';
+    src: url('MuseoSans-500.woff2') format('woff2'),
+        url('MuseoSans-500.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MuseoSans300';
+    src: url('MuseoSans-300.woff2') format('woff2'),
+        url('MuseoSans-300.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MuseoSans700';
+    src: url('MuseoSans-700.woff2') format('woff2'),
+        url('MuseoSans-700.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+

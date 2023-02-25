@@ -2,6 +2,13 @@ var FontsData = [
 	// { name: 'Kredit', custom: true, },
 	// { name: 'Team Spirit', custom: true, },
 	// { name: 'Rubik Mono One', },
+	{ name: 'Odibee Sans', premium: false },
+	{ name: 'Bungee Shade', premium: false },
+	{ name: 'Averia Libre', premium: false },
+	{ name: 'Rammetto One', premium: false },
+	{ name: 'Unbounded', premium: false },
+	{ name: 'Rowdies', premium: false },
+	{ name: 'Gloock', premium: false },
 	{ name: 'Wendy One', premium: true },
 	{ name: 'Aladin', premium: true },
 	{ name: 'Nerko One', premium: true },
@@ -16,6 +23,10 @@ var FontsData = [
 	{ name: 'Modak', premium: true },
 	{ name: 'Orelega One', premium: true },
 	{ name: 'Salsa', premium: true },
+
+	{ name: 'MuseoSans300', custom: true, },
+	{ name: 'MuseoSans500', custom: true, },
+	{ name: 'MuseoSans700', custom: true, },
 
 	{ name: 'Simplicity', custom: true, },
     { name: 'Courier', custom: true, },
@@ -153,6 +164,8 @@ var FiltersData = [
     {name: 'Aqua', color: 'linear-gradient(to left, #78ffd6, #007991)'},
     {name: 'Antigua', color: 'linear-gradient(to left, #20002c, #cbb4d4)'},
     {name: 'Sepia', color: 'linear-gradient(to left, #c7bc84, #9e9853)'},
+    {name: 'Focus', color: 'radial-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.85))'},
+    {name: 'Split 1', color: 'linear-gradient(0deg, rgba(241,212,70,1) 26%, rgba(255,89,122,1) 26%)'},
 ];
 
 FontsData = FontsData.sort(function(a, b){

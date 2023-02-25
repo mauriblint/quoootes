@@ -69,6 +69,7 @@ var app = new Vue({
         error_tag: false,
 
         search_image_query: '',
+        search_image_page: 1,
         photos: [],
         loading: false,
         loading_quotes: false,
@@ -184,6 +185,7 @@ var app = new Vue({
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.text) {
             this.text = window.__NEXT_DATA__.text;
+            this.text_footer = window.__NEXT_DATA__.author;
         }
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.backgrounds) {
@@ -325,6 +327,11 @@ var app = new Vue({
         },
 
         saveTemplate: function () {
+            this.generate(this.onTemplatePreviewGenerated, 0.5);
+        },
+
+        saveAsNewTemplate: function () {
+            this.template_id = null;
             this.generate(this.onTemplatePreviewGenerated, 0.5);
         },
 
@@ -899,6 +906,39 @@ var app = new Vue({
                 return {
                     thumb: obj.previewURL,
                     image: obj.webformatURL,
+                }
+            });
+        },
+
+        searchUnsplashImages: function () {
+            // if (!query) {
+            //     this.photos = [];
+            //     return;
+            // }
+            this.loading = true;
+            this.photos = [];
+            var url = 'https://api.unsplash.com/search/photos/';
+            var _this = this;
+
+            $.get(url, {
+                client_id: 'HscBGmYWMVZT9Jiuv4VmKEkOOlcI5xCazbkmqkHLd_E',
+                page: this.search_image_page,
+                per_page: 30,
+                query: this.search_image_query
+            })
+                .done(response => {
+                    _this.photos = _this.$transformUnsplashImages(response.results);
+                })
+                .always(() => {
+                    _this.loading = false;
+                });
+        },
+
+        $transformUnsplashImages: function (images) {
+            return images.map(function (obj) {
+                return {
+                    thumb: obj.urls.thumb,
+                    image: obj.urls.regular,
                 }
             });
         },

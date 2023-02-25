@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="/fonts/french-love-simplicity/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="/fonts/obelix-pro/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="/fonts/sifonn-basic-outline/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
+    <link rel="stylesheet" href="/fonts/museo/stylesheet.css" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <style>
         [v-cloak] { display: none; }
     </style>
@@ -80,9 +81,10 @@
                     </button>
                 </div>
 
-                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'edit_template'">Save Changes</button>
-                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'create_template'">Save Template</button>
+                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate()" v-if="mode === 'edit_template'">Save Changes</button>
+                <button class="btn btn-warning mb-0 ml-3 btn-upper" @click="saveAsNewTemplate()" v-if="mode === 'edit_template'">Save as New</button>
 
+                <button class="btn btn-primary mb-0 ml-3 btn-upper" @click="saveTemplate" v-if="mode === 'create_template'">Save Template</button>
                 <button class="btn btn-success mb-0 ml-3 btn-upper" @click="createNewTemplate()" v-if="mode === 'edit_template'">New Template</button>
 
                 <div class="studio__header-user-menu" v-if="user">
@@ -378,8 +380,8 @@
                         </div>
                         <div class="form-group">
                             <div class="search-input">
-                                <input type="text" v-model="search_image_query" @keyup.enter="searchPixImages" class="form-control" placeholder="Search dogs, love, peace..">
-                                <i class="bi  bi-search" v-if="!photos.length" @click="searchPixImages"></i>
+                                <input type="text" v-model="search_image_query" @keyup.enter="searchUnsplashImages" class="form-control" placeholder="Search dogs, love, peace..">
+                                <i class="bi  bi-search" v-if="!photos.length" @click="searchUnsplashImages"></i>
                                 <i class="bi bi-x-lg" v-else @click="resetSearch"></i>
                             </div>
                         </div>
@@ -393,6 +395,7 @@
                         </div>
                         <div class="backgrounds-list backgrounds-list-full" v-if="photos.length && !loading">
                             <img :src="bg.thumb" v-for="bg in photos" @click="onBackgroundSelected(bg.image)">
+                            <button class="btn btn-primary btn-block mt-2">Load More</button>
                         </div>
                     </div>
                 </div>
@@ -704,6 +707,7 @@
         template: <?php echo json_encode($template); ?>,
         design: <?php echo json_encode($design); ?>,
         text: "<?= $text; ?>",
+        author: "<?= $author; ?>",
         backgrounds: <?php echo json_encode($backgrounds); ?>,
         templates: <?php echo json_encode($templates); ?>,
         tags: <?php echo json_encode($category_list); ?>,

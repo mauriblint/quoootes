@@ -21,6 +21,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Preview</th>
+                                <th scope="col">Category</th>
                                 <th scope="col">Size</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Premium</th>
@@ -31,6 +32,11 @@
                             <tr v-for="template in templates">
                                 <td>{{ template.id }}</td>
                                 <td class="text-left"><img style="width: 120px;" :src="template.preview_url" @click="onEditTemplate(template)"></td>
+                                <td>
+                                    <select @change="onTemplateCategoryChanged(template, $event)" class="form-control custom-select text-capitalize" v-model="template.category" style="min-width: 140px;">
+                                        <option v-for="item in categories" :value="item">{{ item }}</option>
+                                    </select>
+                                </td>
                                 <td>{{ template.layout }}</td>
                                 <td>
                                     <span v-if="template.active" class="badge badge-success">Active</span>
@@ -45,6 +51,7 @@
                                         <button type="button" class="btn btn-warning" @click="onChangeActive(template, 0)" v-if="template.active" data-toggle="tooltip" data-title="Make Inactive"><i class="bi bi-slash-circle"></i></button>
                                         <button type="button" class="btn btn-success" @click="onChangeActive(template, 1)" v-else><i class="bi bi-check-circle" data-toggle="tooltip" data-title="Make Active"></i></button>
                                         <button type="button" class="btn btn-dark" @click="onEditTemplate(template)" data-toggle="tooltip" data-title="Edit"><i class="bi bi-pencil"></i></button>
+                                        <!-- <button type="button" class="btn btn-dark" @click="onCloneTemplate(template)" data-toggle="tooltip" data-title="Edit"><i class="bi bi-clipboard-plus"></i></i></button> -->
                                         <button type="button" class="btn btn-dark" @click="onDeleteTemplate(template)" data-toggle="tooltip" data-title="Delete"><i class="bi bi-x-lg"></i></button>
                                     </div>
                                 </td>

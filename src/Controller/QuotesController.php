@@ -200,6 +200,7 @@ class QuotesController extends AppController
         }
 
         $text = $this->request->getQuery('text', "");
+        $author = $this->request->getQuery('author', "");
         $action = $this->request->getQuery('action', null);
 
         $templates = TemplatesService::all();
@@ -213,6 +214,7 @@ class QuotesController extends AppController
         $this->set('template', $Template);
         $this->set('design', $Design);
         $this->set('text', $text);
+        $this->set('author', $author);
         $this->set('action', $action);
         $this->set('templates', $templates);
         $this->set('popular_tags', TagService::getPopularList());

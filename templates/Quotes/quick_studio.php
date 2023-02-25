@@ -153,7 +153,8 @@
     </div>
 
     <div class="pt-2 pb-4 px-3 text-center" v-if="!show_wizard">
-        Looking the Advanced editor? <br><a href="/studio?ref=quick-editor">Open Advanced Editor</a>
+        Looking the Advanced editor? <br>
+        <a href="#" @click="goToAdvancedEditor()">Open Advanced Editor</a>
     </div>
 
     <!-- <div style="display:block; position:fixed; bottom:0; left: 0; "> -->
