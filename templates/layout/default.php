@@ -66,7 +66,7 @@
     <?= $this->fetch('script_tracking_events'); ?>
 
     <?php if (!$user): ?>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" defer></script>
         <div id="g_id_onload"
         data-client_id="443859332061-cl9dab1raicl1ernph96mot32jpkhlk2.apps.googleusercontent.com"
         data-login_uri="<?= Router::url('/google/callback?redirect_to=' . $this->request->getAttribute("here"), true); ?>">
