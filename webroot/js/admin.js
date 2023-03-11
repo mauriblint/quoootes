@@ -29,7 +29,7 @@ var app = new Vue({
             status: 0,
             page: 1,
             query: '',
-            tag_id: 'ALL',
+            tag: 'ALL',
         }
     },
 
