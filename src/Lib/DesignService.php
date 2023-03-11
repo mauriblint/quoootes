@@ -349,6 +349,10 @@ class DesignService {
             $Design->tag_id = (int) $data['tag_id'];
         }
 
+        if (isset($data['keywords'])) {
+            $Design->keywords = trim($data['keywords']);
+        }
+
         $id = $DesignsTable->save($Design);
 
         return $Design;

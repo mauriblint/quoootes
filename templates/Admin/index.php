@@ -109,11 +109,17 @@
                     <input type="text" class="form-control mr-3" v-model="filters.query" placeholder="Texto, keywords.." @keypress.enter="fetchDesigns(true)">
 
                     <label class="small mb-0 mr-1">Status</label>
-                    <select class="form-control custom-select" v-model="filters.status" @change="fetchDesigns(true)">
+                    <select class="form-control custom-select mr-3" v-model="filters.status" @change="fetchDesigns(true)">
                         <option value="ALL">All</option>
                         <option value="0">Pendings</option>
                         <option value="1">Accepted</option>
                         <option value="2">Rejected</option>
+                    </select>
+
+                    <label class="small mb-0 mr-1">Category</label>
+                    <select class="form-control custom-select" v-model="filters.tag" @change="fetchDesigns(true)">
+                        <option value="ALL">All</option>
+                        <option v-for="tag in tags" :value="tag.id">{{ tag.name }}</option>
                     </select>
                 </div>
             </div>
@@ -135,8 +141,8 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Preview</th>
-                                <th scope="col">Status</th>
                                 <th scope="col">Tag</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Text</th>
                                 <th scope="col">Keywords</th>
                                 <th class="text-right" scope="col" style="width: 100%;"></th>
@@ -163,7 +169,9 @@
                                         <div v-if="item.text_footer" style="font-size: 70%;"><strong>{{ item.text_footer }}</strong></div>
                                     </blockquote>
                                 </td>
-                                <td>{{ item.keywords }}</td>
+                                <td>
+                                    <input type="text" v-model="item.keywords" class="form-control" style="min-width: 170px;" @blur="updateDesignValue(item, 'keywords', item.keywords, $event)">
+                                </td>
                                 <td class="text-right">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-warning" v-if="item.status !== 2" @click="onChangeDesignStatus(item, 2)" data-toggle="tooltip" data-title="Reject"><i class="bi bi-slash-circle"></i></button>

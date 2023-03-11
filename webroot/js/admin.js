@@ -16,6 +16,9 @@ var app = new Vue({
             'nature',
             'clouds',
             'animals',
+            'paper_note',
+            'flowers',
+            '',
         ],
         designs: [],
         tags: [],
@@ -26,6 +29,7 @@ var app = new Vue({
             status: 0,
             page: 1,
             query: '',
+            tag_id: 'ALL',
         }
     },
 
@@ -94,6 +98,7 @@ var app = new Vue({
                     status: this.filters.status,
                     page: this.filters.page,
                     query: this.filters.query,
+                    tag: this.filters.tag,
                 },
                 dataType: 'json',
             })
