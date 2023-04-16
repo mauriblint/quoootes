@@ -85,6 +85,13 @@ class PagesController extends AppController
         $this->render('contact_form');
     }
 
+    public function fabricjs ()
+    {
+        $this->set('hide_header', 1);
+    	$this->set('hide_footer', 1);
+    	$this->set('title', 'FabricJs Test');
+    }
+
     public function templates()
     {
     	$recentImages = null;

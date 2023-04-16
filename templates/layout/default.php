@@ -11,6 +11,12 @@
     if (isset($_GET['ref']) || isset($_GET['via'])) {
         $canonical_url = Router::url($this->request->getAttribute("here"), true);
     }
+
+    $action = $this->request->getParam('action');
+
+    if ($action === 'quickStudio') {
+        $canonical_url = Router::url('/quick-studio', true);
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -172,6 +172,7 @@ class QuotesController extends AppController
     	$this->set('hide_header', 1);
     	$this->set('hide_footer', 1);
         $this->set('template', $Template);
+        $this->set('canonical_url', Router::url('/quick-studio', true));
         $this->set('design', null);
         $this->set('text', $text);
         $this->set('author', $author);

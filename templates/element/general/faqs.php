@@ -7,7 +7,7 @@
     ];
 
     $Faqs[] = [
-        'q' => 'Can I make your my quotes?',
+        'q' => 'Can I make my quotes?',
         'a' => 'Of course, you can <strong>make your own quotes</strong> by simply writing the text and picking a beautiful template.'
     ];
 
@@ -33,7 +33,7 @@
     ];
     $Faqs[] = [
         'q' => 'Is Quoootes GDPR compliant?',
-        'a' => 'we care a lot about privacy and we’re continuously striving to fulfill the GDPR. You can read all about our compliance efforts, privacy, and security in our GDPR Policy.',
+        'a' => 'We care a lot about privacy and we’re continuously striving to fulfill the GDPR. You can read all about our compliance efforts, privacy, and security in our GDPR Policy.',
     ];
 
     if (isset($data) && is_array($data) && count($data) > 0) {
