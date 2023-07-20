@@ -579,7 +579,7 @@ var app = new Vue({
 
         onLayoutChange: function () {
             if (this.is_free) {
-                return this.showUpgrade('download');
+                return this.showUpgrade('resizer');
             }
             var layout = this._getLayout(this.template.layout);
             this.template.textboxWidth = layout.textboxWidth;
