@@ -173,7 +173,7 @@
                 </div>
                 <div class="badge text-capitalize me-2"
                     v-for="cat in Object.values(templates_categories)"
-                    v-if="cat.count > 1"
+                    v-if="cat.count > 5"
                     :class="(selected_template_category === cat.category ? 'bg-primary' : 'text-bg-light')"
                     @click="filterTemplatesByCategory(cat.category)">
                     {{ cat.name }} <span class="small ms-1" style="opacity: .7;">{{cat.count}}</span>
