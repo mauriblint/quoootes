@@ -45,7 +45,9 @@
 </head>
 
 <body class="default">
-
+    <script>
+        window.__APP_DATA__ = {};
+    </script>
     <?php echo (!isset($hide_header)) ? $this->element('layout/header') : null;  ?>
 
     <div class="fluid-container mb20">
@@ -59,6 +61,11 @@
     <?= $this->element('modals/login'); ?>
 
     <?php echo (!isset($hide_footer)) ? $this->element('layout/footer') : null;  ?>
+
+    <script>
+        __APP_DATA__.user_id = <?= ($user_id) ? $user_id : 'null' ?>;
+        __APP_DATA__.test = 'test';
+    </script>
 
     <?= $this->Html->script([
         'vendor/bootstrap.v5.3.0.bundle.min.js',

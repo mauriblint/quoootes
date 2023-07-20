@@ -25,10 +25,8 @@
 </div>
 
 <script>
-    var __APP_DATA__ = {
-        user_id: <?= $user_id ?>,
-        user_designs: <?= json_encode($user_designs); ?>,
-    };
+    __APP_DATA__.user_id =  <?= $user_id ?>;
+    __APP_DATA__.user_designs = <?= json_encode($user_designs); ?>;
 </script>
 <?php
 if ($env === 'DEV') {

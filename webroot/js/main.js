@@ -1,3 +1,9 @@
+if (typeof mixpanel !== 'undefined') {
+    if (typeof __APP_DATA__ !== 'undefined' && __APP_DATA__.user_id) {
+        mixpanel.identify(__APP_DATA__.user_id);
+    }
+}
+
 window.hero_end_position = 750;
 
 var calculateHeroPosition = function () {
