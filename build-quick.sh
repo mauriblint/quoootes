@@ -1,6 +1,7 @@
 echo "Start creating vendors bundle"
 uglifyjs --compress -o webroot/js/qs.vendors.build.js \
      -- webroot/js/studio/vue.min.js \
+        webroot/js/studio/filesaver.min.js \
         webroot/js/vendor/jquery.min.js \
         webroot/js/studio/html2canvas.min.js \
         webroot/js/vendor/vue-loading.js \

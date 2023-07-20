@@ -46,6 +46,9 @@ var app = new Vue({
         sidebar_open: null,
         quotes: [],
         templates: [],
+        filtered_templates: [],
+        templates_categories: [],
+        selected_template_category: 'all',
         backgrounds: [],
         user: null,
         tags: [],
@@ -114,6 +117,7 @@ var app = new Vue({
             logoImage: '', // https://quoootes.com/img/isologo_color.png
             logoSize: 38,
             logoBorderRadius: 8,
+            logoOpacity: 90,
 
             textboxWidth: 250,
             textboxHeight: 250,
@@ -143,7 +147,9 @@ var app = new Vue({
             { name: 'Square', key: 'square', width: 500, height: 500, textboxWidth: 290, textboxHeight: 290, text_min_width: 0.3, text_min_height: 0.3, text_max_width: 0.8, text_max_height: 0.8 },
             { name: 'Story', key: 'story', width: 383, height: 680, textboxWidth: 215, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
             { name: 'Landscape', key: 'landscape', width: 700, height: 400, textboxWidth: 470, textboxHeight: 170, text_min_width: 0.5, text_min_height: 0.35, text_max_width: 0.82, text_max_height: 0.55 },
-            { name: 'Portrait', key: 'portrait', width: 450, height: 650, textboxWidth: 220, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   }
+            { name: 'Portrait', key: 'portrait', width: 450, height: 650, textboxWidth: 220, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
+            { name: 'Cover', key: 'cover', width: 820, height: 312, textboxWidth: 570, textboxHeight: 180, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
+            { name: 'Reel', key: 'reel', width: 383, height: 680, textboxWidth: 215, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
         ],
 
         show_wizard: false,
@@ -214,12 +220,26 @@ var app = new Vue({
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.templates) {
             this.templates = window.__NEXT_DATA__.templates;
+            this.filtered_templates = window.__NEXT_DATA__.templates;
             this.popular_tags = window.__NEXT_DATA__.popular_tags;
             var templates_orders = ['landscape', 'square', 'story', 'portrait'];
             this.templates.sort(function (a,b) {
                 var a_weight = templates_orders.indexOf(a.layout);
                 var b_weight = templates_orders.indexOf(b.layout);
                 return (a_weight - b_weight);
+            });
+            this.templates.forEach( item => {
+                if (item.category) {
+                    if (this.templates_categories[item.category]) {
+                        this.templates_categories[item.category].count++;
+                    } else {
+                        this.templates_categories[item.category] = {
+                            count: 1,
+                            category: item.category,
+                            name: item.category.replace('-', ' '),
+                        }
+                    }
+                }
             });
         }
 
@@ -252,6 +272,14 @@ var app = new Vue({
     },
 
     methods: {
+        restoreSettingsFromStorage: function () {
+            if (localStorage.getItem('quoootes::qs_logo')) {
+                if (!this.is_free) {
+                    Vue.set(this.template, 'logoImage', localStorage.getItem('quoootes::qs_logo'));
+                }
+            }
+        },
+
         onTextChange: function (type) {
             this.resizeText();
             setTimeout(this.resizeText, 50);
@@ -263,6 +291,13 @@ var app = new Vue({
         saveDesign: function () {
             $('#saveModal').modal();
             mixpanel.track("OpenedSaveDesign");
+        },
+
+        onDownload: function () {
+            if (this.is_free) {
+                return this.showUpgrade('download');
+            }
+            return this.downloadDesign();
         },
 
         downloadDesign: function () {
@@ -432,9 +467,11 @@ var app = new Vue({
         // },
 
         onTemplateSelected: function (template) {
-            // if (template.is_premium) {
-            //     return this.showUpgrade('premium_template');
-            // }
+            if (template.is_premium) {
+                if (!this.user || this.user.is_free) {
+                    return this.showUpgrade('premium_template');
+                }
+            }
             var template_id = (template.id) ? template.id : template;
             // TODO: HERE
             this.showLoader();
@@ -470,6 +507,7 @@ var app = new Vue({
             this.is_automatic_layout = true;
             var template_styles = (data.styles) ? data.styles : data;
             this.template = Object.assign({}, this.initial_template, this._parseTemplateJSON(template_styles));
+            debugger;
             this.template_id = data.id;
             // this.template.logoImage = 'https://logodownload.org/wp-content/uploads/2014/09/facebook-logo-0.png';
             // this.template.logoImage = '/img/isologo.png';
@@ -479,6 +517,8 @@ var app = new Vue({
             if (this.is_free) {
                 this.template.logoImage = '';
             }
+
+            this.restoreSettingsFromStorage();
 
             // if (back_to_editor) {
             //     this.page = 'editor';
@@ -535,6 +575,22 @@ var app = new Vue({
             this.template.layout = layout.key;
             var layout = this._getLayout(layout.key);
             this.is_automatic_layout = true;
+        },
+
+        onLayoutChange: function () {
+            if (this.is_free) {
+                return this.showUpgrade('download');
+            }
+            var layout = this._getLayout(this.template.layout);
+            this.template.textboxWidth = layout.textboxWidth;
+            this.template.textboxHeight = layout.textboxHeight;
+            this.template.textboxLeft = ((layout.width - layout.textboxWidth) / 2);
+            this.template.textboxTop = ((layout.height - layout.textboxHeight) / 2);
+            console.log('layout.textboxWidth', layout.textboxWidth);
+            this.initial_textbox_width = layout.textboxWidth;
+            this.initial_textbox_height = layout.textboxHeight;
+            this.is_automatic_layout = true;
+            this.refreshPreview();
         },
 
         _parseTemplateJSON: function (template) {
@@ -662,7 +718,8 @@ var app = new Vue({
             return {
                 width: this.template.logoSize + 'px',
                 borderRadius: this.template.logoBorderRadius + '%',
-                marginLeft: marginLeft
+                marginLeft: marginLeft,
+                opacity: (parseInt(this.template.logoOpacity)/100),
             };
         },
 
@@ -822,6 +879,8 @@ var app = new Vue({
                 editor: 'quick-editor',
             });
 
+            return true;
+
             // $('#UpgradeModal').modal({
             //     backdrop: 'static',
             //     keyboard: false
@@ -830,17 +889,25 @@ var app = new Vue({
             // this.saveCurrentWorkSession(feature);
         },
 
+        onLogoRemoved: function (event) {
+            this.template.logoImage='';
+            localStorage.removeItem('quoootes::qs_logo');
+            this.refreshPreview();
+        },
+
         onLogoImageSelected: function (event) {
             var _this = this;
             if (event.target.files.length) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     Vue.set(_this.template, 'logoImage', e.target.result);
+                    localStorage.setItem('quoootes::qs_logo', e.target.result);
                     _this.showLoader();
                     _this.renderQuickImage();
 
                     _this.resizeDownDataUrlKeepProportions(e.target.result, 300, 300, function (data) {
                         Vue.set(_this.template, 'logoImage', data);
+                        localStorage.setItem('quoootes::qs_logo', data);
                     });
                 }
                 // reader.onerror = e => rej(e);
@@ -985,6 +1052,23 @@ var app = new Vue({
                 + 'ref=quick-editor';
 
             window.location.href = url;
+        },
+
+        filterTemplatesByCategory: function (category) {
+            this.filtered_templates = this.templates.filter(item => {
+                return item.category === category || category === 'all';
+            });
+            this.selected_template_category = category;
+        },
+
+        onLogoOpacityChange: function () {
+            if (window.refresh_preview_timer) {
+                clearTimeout(refresh_preview_timer);
+            }
+
+            window.refresh_preview_timer = setTimeout(() => {
+                this.refreshPreview();
+            }, 500);
         }
     },
 });

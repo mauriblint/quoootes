@@ -2,6 +2,11 @@ var FontsData = [
 	// { name: 'Kredit', custom: true, },
 	// { name: 'Team Spirit', custom: true, },
 	// { name: 'Rubik Mono One', },
+	{ name: 'Poiret One', premium: true },
+	{ name: 'Dokdo', premium: true },
+	{ name: 'Nanum Pen Script', premium: true },
+	{ name: 'Mynerve', premium: true },
+
 	{ name: 'Odibee Sans', premium: false },
 	{ name: 'Bungee Shade', premium: false },
 	{ name: 'Averia Libre', premium: false },

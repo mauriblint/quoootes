@@ -17,6 +17,8 @@
                         <li><i class="bi bi-check-circle-fill me-2 color-brand"></i>Remove Watermark</li>
                         <li><i class="bi bi-check-circle-fill me-2 color-brand"></i>Unlock all templates</li>
                         <li><i class="bi bi-check-circle-fill me-2 color-brand"></i>Use Advanced Editor</li>
+                        <li><i class="bi bi-check-circle-fill me-2 color-brand"></i>Resize / Change Format</li>
+                        <li><i class="bi bi-check-circle-fill me-2 color-brand"></i>Direct Download</li>
                         <!-- <li><i class="bi bi-check-circle-fill me-2"></i>Save Private Designs</li> -->
                         <!-- <li><i class="bi bi-check-circle-fill me-2"></i>Explore thousands of Quotes</li> -->
                         <!-- <li><i class="bi bi-check-circle-fill me-2"></i>Download only designs</li> -->

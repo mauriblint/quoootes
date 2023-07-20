@@ -26,14 +26,14 @@ label.form-label{font-weight:700;text-transform:uppercase;font-size:11px;margin-
 .studio__logo.pos-2{top:var(--watermark-offset);right:var(--watermark-offset)}
 .studio__logo.pos-3{bottom:var(--watermark-offset);left:var(--watermark-offset)}
 .studio__logo.pos-4{bottom:var(--watermark-offset);right:var(--watermark-offset)}
-.studio__logo.pos-5{top:var(--watermark-offset);left:50%;margin-left:-50px}
+.studio__logo.pos-5{top:var(--watermark-offset);left:50%;transform: translateX(-50%);}
 .studio__logo.pos-6{bottom:var(--watermark-offset);left:50%;margin-left:-50px}
 .form-control-hidden-file{width:0;height:0;opacity:0;position:absolute;overflow:hidden;padding:0;border:0}
 .quick-studio{margin:50px 0;background-color:#fff;max-width:800px;margin:0 auto;border-radius:0 0 12px 12px;border:1px solid rgba(0,0,0,.1);border-top:0;margin-top:20px;border-radius:14px}
 .quick-studio__header{border-bottom:1px solid rgba(0,0,0,.06);height:70px;display:flex;align-items:center;padding:0 16px;justify-content:space-between}
 .quick-studio__wizard{padding: 40px 30px;max-width:500px;margin:0 auto}
 .quick-studio__top{display:flex;flex-direction:row;justify-content:center;background-color:var(--color-bg-1)}
-.quick-studio__options{width:200px;background-color:var(--color-bg-1);padding-top:30px;padding-right:30px;display:none}
+.quick-studio__options{width:170px;min-width: 170px;background-color:var(--color-bg-1);padding-top:30px;padding-right:30px; padding-bottom: 30px;}
 .quick-studio__preview{justify-content:center;display:flex;padding:30px;background-color:#f6f6ff;flex-direction:column}
 .quick-studio__preview img{max-width:100%;max-height:420px}
 .quick-studio__canvas{width:400px;height:400px;background-color:red;position:relative}
@@ -45,13 +45,22 @@ label.form-label{font-weight:700;text-transform:uppercase;font-size:11px;margin-
 .quick-studio__templates{padding:30px}
 .quick-studio__canvas-text{display:flex;flex-direction:column;background-color:transparent;padding:20px;white-space:pre-line;max-height:100%;max-width:100%;width:300px;height:300px;position:absolute;justify-content:center;align-items:center;z-index:3}
 .quick-studio__options-logo{background-color:#fff;border-radius:.375rem;padding:20px;display:flex;align-items:center;justify-content:center;border:var(--bs-border-width) solid var(--bs-border-color);position:relative}
-.quick-studio__options-logo img{max-width:100%;max-height:80px}
+.quick-studio__options-logo img{max-width:100%;max-height:50px}
 .quick-studio__options-logo .remove-btn{position:absolute;top:3px;right:6px;font-size:19px;padding:0}
 .template-card{background-color:#eef0f6;text-align:center;border-radius:4px;padding:8px;position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.template-card-inner{position:relative;display:flex;align-items:center;justify-content:center}
+.template-card-inner{display:flex;align-items:center;justify-content:center}
 .template-card-inner .is-premium{position:absolute;left:10px;top:10px;padding:7px 10px}
 .template-card img{border-radius:4px}
 .template-card:hover{cursor:pointer;background-color:#d9deea}
+.template-card .is-premium-xs {
+    top: 0;
+    left: 0;
+    background-color: var(--color-brand);
+    border-radius: 4px 0 0 0;
+    padding: 4px;
+    font-size: 11px;
+}
+.templates__categories .badge:hover { cursor: pointer; opacity: .8;}
 .loader-wrap{min-height:300px;display:flex;align-items:center;justify-content:center}
 .loader{border:2px solid var(--color-brand)!important;border-top:2px solid transparent!important;border-radius:50%;width:38px;height:38px;animation:spin .65s linear infinite}
 
@@ -60,4 +69,15 @@ label.form-label{font-weight:700;text-transform:uppercase;font-size:11px;margin-
 @media (min-width:991px){
     .quick-studio__wizard{padding:100px 40px;max-width:500px;margin:0 auto}
     .quick-studio__header{padding:0 30px}
+    .quick-studio__options{width:200px;min-width: 200px;}
 }
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.1);
+    height: 8px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    background-color: var(--color-brand);
+  }

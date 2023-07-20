@@ -38,6 +38,7 @@
         </div>
         <div v-if="!show_wizard">
             <button class="btn btn-light me-2" @click="onEdit()">Edit Quote</button>
+            <button class="btn btn-primary me-2" @click="onDownload()"><i class="bi bi-stars me-1"></i>Download</button>
             <button class="btn btn-primary" @click="onSave()">Save</button>
         </div>
     </div>
@@ -80,7 +81,7 @@
             </div>
         </div>
 
-        <div class="quick-studio__options">
+        <div class="quick-studio__options" v-if="rendered_image">
             <!-- <button class="btn btn-link" @click="onEdit()">Edit Quote</button> -->
             <!-- <div class="mb-3">
                 <label class="form-label">Quote {{ text.length }} / 300</label>
@@ -92,8 +93,8 @@
             </div> -->
 
             <div class="mb-3">
-                <i class="bi bi-lock-fill mr-1"></i>
-                <label class="form-label">Upload your Logo</label>
+
+                <label class="form-label"><i class="bi bi-stars me-1"></i> Upload your Logo</label>
                 <div class="form-group" @click="onAddLogo()">
                     <div class="d-grid gap-2" v-if="!template.logoImage">
                         <button class="btn btn-block btn-outline-primary">
@@ -102,7 +103,7 @@
                     </div>
                     <div class="quick-studio__options-logo" v-if="template.logoImage">
                         <img class="bg-thumb" :src="template.logoImage" alt="">
-                        <button class="remove-btn btn btn-link btn-sm" @click.stop="template.logoImage=''">
+                        <button class="remove-btn btn btn-link btn-sm" @click.stop="onLogoRemoved()">
                             <i class="bi bi-x-lg ml-2" data-toggle="tooltip" data-title="Remove"></i>
                         </button>
                     </div>
@@ -111,13 +112,41 @@
             </div>
 
 
-            <div v-if="template.logoImage">
+            <div v-if="template.logoImage" class="mb-3">
                 <label class="form-label">Logo Size</label>
                 <select class="form-select" aria-label="Default select example" v-model="template.logoSize" @change="refreshPreview()">
                     <option value="40">Small</option>
                     <option value="60" selected>Medium</option>
                     <option value="90">Large</option>
                     <option value="150">Extra Large</option>
+                </select>
+            </div>
+
+            <div v-if="template.logoImage" class="mb-3">
+                <label class="form-label">Logo Position</label>
+                <select class="form-select" aria-label="Default select example" v-model="template.watermarkPosition" @change="refreshPreview()">
+                    <option value="1">Top - Left</option>
+                    <option value="2" selected>Top - Right</option>
+                    <option value="3">Bottom - Left</option>
+                    <option value="4">Bottom - Right</option>
+                    <option value="5">Top - Center</option>
+                    <option value="6">Bottom - Center</option>
+                </select>
+            </div>
+            <div v-if="template.logoImage" class="mb-3">
+                <label class="form-label">Logo Opacity</label>
+                <input type="range" class="form-range" id="customRange1" min="10" max="100" v-model="template.logoOpacity" @change="onLogoOpacityChange()">
+            </div>
+
+
+            <div>
+                <label class="form-label">
+                    <i class="bi bi-stars me-1"></i> Resize
+                </label>
+                <select class="form-select" aria-label="Default select example" v-model="template.layout" @change="onLayoutChange();">
+                    <option :value="layout.key" v-for="layout in layouts">{{ layout.name }}</option>
+
+                    <!-- <option value="reel">Reel</option> -->
                 </select>
             </div>
 
@@ -132,20 +161,29 @@
             </div> -->
         </div>
     </div>
-
     <!-- Templates -->
     <div class="quick-studio__templates" v-if="!show_wizard">
         <div class="row">
             <h3 class="mb-2">Templates</h3>
-            <div class="templates__categories mb-4 d-none">
-                <div class="badge text-bg-light">Nature</div>
-                <div class="badge text-bg-light">Love</div>
+            <div class="templates__categories mb-4">
+                <div class="badge text-capitalize me-2"
+                    :class="(selected_template_category === 'all' ? 'bg-primary' : 'text-bg-light')"
+                    @click="filterTemplatesByCategory('all')">
+                    All
+                </div>
+                <div class="badge text-capitalize me-2"
+                    v-for="cat in Object.values(templates_categories)"
+                    v-if="cat.count > 1"
+                    :class="(selected_template_category === cat.category ? 'bg-primary' : 'text-bg-light')"
+                    @click="filterTemplatesByCategory(cat.category)">
+                    {{ cat.name }} <span class="small ms-1" style="opacity: .7;">{{cat.count}}</span>
+                </div>
             </div>
-            <div v-for="template in templates" class="col-6 col-md-3 col-lg-2 mb-2">
-                <div class="template-card">
+            <div v-for="template in filtered_templates" class="col-6 col-md-3 col-lg-2 mb-2">
+                <div class="template-card" @click="onTemplateSelected(template)">
                     <div class="template-card-inner">
-                        <img :src="template.preview_url" class="img-fluid" @click="onTemplateSelected(template)">
-                        <!-- <div class="is-premium badge badge-light" v-if="template.is_premium"><i class="bi bi-star-fill mr-1"></i> Premium</div> -->
+                        <img :src="template.preview_url" class="img-fluid">
+                        <div class="is-premium is-premium-xs badge badge-light" v-if="template.is_premium"><i class="bi bi-star-fill mr-1"></i></div>
                     </div>
                 </div>
             </div>
@@ -217,6 +255,7 @@ if ($env === 'DEV') {
         'studio/vue.js',
         'vendor/jquery.min.js',
         'vendor/jquery.textfill.js',
+        'studio/filesaver.min.js',
         'studio/html2canvas.min.js',
         'vendor/vue-loading.js',
         'studio/polyfills.js',

@@ -11,6 +11,7 @@ var StudioMixin = {
         },
 
         getTextBoxDimensions: function () {
+            debugger;
             var box_scale_factor = 1;
 
             if (this.text.length < 20) { box_scale_factor = 0.75; }
@@ -26,6 +27,7 @@ var StudioMixin = {
 
             var currentTextboxWidth = this.template.textboxWidth;
             var currentTextboxHeight= this.template.textboxHeight;
+            console.log('currentTextboxWidth', this.template.textboxWidth);
             var newTextboxWidth = (this.initial_textbox_width*box_scale_factor);
             var newTextboxHeight = (this.initial_textbox_height*box_scale_factor);
             var diffTextboxWidth = (currentTextboxWidth - newTextboxWidth) / 2;
