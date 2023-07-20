@@ -216,6 +216,8 @@
     </div>
 </div>
     <?= $this->element('modals/upgrade'); ?>
+    <?= $this->element('studio/login-modal'); ?>
+    <?= $this->element('studio/payment-success-modal'); ?>
 </div>
 <!-- end #app -->
 

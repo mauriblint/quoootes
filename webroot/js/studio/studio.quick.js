@@ -920,7 +920,7 @@ var app = new Vue({
             if (this.user && this.user.id) {
                 window.location.href = "/subscriptions/pay/pro";
             } else {
-                $('#UpgradeModal').modal('hide');
+                // $('#UpgradeModal').modal('hide');
                 get_modal('upgrade').hide();
                 get_modal('login').show();
                 set_cookie('redirect_to_checkout', 1, 1);
