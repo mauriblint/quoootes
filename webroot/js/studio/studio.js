@@ -275,12 +275,16 @@ var app = new Vue({
         },
 
         saveTemplate: function () {
-            this.generate(this.onTemplatePreviewGenerated, 0.5);
+            this.generate(this.onTemplatePreviewGeneratedResizer, 1);
         },
 
         saveAsNewTemplate: function () {
             this.template_id = null;
-            this.generate(this.onTemplatePreviewGenerated, 0.5);
+            this.generate(this.onTemplatePreviewGeneratedResizer, 1);
+        },
+
+        onTemplatePreviewGeneratedResizer: function (imageData) {
+            this.resizeDownDataUrlKeepProportions(imageData, 250, 250, this.onTemplatePreviewGenerated);
         },
 
         onTemplatePreviewGenerated: function (imageData) {

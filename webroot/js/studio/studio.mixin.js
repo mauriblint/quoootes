@@ -68,7 +68,7 @@ var StudioMixin = {
             return !this.isCus();
         },
 
-        generate: function (callback, scaleFactor, to_blob = false) {
+        generate: function (callback, scaleFactor, to_blob) {
             var $StudioCanvas = $('#StudioCanvas');
             var scale = scaleFactor || 1.5;
             var canvas_width = $StudioCanvas.width() * scale;
