@@ -6,7 +6,7 @@ var Fonts = {};
 Fonts.insertFonts = function () {
     var FontList = this.getFontList();
     var gfonts_url = "https://fonts.googleapis.com/css2?" + FontList + "&display=swap";
-    $("head").append("<link href='" + gfonts_url + "' rel='stylesheet' type='text/css'>");
+    $("head").append("<link href='" + gfonts_url + "' rel='stylesheet' type='text/css' crossorigin='anonymous'>");
 };
 
 Fonts.getFontsArray = function () {
@@ -84,47 +84,6 @@ var app = new Vue({
         template_id: null,
 
         template: {},
-        initial_template: {
-            layout: 'square',
-            backgroundColor: '#FFFFFF',
-            backgroundImage: '',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            color: '#1a1a1a',
-
-            boxVisible: false,
-            boxBackgroundColor: '#228c5f',
-            boxPosition: 'center-center',
-            boxBorderRadius: 4,
-            boxPadding: 20,
-
-            textAlign: 'center',
-            lineHeight: 1,
-            fontFamily: 'Open Sans',
-            fontSize: 20,
-            fontWeight: 400,
-            letterSpacing: 1,
-            textUppercase: false,
-            textOffset: 0,
-
-            footerVisible: false,
-            headerVisible: false,
-            watermarkPosition: 4,
-
-            filter: '',
-            filterOpacity: 0.65,
-
-            logoImage: '', // https://quoootes.com/img/isologo_color.png
-            logoSize: 38,
-            logoBorderRadius: 8,
-            logoOpacity: 90,
-
-            textboxWidth: 250,
-            textboxHeight: 250,
-            textboxTop: 125,
-            textboxLeft: 125,
-        },
-
         rendered_image: null,
         rendered_image_width: 0,
         rendered_image_height: 0,
@@ -142,16 +101,6 @@ var app = new Vue({
 
         show_advanced_options: false,
         is_automatic_layout: true,
-
-        layouts: [
-            { name: 'Square', key: 'square', width: 500, height: 500, textboxWidth: 290, textboxHeight: 290, text_min_width: 0.3, text_min_height: 0.3, text_max_width: 0.8, text_max_height: 0.8 },
-            { name: 'Story', key: 'story', width: 383, height: 680, textboxWidth: 215, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
-            { name: 'Landscape', key: 'landscape', width: 700, height: 400, textboxWidth: 470, textboxHeight: 170, text_min_width: 0.5, text_min_height: 0.35, text_max_width: 0.82, text_max_height: 0.55 },
-            { name: 'Portrait', key: 'portrait', width: 450, height: 650, textboxWidth: 220, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
-            { name: 'Cover', key: 'cover', width: 820, height: 312, textboxWidth: 570, textboxHeight: 180, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
-            { name: 'Reel', key: 'reel', width: 383, height: 680, textboxWidth: 215, textboxHeight: 340, text_min_width: 0.4, text_min_height: 0.4, text_max_width: 0.7, text_max_height: 0.7   },
-        ],
-
         show_wizard: false,
         step: 'wizard', // wizard | preview |
         saved_session: null,
@@ -301,7 +250,7 @@ var app = new Vue({
         },
 
         downloadDesign: function () {
-            this.generate(this.onDesignGeneratedForDownload, 1);
+            this.generate(this.onDesignGeneratedForDownload, 1, true);
             mixpanel.track("StudioDownloadedDesign");
         },
 
@@ -312,13 +261,6 @@ var app = new Vue({
             }
             this.saving = true;
             this.generate(this.onDesignGenerated, 1);
-        },
-
-        onDesignGeneratedForDownload: function (imageData, width, height, canvas) {
-            canvas.toBlob(function(blob) {
-                var hash = new Date().toJSON().replace('T', ' ').slice(0,19);
-                window.saveAs(blob, 'quoootes.com_' + hash + '.jpg');
-            });
         },
 
         onDesignGenerated: function (imageData, width, height) {
@@ -676,14 +618,6 @@ var app = new Vue({
             return '';
         },
 
-        getEditorBackgroundStyles: function () {
-            return {
-                backgroundImage: this.template.backgroundImage && 'url(' + this.template.backgroundImage + ')',
-                backgroundSize: this.template.backgroundSize,
-                backgroundPosition: this.template.backgroundPosition
-            };
-        },
-
         getEditorStyles: function () {
             var dimensions = this.getLayoutDimensions(this.template.layout);
             return {
@@ -707,19 +641,6 @@ var app = new Vue({
             return {
                 alignItems: position_y,
                 justifyContent: position_x
-            };
-        },
-
-        getLogoStyles: function () {
-            var marginLeft = 0;
-            if (this.template.logoPosition === '5' || this.template.logoPosition === '6') {
-                marginLeft = (parseInt(this.template.logoSize)/2) * -1;
-            }
-            return {
-                width: this.template.logoSize + 'px',
-                borderRadius: this.template.logoBorderRadius + '%',
-                marginLeft: marginLeft,
-                opacity: (parseInt(this.template.logoOpacity)/100),
             };
         },
 
@@ -791,47 +712,6 @@ var app = new Vue({
             var find = this._getLayout(layout);
 
             return find;
-        },
-
-        generate: function (callback, scaleFactor) {
-            var _this = this;
-            // if (this.page !== 'editor') {
-            //     return false;
-            // }
-            // this.destroyMoveable();
-            html2canvas($('.quick-studio__canvas')[0], {
-                useCORS: true,
-                // proxy: '/ajax/proxy',
-                scale: scaleFactor || window.devicePixelRatio,
-                onclone: function (cloned) {
-                    var a = cloned.getElementsByClassName('studio__canvas')[0];
-                    cloned.querySelector(".quick-studio__templates").remove();
-                    // if(a.style.backgroundImage) {
-                    //     a.style.backgroundImage = a.style.backgroundImage.replace('")', '?version='+Date.now()+'")');
-                    // }
-                    if (a) {
-                        a.style.boxShadow = 'none';
-                        a.style.transform = 'none';
-                        a.style.visibility = 'visible';
-                        a.style.display = 'block';
-                    }
-                    // if (_this.mode === 'edit_template' || _this.mode === 'create_template') {
-                    //     $watermark = cloned.getElementsByClassName('studio__watermark');
-                    //     if ($watermark[0]) {
-                    //         $watermark[0].remove();
-                    //     }
-                    // }
-                 }
-            }).then(function (canvas) {
-				var imgData = canvas.toDataURL("image/jpeg", 1);
-                // var img = document.createElement('img');
-                // img.src = imgData;
-                // document.body.appendChild(img);
-
-                if (callback) {
-                    callback(imgData, canvas.width, canvas.height, canvas);
-                }
-            });
         },
 
         onFocusTextarea: function (e) {
@@ -916,7 +796,7 @@ var app = new Vue({
         },
 
         goToCheckout: function () {
-            mixpanel.track("ClickedOnUpgrade");
+            mixpanel.track("ClickedOnUpgrade", { 'editor': 'quick-editor' });
             if (this.user && this.user.id) {
                 window.location.href = "/subscriptions/pay/pro";
             } else {
@@ -924,7 +804,7 @@ var app = new Vue({
                 get_modal('upgrade').hide();
                 get_modal('login').show();
                 set_cookie('redirect_to_checkout', 1, 1);
-                mixpanel.track("ViewLoginModal");
+                mixpanel.track("ViewLoginModal", { 'editor': 'quick-editor' });
             }
         },
 
@@ -1049,7 +929,7 @@ var app = new Vue({
 
             url += '?text=' + this.text
                 + '&author=' + this.text_footer
-                + 'ref=quick-editor';
+                + '&ref=quick-editor';
 
             window.location.href = url;
         },

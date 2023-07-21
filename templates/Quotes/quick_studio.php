@@ -197,10 +197,10 @@
 
     <!-- <div style="display:block; position:fixed; bottom:0; left: 0; "> -->
     <div style="display:block; position:fixed; bottom:0; left: -1000px;">
-        <div class="quick-studio__canvas" :style="getEditorStyles()">
-            <div class="quick-studio__canvas-filter" v-if="template.filter" :style="{background: template.filter, opacity: template.filterOpacity}"></div>
-            <div class="quick-studio__canvas-bg" v-if="template.backgroundImage" :style="getEditorBackgroundStyles()"></div>
-
+        <div id="StudioCanvas" class="quick-studio__canvas" :style="getEditorStyles()">
+            <div class="quick-studio__canvas-filter" v-if="template.filter" :style="getFilterStyles()"></div>
+            <div class="quick-studio__canvas-bg" v-if="template.backgroundImage" :style="getBackgroundStyles()"></div>
+            <div class="quick-studio__canvas-border" :style="getBorderStyles()"></div>
             <div class="quick-studio__canvas-text jtextfill" id="StudioCanvasText" :style="getTextStyles()">
                 <div class="quick-studio__canvas-text-container fillthis" id="StudioCanvasTextContainer">
                     <div id="StudioCanvasTextDiv">{{ text }}</div>
@@ -209,9 +209,7 @@
             </div>
             <!-- <div class="studio__watermark" v-if="is_free" :class="'pos-' + template.watermarkPosition">QUOOOTES.COM</div> -->
             <img class="studio__watermark" src="/img/watermark_3.png" v-if="is_free" :class="'pos-' + template.watermarkPosition">
-            <div v-if="!is_free && template.logoImage" class="studio__logo" :class="'pos-' + template.watermarkPosition" :style="getLogoStyles()">
-                <img :src="template.logoImage" :style="getLogoStyles()">
-            </div>
+            <img class="studio__logo" v-if="!is_free && template.logoImage" :src="template.logoImage" :style="getLogoStyles()">
         </div>
     </div>
 </div>
@@ -258,7 +256,7 @@ if ($env === 'DEV') {
         'vendor/jquery.min.js',
         'vendor/jquery.textfill.js',
         'studio/filesaver.min.js',
-        'studio/html2canvas.min.js',
+        'studio/domtoimage.min.js',
         'vendor/vue-loading.js',
         'studio/polyfills.js',
         'studio/fonts.js',

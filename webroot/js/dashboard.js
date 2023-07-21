@@ -38,6 +38,15 @@ var app = new Vue({
             var _this = this;
 
             if (window.confirm("Do you really want to leave?")) {
+
+                // RequestMaker.delete('/ajax/delete/' + item.id)
+                //     .then(response => {
+                //         console.log(response);
+                //     })
+                //     .catch(error => {
+                //         console.error(error);
+                //     });
+                // return false;
                 $.ajax({
                     type: "DELETE",
                     url: '/ajax/delete/' + item.id,

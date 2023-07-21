@@ -225,6 +225,14 @@
                     </div>
                 </div>
 
+                <div class="form-group clickeable d-flex justify-content-between align-items-center" @click="openSidebar('border')">
+                    <label class="mb-0" style="width: 180px;">
+                    Border and Frame</label>
+                    <div>
+                    <i class="bi bi-chevron-double-right"></i>
+                    </div>
+                </div>
+
                 <div class="form-group clickeable d-flex justify-content-between align-items-center" @click="onRemoveWatermark()" v-if="is_free">
                     <label class="mb-0" style="width: 180px;">
                     <i class="bi bi-lock-fill mr-1"></i> Remove Watermark</label>
@@ -276,6 +284,18 @@
                         <label class="mb-0" style="width: 180px;">Logo Size</label>
                         <input type="range" v-model="template.logoSize" step="1" min="20" max="180" style="max-width: 100px;" class="form-control-range">
                         <span class="ml-1r range-value">{{ template.logoSize }}</span>
+                    </div>
+
+                    <div class="form-group mb-3 d-flex justify-content-between align-items-center">
+                        <label class="mb-0" style="width: 180px;">Logo Opacity</label>
+                        <input type="range" v-model="template.logoOpacity" step="1" min="1" max="100" style="max-width: 100px;" class="form-control-range">
+                        <span class="ml-1r range-value">{{ template.logoOpacity }}</span>
+                    </div>
+
+                    <div class="form-group mb-3 d-flex justify-content-between align-items-center">
+                        <label class="mb-0" style="width: 180px;">Logo Margin</label>
+                        <input type="range" v-model="template.logoMargin" step="1" min="0" max="20" style="max-width: 100px;" class="form-control-range">
+                        <span class="ml-1r range-value">{{ template.logoMargin }}</span>
                     </div>
                 </div>
 
@@ -414,7 +434,7 @@
                         <div>
                             <div class="slider form-group" :class="{disabled: !template.filter}">
                                 <label class="mb-0">Intensity</label>
-                                <div class="form-group slider--input" style="flex:1">
+                                <div class="slider--input" style="flex:1">
                                     <input class="form-control-range" v-model="template.filterOpacity" type="range" step="0.05" min="0.15" max="0.85" />
                                 </div>
                                 <span class="ml-2 range-value">
@@ -422,11 +442,11 @@
                                 </span>
                             </div>
                             <div class="">
-                                <div v-for="(gradient) in filters" v-on:click="setFilter(gradient)" class="gradient-item" :class="{active: gradient.color===template.filter}">
+                                <div v-for="(gradient) in filters" v-on:click="setFilter(gradient)" class="gradient-item" :class="{active: gradient.color===template.filter || gradient.filter===template.filter}">
                                     <div class="gradient-preview">
                                         <div class="gradient-preview-inner">
-                                            <div class="gradient-image"></div>
-                                            <div class="gradient-color" :style="{background: gradient.color }"></div>
+                                            <div class="gradient-image" :style="gradient.filter ? 'filter:' + gradient.filter : ''"></div>
+                                            <div class="gradient-color" v-if="gradient.color" :style="{background: gradient.color }"></div>
                                         </div>
                                     </div>
                                     <div class="gradient-name">{{ gradient.name }}</div>
@@ -437,10 +457,58 @@
                 </div>
             </div>
 
+            <!-- Editor Sidebar: Borders -->
+            <div class="sidebar" v-if="sidebar_open === 'border'">
+                <div class="sidebar__content">
+                    <div class="sidebar__header">
+                        <h4>Border & Frame</h4>
+                        <div class="sidebar__close" data-toggle="tooltip" data-title="(or press scape)" @click="closeSidebar()">
+                            <i class="bi bi-chevron-double-left"></i>
+                        </div>
+                    </div>
+                    <div class="sidebar__body scrollable">
+                        <div>
+                            <div class="form-group d-flex justify-content-between align-items-center">
+                                <label class="mb-0" style="width: 180px;">Border Type</label>
+                                <select class="form-control" v-model="template.borderType">
+                                    <option value="">None</option>
+                                    <option value="solid">Solid</option>
+                                    <option value="dotted">Dotted</option>
+                                    <option value="dashed">Dashed</option>
+                                </select>
+                            </div>
+                            <div :class="{'ui-disabled': !template.borderType}">
+                                <div class="form-group mb-3 d-flex justify-content-between align-items-center">
+                                    <label class="mb-0" style="width: 180px;">Border Size</label>
+                                    <input type="range" v-model="template.borderWidth" step="1" min="1" max="20" style="max-width: 100px;" class="form-control-range">
+                                    <span class="ml-1r range-value">{{ template.borderWidth }}</span>
+                                </div>
+                                <div class="form-group mb-3 d-flex justify-content-between align-items-center">
+                                    <label class="mb-0" style="width: 180px;">Border Space</label>
+                                    <input type="range" v-model="template.borderMargin" step="1" min="0" max="30" style="max-width: 100px;" class="form-control-range">
+                                    <span class="ml-1r range-value">{{ template.borderMargin }}</span>
+                                </div>
+                                <div class="form-group d-flex justify-content-between align-items-center">
+                                    <label class="mb-0" style="width: 180px;">Border Color</label>
+                                    <div class="color-picker">
+                                        <div class="color-picker__swatch" @click="popovers.color_picker_2_open=!popovers.color_picker_2_open" :style="{ background: template.borderColor }"></div>
+                                        <div class="color-picker__box" v-if="popovers.color_picker_2_open">
+                                            <color-picker :value="template.borderColor" @input="(c) => { template.borderColor = c.hex8;}"></color-picker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Editor Canvas -->
             <div class="studio__editor" ref="studio">
                 <div id="StudioCanvas" class="studio__canvas" ref="canvas" :style="getEditorStyles()" @mouseleave="onTextMouseLeave($event)" >
-                    <div class="studio__filter" v-if="template.filter" :style="{background: template.filter, opacity: template.filterOpacity}"></div>
+                    <div class="studio__filter" v-if="template.filter" :style="getFilterStyles()"></div>
+                    <div class="studio__bg" :style="getBackgroundStyles()"></div>
+                    <div class="studio__border" :style="getBorderStyles()"></div>
                     <div class="studio__canvas__inner" :style="getBoxStyles()">
                         <div id="StudioCanvasText" class="studio__canvas__text" :style="getTextStyles()" @mouseover="updateResizerPosition()">
                             <div class="studio__canvas__text__container" id="StudioCanvasTextContainer">
@@ -452,10 +520,10 @@
                         <div id="StudioCanvasTextResizer" class="studio__canvas_resizer" @click="onTextMouseHover()" @mouseover="updateResizerPosition()"></div>
                     </div>
 
-                    <div class="studio__watermark" v-if="is_free" :class="'pos-' + template.watermarkPosition">QUOOOTES.COM</div>
-                    <div v-if="!is_free && template.logoImage" class="studio__logo" :class="'pos-' + template.watermarkPosition" :style="getLogoStyles()">
-                        <img :src="template.logoImage" :style="getLogoStyles()">
-                    </div>
+                    <div class="studio__watermark" v-if="is_free" :style="getWatermarkStyles()">QUOOOTES.COM</div>
+                    <!-- <div  class="studio__logo" :style="getLogoStyles()"> -->
+                        <img class="studio__logo" v-if="!is_free && template.logoImage" :src="template.logoImage" :style="getLogoStyles()">
+                    <!-- </div> -->
                     <div class="studio__btoolbar">
                         <button class="btn btn-link p-0 mr-2 small" @click="onViewQuotes()">Need inspiration? Explore quotes</button>
                     </div>
@@ -729,10 +797,11 @@ if ($env === 'DEV') {
         'vendor/jquery.min.js',
         'vendor/popper.min.js',
         '/bootstrap4/js/bootstrap.min.js',
-        'studio/html2canvas.min.js',
+        'studio/domtoimage.min.js',
         'studio/vue-color.js',
         'studio/polyfills.js',
         'studio/fonts.js',
+        'studio/studio.mixin.js',
         'studio/studio.js',
     ], ['defer' => true]);
 }

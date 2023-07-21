@@ -11,7 +11,7 @@ uglifyjs --compress -o webroot/js/studio.vendors.build.js \
         webroot/js/vendor/jquery.min.js \
         webroot/js/vendor/popper.min.js \
         webroot/bootstrap4/js/bootstrap.min.js \
-        webroot/js/studio/html2canvas.min.js \
+        webroot/js/studio/domtoimage.min.js \
         webroot/js/studio/vue-color.js \
         webroot/js/studio/polyfills.js
 
@@ -37,6 +37,8 @@ javascript-obfuscator webroot/js/studio.soft.build.js \
 echo "Soft bundle obfuscated!"
 
 git add webroot/js/studio/studio.js
+git add webroot/js/studio.vendors.build.js
 git add webroot/js/studio.soft.build.js
+git add webroot/js/studio/studio.mixin.js
 
 echo "Soft bundle ready to commit!"

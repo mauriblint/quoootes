@@ -3,7 +3,7 @@ uglifyjs --compress -o webroot/js/qs.vendors.build.js \
      -- webroot/js/studio/vue.min.js \
         webroot/js/studio/filesaver.min.js \
         webroot/js/vendor/jquery.min.js \
-        webroot/js/studio/html2canvas.min.js \
+        webroot/js/studio/domtoimage.min.js \
         webroot/js/vendor/vue-loading.js \
         webroot/js/vendor/jquery.textfill.js \
 
@@ -32,5 +32,6 @@ echo "Soft bundle obfuscated!"
 git add webroot/js/studio/studio.quick.js
 git add webroot/js/qs.vendors.build.js
 git add webroot/js/qs.app.build.js
+git add webroot/js/studio/studio.mixin.js
 
 echo "Soft bundle ready to commit!"

@@ -20,14 +20,14 @@ label.form-label{font-weight:700;text-transform:uppercase;font-size:11px;margin-
 .studio__watermark.pos-4{bottom:var(--watermark-offset);right:var(--watermark-offset)}
 .studio__watermark.pos-5{top:var(--watermark-offset);left:50%;margin-left:-50px}
 .studio__watermark.pos-6{bottom:var(--watermark-offset);left:50%;margin-left:-50px}
-.studio__logo{position:absolute;z-index:11}
-.studio__logo img{border-radius:6px;width:42px}
+.studio__logo { position:absolute;  z-index: 11; border-radius: 6px; width: 42px;  }
+/* .studio__logo img{border-radius:6px;width:42px}
 .studio__logo.pos-1{top:var(--watermark-offset);left:var(--watermark-offset)}
 .studio__logo.pos-2{top:var(--watermark-offset);right:var(--watermark-offset)}
 .studio__logo.pos-3{bottom:var(--watermark-offset);left:var(--watermark-offset)}
 .studio__logo.pos-4{bottom:var(--watermark-offset);right:var(--watermark-offset)}
 .studio__logo.pos-5{top:var(--watermark-offset);left:50%;transform: translateX(-50%);}
-.studio__logo.pos-6{bottom:var(--watermark-offset);left:50%;margin-left:-50px}
+.studio__logo.pos-6{bottom:var(--watermark-offset);left:50%;margin-left:-50px} */
 .form-control-hidden-file{width:0;height:0;opacity:0;position:absolute;overflow:hidden;padding:0;border:0}
 .quick-studio{margin:50px 0;background-color:#fff;max-width:800px;margin:0 auto;border-radius:0 0 12px 12px;border:1px solid rgba(0,0,0,.1);border-top:0;margin-top:20px;border-radius:14px}
 .quick-studio__header{border-bottom:1px solid rgba(0,0,0,.06);height:70px;display:flex;align-items:center;padding:0 16px;justify-content:space-between}
@@ -42,6 +42,9 @@ label.form-label{font-weight:700;text-transform:uppercase;font-size:11px;margin-
 .quick-studio__canvas-filter{width:100%;height:100%;z-index:2;position:absolute}
 .quick-studio__canvas-bg{width:100%;height:100%;z-index:1;position:absolute}
 .quick-studio__canvas-bg-image{width:100%;height:100%}
+
+.quick-studio__canvas-border { width: 100%; height: 100%; z-index: 3; position: absolute; }
+
 .quick-studio__templates{padding:30px}
 .quick-studio__canvas-text{display:flex;flex-direction:column;background-color:transparent;padding:20px;white-space:pre-line;max-height:100%;max-width:100%;width:300px;height:300px;position:absolute;justify-content:center;align-items:center;z-index:3}
 .quick-studio__options-logo{background-color:#fff;border-radius:.375rem;padding:20px;display:flex;align-items:center;justify-content:center;border:var(--bs-border-width) solid var(--bs-border-color);position:relative}

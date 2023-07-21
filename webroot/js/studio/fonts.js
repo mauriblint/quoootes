@@ -6,6 +6,7 @@ var FontsData = [
 	{ name: 'Dokdo', premium: true },
 	{ name: 'Nanum Pen Script', premium: true },
 	{ name: 'Mynerve', premium: true },
+	{ name: 'Zilla Slab Highlight', premium: true },
 
 	{ name: 'Odibee Sans', premium: false },
 	{ name: 'Bungee Shade', premium: false },
@@ -153,12 +154,17 @@ var FontsData = [
 ];
 
 var FiltersData = [
-    {name: 'No Filter', color: ''},
+    {name: 'No Filter', color: '', filter: ''},
+    {name: 'Greyscale 2', filter: 'grayscale(0.6)'},
+    {name: 'Greyscale 3', filter: 'grayscale(1)'},
+    {name: 'Darken', filter: 'brightness(60%)'},
+    {name: 'Lighten', filter: 'brightness(130%)'},
+    {name: 'Blur 1', filter: 'blur(2px)'},
+    {name: 'Blur 2', filter: 'blur(4px)'},
     {name: 'Retro', color: 'linear-gradient(to left, #FAACA8 0%, #DDD6F3 100%)'},
     {name: 'Blue Sky', color: 'linear-gradient(to left, #1CB5E0, #000046)'},
     {name: 'Sunset', color: 'linear-gradient(to left, #F0CB35, #C02425)'},
     {name: 'Magenta', color: 'linear-gradient(to left, #333399, #ff00cc)'},
-    // {name: 'FilterName', color: 'linear-gradient(to left, #48b1bf, #06beb6)'},
     {name: 'Fun', color: 'linear-gradient(to left, #db36a4, #f7ff00)'},
     {name: 'Hope', color: 'linear-gradient(to left, #a8e063, #56ab2f)'},
     {name: 'Salmon', color: 'linear-gradient(to left, #ff9068, #fd746c)'},

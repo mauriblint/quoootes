@@ -18,7 +18,7 @@
                     <img class="img-fluid" :src="item.image_url">
                 </a>
                 <button class="btn btn-ligth btn-sm delete-btn btn-icon" @click.stop="onDelete($event, item, index)"><i class="bi bi-trash"></i></button>
-                <button class="btn btn-ligth btn-sm edit-btn btn-icon" @click.stop="onEdit($event, item, index)"><i class="bi bi-pencil"></i></button>
+                <!-- <button class="btn btn-ligth btn-sm edit-btn btn-icon" @click.stop="onEdit($event, item, index)"><i class="bi bi-pencil"></i></button> -->
             </div>
         </div>
     </div>
@@ -31,12 +31,14 @@
 <?php
 if ($env === 'DEV') {
     echo $this->Html->script([
+        'vendor/jquery.min.js',
         'studio/vue.js',
         'dashboard.js',
     ], ['defer' => true]);
 }
 if ($env === 'PROD') {
     echo $this->Html->script([
+        'vendor/jquery.min.js',
         'studio/vue.min.js',
         'dashboard.js',
     ], ['defer' => true]);

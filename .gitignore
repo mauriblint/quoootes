@@ -46,4 +46,5 @@ nbproject/*
 # Sass preprocessor
 .sass-cache/
 .history/
+TODO.txt
 webroot/uploads
