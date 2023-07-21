@@ -23,6 +23,7 @@ echo "Start creating soft bundle"
 uglifyjs -o webroot/js/studio.soft.build.js \
     -- webroot/js/studio/polyfills.js \
     webroot/js/studio/fonts.js \
+    webroot/js/studio/studio.mixin.js \
     webroot/js/studio/studio.js
 
 echo "Soft bundle generated: studio.vendors.build.js"
