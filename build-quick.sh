@@ -3,7 +3,7 @@ uglifyjs --compress -o webroot/js/qs.vendors.build.js \
      -- webroot/js/studio/vue.min.js \
         webroot/js/studio/filesaver.min.js \
         webroot/js/vendor/jquery.min.js \
-        webroot/js/studio/domtoimage.min.js \
+        webroot/js/studio/dom-to-image.min.js \
         webroot/js/vendor/vue-loading.js \
         webroot/js/vendor/jquery.textfill.js \
 

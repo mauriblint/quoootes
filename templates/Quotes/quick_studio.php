@@ -256,7 +256,8 @@ if ($env === 'DEV') {
         'vendor/jquery.min.js',
         'vendor/jquery.textfill.js',
         'studio/filesaver.min.js',
-        'studio/domtoimage.min.js',
+        // https://github.com/Nikitozz13/dom-to-image/tree/add-cache-for-fonts-loading
+        'studio/dom-to-image.min.js',
         'vendor/vue-loading.js',
         'studio/polyfills.js',
         'studio/fonts.js',

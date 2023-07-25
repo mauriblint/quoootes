@@ -797,7 +797,8 @@ if ($env === 'DEV') {
         'vendor/jquery.min.js',
         'vendor/popper.min.js',
         '/bootstrap4/js/bootstrap.min.js',
-        'studio/domtoimage.min.js',
+        // https://github.com/Nikitozz13/dom-to-image/tree/add-cache-for-fonts-loading
+        'studio/dom-to-image.min.js',
         'studio/vue-color.js',
         'studio/polyfills.js',
         'studio/fonts.js',

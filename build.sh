@@ -11,7 +11,7 @@ uglifyjs --compress -o webroot/js/studio.vendors.build.js \
         webroot/js/vendor/jquery.min.js \
         webroot/js/vendor/popper.min.js \
         webroot/bootstrap4/js/bootstrap.min.js \
-        webroot/js/studio/domtoimage.min.js \
+        webroot/js/studio/dom-to-image.min.js \
         webroot/js/studio/vue-color.js \
         webroot/js/studio/polyfills.js
 
