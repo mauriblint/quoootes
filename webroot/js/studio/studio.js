@@ -398,7 +398,9 @@ var app = new Vue({
 
         onTemplateSelected: function (template) {
             if (template.is_premium) {
-                return this.showUpgrade('premium_template');
+                if (!this.user || this.user.is_free) {
+                    return this.showUpgrade('premium_template');
+                }
             }
 
             this.loadTemplate(template.id);
