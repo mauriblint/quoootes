@@ -141,10 +141,13 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Preview</th>
+                                <th scope="col">User</th>
                                 <th scope="col">Tag</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Text</th>
                                 <th scope="col">Keywords</th>
+                                <th scope="col">Editor</th>
+                                <th scope="col">Template</th>
                                 <th class="text-right" scope="col" style="width: 100%;"></th>
                             </tr>
                         </thead>
@@ -152,6 +155,9 @@
                             <tr v-for="item in designs">
                                 <td><a :href="'/quote-' + item.id" target="_blank">{{ item.id }}</a></td>
                                 <td class="text-left"><img style="width: 120px;" :src="item.image_url" @click="onItemCicked(item)"></td>
+                                <td>
+                                    <a @click="loginAsConfirmation(item['user_id'], $event)" target="_blank" :href="'/admin/auth?token=aabbccddee123987&id=' + item.user_id" v-if="item.user_id">{{ item.user_id }}</a>
+                                </td>
                                 <td>
                                     <select v-model="item.tag_id" class="form-control custom-select" style="width: 140px" @change="updateDesignValue(item, 'tag_id', item.tag_id, $event)">
                                         <option :value="tag.id" v-for="tag in tags">{{ tag.name }}</option>
@@ -161,6 +167,7 @@
                                     <span v-if="item.status === 1" class="badge badge-success">Approved</span>
                                     <span v-if="item.status === 0" class="badge badge-warning">Pending</span>
                                     <span v-if="item.status === 2" class="badge badge-danger">Rejected</span>
+                                    <span v-if="item.status === 7" class="badge badge-danger">Deleted</span>
                                 </td>
                                 <td style="min-width: 200px">
                                     <blockquote>
@@ -172,6 +179,8 @@
                                 <td>
                                     <input type="text" v-model="item.keywords" class="form-control" style="min-width: 170px;" @blur="updateDesignValue(item, 'keywords', item.keywords, $event)">
                                 </td>
+                                <td>{{ item.template_id || ''}}</td>
+                                <td>{{ item.source || '' }}</td>
                                 <td class="text-right">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-warning" v-if="item.status !== 2" @click="onChangeDesignStatus(item, 2)" data-toggle="tooltip" data-title="Reject"><i class="bi bi-slash-circle"></i></button>

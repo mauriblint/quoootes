@@ -384,6 +384,15 @@ var app = new Vue({
                 console.log('__updateTemplate', response);
                 app.$toasted.show('Template updated!');
             })
-        }
+        },
+
+        loginAsConfirmation: function (user_id, event) {
+            if(confirm('Login as User ' + user_id + '?')) {
+                return true;
+            } else {
+                event.preventDefault();
+                return false;
+            }
+        },
     },
 });
