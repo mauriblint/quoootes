@@ -146,8 +146,8 @@
                                 <th scope="col">Status</th>
                                 <th scope="col">Text</th>
                                 <th scope="col">Keywords</th>
-                                <th scope="col">Editor</th>
                                 <th scope="col">Template</th>
+                                <th scope="col">Editor</th>
                                 <th class="text-right" scope="col" style="width: 100%;"></th>
                             </tr>
                         </thead>
