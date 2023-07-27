@@ -35,7 +35,9 @@
         		<button class="btn btn-primary btn-block" style="padding: 12px;" @click="goToCheckout()">
 					Upgrade for just $4,99/mo
 				</button>
-				<!-- <div class="text-center text-muted small mt-2 w-100">Cancel at any time</div> -->
+				<a href="javascript:void(0)" class="text-center mt-2 w-100 fw-bold" @click="goToCheckout(true)">
+                    or $39,99 a year (save 33%)
+                </a>
       		</div>
 		</div>
 	</div>

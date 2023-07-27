@@ -52,6 +52,10 @@ class SubscriptionsController extends AppController
             $plan_id = 2;
         }
 
+        if ($plan_id === 'pro-yearly') {
+            $plan_id = 3;
+        }
+
         $User = UserService::findById($user_id);
         $Plan = PlanService::findById($plan_id);
 

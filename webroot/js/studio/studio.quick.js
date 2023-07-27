@@ -795,10 +795,11 @@ var app = new Vue({
             }
         },
 
-        goToCheckout: function () {
-            mixpanel.track("ClickedOnUpgrade", { 'editor': 'quick-editor' });
+        goToCheckout: function (is_anual) {
+            plan = (is_anual) ? 'pro' : 'pro-yearly';
+            mixpanel.track("ClickedOnUpgrade", { 'editor': 'quick-editor', 'plan': plan});
             if (this.user && this.user.id) {
-                window.location.href = "/subscriptions/pay/pro";
+                window.location.href = "/subscriptions/pay/" + plan;
             } else {
                 // $('#UpgradeModal').modal('hide');
                 get_modal('upgrade').hide();
