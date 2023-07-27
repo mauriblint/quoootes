@@ -96,7 +96,11 @@ class GoogleController extends AppController
 
             // TODO: check if user have already a plan
             if ($redirect_to_checkout) {
-                $redirect_to = '/subscriptions/pay/pro';
+                if ($_COOKIE['redirect_to_checkout'] === 'pro' || $_COOKIE['redirect_to_checkout'] === 'pro-yearly') {
+                    $redirect_to = '/subscriptions/pay/' . $_COOKIE['redirect_to_checkout'];
+                } else {
+                    $redirect_to = '/subscriptions/pay/pro';
+                }
                 unset($_COOKIE['redirect_to_checkout']);
             }
 

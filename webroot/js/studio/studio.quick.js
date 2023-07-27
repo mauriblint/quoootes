@@ -804,7 +804,7 @@ var app = new Vue({
                 // $('#UpgradeModal').modal('hide');
                 get_modal('upgrade').hide();
                 get_modal('login').show();
-                set_cookie('redirect_to_checkout', 1, 1);
+                set_cookie('redirect_to_checkout', plan, 1);
                 mixpanel.track("ViewLoginModal", { 'editor': 'quick-editor' });
             }
         },
