@@ -796,7 +796,7 @@ var app = new Vue({
         },
 
         goToCheckout: function (is_anual) {
-            plan = (is_anual) ? 'pro' : 'pro-yearly';
+            plan = (is_anual) ? 'pro-yearly' : 'pro';
             mixpanel.track("ClickedOnUpgrade", { 'editor': 'quick-editor', 'plan': plan});
             if (this.user && this.user.id) {
                 window.location.href = "/subscriptions/pay/" + plan;
