@@ -25,6 +25,11 @@ class MixpanelService {
         $mp_token = self::$MIXPANEL_TOKEN;
         $mp = Mixpanel::getInstance($mp_token);
 
+        if (!$user_id && isset($_COOKIE['mp_' . $mp_token .'_mixpanel'])) {
+            $mixpanel_cookie = json_decode($_COOKIE['mp_' . $mp_token .'_mixpanel'], true);
+            $user_id = $mixpanel_cookie['distinct_id'];
+        }
+
         if ($user_id) {
             $mp->identify($user_id);
         }

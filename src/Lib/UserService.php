@@ -64,7 +64,7 @@ class UserService {
 
             MixpanelService::track('SignUp', array(
                 'source' => 'google',
-                'user_id' => $User['id'],
+                // 'user_id' => $User['id'],
             ));
 
         } else {
