@@ -167,7 +167,7 @@ class StripeService {
 
         $session = \Stripe\BillingPortal\Session::create([
           'customer' => $stripe_customer_id,
-          'return_url' => Router::url('/settings/billing', true),
+          'return_url' => Router::url('/account', true),
         ]);
 
         return $session;

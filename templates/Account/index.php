@@ -84,8 +84,10 @@ $subscription_duration = $subscription['type'] === 'year' ? __('Yearly') : __('M
 
                                         <?php if ($subscription['plan']['id'] > 1 && !$subscription['is_cancelled']): ?>
                                             <div>
-                                            You are subscribed to <strong><?php echo $subscription['plan']['name']; ?></strong> Plan. Your subscription renew on <strong><?=$renewal_date?></strong>
+                                                You are subscribed to <strong><?php echo $subscription['plan']['name']; ?></strong> Plan. Your subscription renew on <strong><?=$renewal_date?></strong>
                                             </div>
+                                            <a class="btn btn-link mt-3 btn-sm" href="/subscriptions/manage">Update Plan</a>
+                                            <a class="btn btn-link mt-3 btn-sm" href="/subscriptions/manage">Update Payment Method</a>
                                             <a class="btn btn-danger mt-3 btn-sm" href="/subscriptions/cancel">Cancel Subscription</a>
                                         <?php endif; ?>
 

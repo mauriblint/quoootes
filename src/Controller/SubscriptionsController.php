@@ -121,6 +121,17 @@ class SubscriptionsController extends AppController
         return $this->redirect($Session->url);
     }
 
+    public function manage ()
+    {
+        $user_id = $this->user_id;
+
+        $User = UserService::findById($user_id);
+
+        $Session = StripeService::createCustomerPortalSession($User->customer_id);
+
+        return $this->redirect($Session->url);
+    }
+
     public function ipnStripe  () {
 
         $payload = @file_get_contents('php://input');
