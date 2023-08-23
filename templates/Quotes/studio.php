@@ -155,6 +155,7 @@
                         <div class="color-picker__swatch" @click="popovers.color_picker_3_open=!popovers.color_picker_3_open" :style="{ background: template.color }"></div>
                         <div class="color-picker__box" v-if="popovers.color_picker_3_open">
                             <color-picker :value="template.color" @input="(c) => { template.color = c.hex8 }"></color-picker>
+                            <input type="text" v-model="template.color" class="form-control form-control-sm">
                         </div>
                     </div>
                 </div>
@@ -165,6 +166,7 @@
                         <div class="color-picker__swatch" @click="popovers.color_picker_2_open=!popovers.color_picker_2_open" :style="{ background: template.backgroundColor }"></div>
                         <div class="color-picker__box" v-if="popovers.color_picker_2_open">
                             <color-picker :value="template.backgroundColor" @input="(c) => { template.backgroundColor = c.hex8; template.backgroundImage = ''; }"></color-picker>
+                            <input type="text" v-model="template.backgroundColor" class="form-control form-control-sm">
                         </div>
                     </div>
                 </div>
@@ -341,6 +343,7 @@
                             <div class="color-picker__swatch" @click="popovers.color_picker_1_open=!popovers.color_picker_1_open" :style="{ background: template.boxBackgroundColor }"></div>
                             <div class="color-picker__box" v-if="popovers.color_picker_1_open">
                                 <color-picker :value="template.boxBackgroundColor" @input="(c) => { template.boxBackgroundColor = c.hex8 }"></color-picker>
+                                <input type="text" v-model="template.boxBackgroundColor" class="form-control form-control-sm">
                             </div>
                         </div>
                     </div>
@@ -494,6 +497,7 @@
                                         <div class="color-picker__swatch" @click="popovers.color_picker_2_open=!popovers.color_picker_2_open" :style="{ background: template.borderColor }"></div>
                                         <div class="color-picker__box" v-if="popovers.color_picker_2_open">
                                             <color-picker :value="template.borderColor" @input="(c) => { template.borderColor = c.hex8;}"></color-picker>
+                                            <input type="text" v-model="template.borderColor" class="form-control form-control-sm">
                                         </div>
                                     </div>
                                 </div>
@@ -714,6 +718,8 @@
                 </div>
             </div>
         </div>
+
+        <input type="file" id="file-input-dropzone" style="display:none;">
 
         <?= $this->element('studio/upgrade'); ?>
         <?= $this->element('studio/login-modal'); ?>
