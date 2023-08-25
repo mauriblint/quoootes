@@ -145,6 +145,7 @@ var app = new Vue({
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.backgrounds) {
             this.backgrounds = window.__NEXT_DATA__.backgrounds;
+            this.shuffleArray(this.backgrounds);
         }
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.templates) {
@@ -1167,7 +1168,14 @@ var app = new Vue({
                 this.showUpgrade('private_design');
                 return false;
             }
-        }
+        },
+
+        shuffleArray: function (array) {
+            for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+        },
     },
 });
 
