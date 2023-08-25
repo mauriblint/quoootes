@@ -64,7 +64,7 @@
 
     <script>
         __APP_DATA__.user_id = <?= ($user_id) ? $user_id : 'null' ?>;
-        __APP_DATA__.test = 'test';
+        __APP_DATA__.user = <?php echo json_encode($user); ?>;
     </script>
 
     <?= $this->Html->script([

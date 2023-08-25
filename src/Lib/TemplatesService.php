@@ -110,6 +110,7 @@ class TemplatesService {
         $TemplatesTable = TableRegistry::getTableLocator()->get('Templates');
 
         $query = $TemplatesTable->find()
+            ->where(['active' => 1])
             ->order(['created' => 'DESC'])
             ->enableHydration(false);
 

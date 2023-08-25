@@ -1301,9 +1301,9 @@ dropZone.addEventListener('drop', (e) => {
     }
 });
 
-dropZone.addEventListener('click', () => {
-    fileInput.click();
-});
+// dropZone.addEventListener('click', () => {
+//     fileInput.click();
+// });
 
 fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];

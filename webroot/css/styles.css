@@ -309,7 +309,8 @@ footer a{color:#25243c;font-size:14px}
 
 .home-section{margin-top:120px;margin-bottom:120px}
 .template{background-color:#eef0f6;text-align:center;border-radius:4px;padding:8px; position: relative;}
-.template > a { position: relative; }
+.template .badge { position: absolute; bottom: 10px; right: 10px;}
+.template > a { position: relative; display: block; }
 .template img{border-radius:4px}
 .template:hover{cursor:pointer;background-color:#d9deea}
 .templates-list__square .template{width:100%;height:200px;margin-bottom:30px}

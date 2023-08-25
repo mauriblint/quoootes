@@ -176,7 +176,7 @@
                     v-if="cat.count > 5"
                     :class="(selected_template_category === cat.category ? 'bg-primary' : 'text-bg-light')"
                     @click="filterTemplatesByCategory(cat.category)">
-                    {{ cat.name }} <span class="small ms-1" style="opacity: .7;">{{cat.count}}</span>
+                    {{ cat.name }} <span class="small ms-1 d-none" style="opacity: .7;">{{cat.count}}</span>
                 </div>
             </div>
             <div v-for="template in filtered_templates" class="col-6 col-md-3 col-lg-2 mb-2">
