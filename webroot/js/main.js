@@ -89,6 +89,24 @@ function delete_cookie(name) {
 
 delete_cookie('redirect_to_checkout');
 
+var goToCheckout = function (is_anual) {
+    if (typeof app !== 'undefined' && typeof app.goToCheckout !== 'undefined') {
+        app.goToCheckout(is_anual);
+    } else {
+        plan = (is_anual) ? 'pro-yearly' : 'pro';
+        mixpanel.track("ClickedOnUpgrade", { 'editor': 'templates-page', 'plan': plan});
+        if (__APP_DATA__.user && __APP_DATA__.user.id) {
+            window.location.href = "/subscriptions/pay/" + plan;
+        } else {
+            // $('#UpgradeModal').modal('hide');
+            get_modal('upgrade').hide();
+            get_modal('login').show();
+            set_cookie('redirect_to_checkout', plan, 1);
+            mixpanel.track("ViewLoginModal", { 'editor': 'templates-page' });
+        }
+    }
+};
+
 // var TopicsDropdown = document.getElementById('TopicsDropdown');
 // var TopicsDropdownMenu = document.getElementById('TopicsDropdownMenu');
 

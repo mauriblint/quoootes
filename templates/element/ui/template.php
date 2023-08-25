@@ -13,7 +13,7 @@
 </div>
 
 <?= $this->element('modals/upgrade'); ?>
-
+<?= $this->element('studio/login-modal'); ?>
 <script>
     onTemplateClicked = function (is_premium) {
         if (is_premium) {
@@ -30,5 +30,5 @@
         }
 
         return true;
-    }
+    };
 </script>
