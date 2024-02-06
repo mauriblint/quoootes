@@ -449,6 +449,11 @@ var app = new Vue({
         setLayout: function (layout) {
             this.template.layout = layout.key;
             var layout = this._getLayout(layout.key);
+            this.template.textboxWidth = layout.textboxWidth;
+            this.template.textboxHeight = layout.textboxHeight;
+            this.template.textboxLeft = ((layout.width - layout.textboxWidth) / 2);
+            this.template.textboxTop = ((layout.height - layout.textboxHeight) / 2);
+
             this.is_automatic_layout = true;
             // this.resizeTextbox(layout);
         },

@@ -276,5 +276,23 @@ var StudioMixin = {
             if (pos === 5) return { top: offset + 'px', left: '50%', transform: 'translateX(-50%)' };
             if (pos === 6) return { bottom: offset + 'px', left: '50%', transform: 'translateX(-50%)' };
         },
+
+        getAuthorStyles: function () {
+            var _fs = '70%';
+            if (this.template.fontSize) {
+                _fs = this.template.fontSize * 0.7;
+                if (_fs < 15) {
+                    _fs = this.template.fontSize;
+                }
+                if (_fs > 20) {
+                    _fs = 20;
+                }
+            }
+
+            return {
+                marginTop: '26px',
+                fontSize: _fs + 'px',
+            }
+        },
     }
 };

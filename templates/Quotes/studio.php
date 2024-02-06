@@ -518,7 +518,7 @@
                             <div class="studio__canvas__text__container" id="StudioCanvasTextContainer">
                                 <div v-html="getHeader()" v-if="template.headerVisible && text_header" class="studio__canvas__text-header"></div>
                                 <div v-html="getText()" class="studio__canvas__text-main"></div>
-                                <div v-html="getFooter()" v-if="template.footerVisible && text_footer" class="studio__canvas__text-footer"></div>
+                                <div v-html="getFooter()" :style="getAuthorStyles()" v-if="template.footerVisible && text_footer" class="studio__canvas__text-footer"></div>
                             </div>
                         </div>
                         <div id="StudioCanvasTextResizer" class="studio__canvas_resizer" @click="onTextMouseHover()" @mouseover="updateResizerPosition()"></div>

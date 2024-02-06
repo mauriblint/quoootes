@@ -92,7 +92,7 @@ use Cake\Routing\Router;
                 <?php endif; ?>
 
                 <li class="nav-item active">
-                    <a class="btn btn-brand" href="<?= Router::url(['_name' => 'QuickStudio']); ?>">
+                    <a class="btn btn-brand" href="<?= Router::url(['_name' => 'Studio']); ?>">
                         <i class="bi bi-plus-lg mr-1"></i>
                         Create
                     </a>
