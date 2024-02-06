@@ -141,6 +141,10 @@ var app = new Vue({
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.text) {
             this.text = window.__NEXT_DATA__.text;
             this.text_footer = window.__NEXT_DATA__.author;
+
+            if (this.text_footer) {
+                this.template.footerVisible = true;
+            }
         }
 
         if (window.__NEXT_DATA__ && window.__NEXT_DATA__.backgrounds) {
@@ -197,7 +201,7 @@ var app = new Vue({
             }
         }
 
-        if (this.hasSavedSession()) {
+        if (this.hasSavedSession() && !window.__NEXT_DATA__.text) {
             this.saved_session = true;
             this.restoreWorkSession();
         }

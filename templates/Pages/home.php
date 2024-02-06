@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-10 mx-auto col-lg-5">
             <div class="blurry-bg"></div>
-            <form class="p-4 p-md-4 border rounded-3 bg-light write-quote-form" action="<?=Router::url(['_name' => 'QuickStudio']);?>" method="GET">
+            <form class="p-4 p-md-4 border rounded-3 bg-light write-quote-form" action="<?=Router::url(['_name' => 'Studio']);?>" method="GET">
                 <div class="form-floating">
                     <textarea class="form-control" placeholder="Enter your quote" name="text" style="height: 100px"></textarea>
                     <label for="floatingTextarea2">Enter your quote</label>
