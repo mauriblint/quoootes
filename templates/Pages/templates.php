@@ -13,3 +13,5 @@
 <?php $this->start('script_tracking_events'); ?>
 	<script>mixpanel.track("ViewTemplates");</script>
 <?php $this->end(); ?>
+
+<?= $this->element('ui/template-modals'); ?>

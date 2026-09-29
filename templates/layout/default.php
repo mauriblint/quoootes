@@ -25,6 +25,7 @@
     <meta name="description" content="<?= h($meta_description, false) ?>">
     <meta name="keywords" content="<?= h($meta_keywords, false) ?>">
     <link rel="canonical" href="<?= h($canonical_url) ?>" />
+    <?php if (!empty($noindex)): ?><meta name="robots" content="noindex, follow"><?php endif; ?>
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="icon"/>
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
     <meta name="p:domain_verify" content="f0b7d6f5e9bac3d19dc79d01bcaa8826"/>

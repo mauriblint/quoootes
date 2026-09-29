@@ -46,3 +46,5 @@
 <style>
     body { background-color: #fff; }
 </style>
+
+<?= $this->element('ui/template-modals'); ?>

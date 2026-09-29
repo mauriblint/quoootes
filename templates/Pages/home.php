@@ -2,31 +2,65 @@
     use Cake\Routing\Router;
 ?>
 <?php $this->start('fluidcontent'); ?>
+<style>
+    .hero-bullets { list-style: none; padding: 0; margin: 1.25rem 0 0; }
+    .hero-bullets li { margin-bottom: .4rem; font-size: 1.05rem; }
+    .hero-bullets i { color: #f9384d; margin-right: .5rem; }
+    .hero-preview { aspect-ratio: 1 / 1; border-radius: .75rem; margin-bottom: 1rem; padding: 2rem; display: flex; flex-direction: column; justify-content: center; text-align: center; color: #fff; background: linear-gradient(135deg, #f9384d 0%, #7b2ff7 100%); box-shadow: 0 10px 30px rgba(0,0,0,.12); overflow: hidden; }
+    .hero-preview__text { font-family: Georgia, 'Times New Roman', serif; font-size: 1.5rem; line-height: 1.3; word-break: break-word; }
+    .hero-preview__author { margin-top: 1rem; font-size: .95rem; opacity: .85; text-transform: uppercase; letter-spacing: .08em; }
+    @media (max-width: 575px) { .hero-preview { aspect-ratio: 4 / 3; padding: 1.25rem; } .hero-preview__text { font-size: 1.2rem; } }
+</style>
 <div class="container col-xl-10 col-xxl-8 px-4 py-3 py-md-5">
     <div class="row align-items-center g-lg-5 py-3 py-md-5">
-        <div class="col-lg-7 text-center text-lg-start">
-            <h1 class="display-4 fw-bold lh-1 mb-3">Quote <b style="color: #f9384d;">Maker</b> and Generator. <b style="color: #f9384d;">Write</b> a Quote <span class="d-none d-md-inline">→</span><span class="d-inline d-md-none">↓</span></h1>
-            <p class="col-lg-10 fs-5 text-muted">Create images with text using our <strong>quotes creator app</strong>. Discover and get Inspired, create your own images with quotes. Ready to download or share.</p>
+        <div class="col-lg-6 text-center text-lg-start">
+            <h1 class="display-5 fw-bold lh-1 mb-3">Free Quote Maker: turn any quote into a <b style="color: #f9384d;">beautiful image</b></h1>
+            <p class="col-lg-11 fs-5 text-muted">Write your quote, pick a template and download it in seconds. No sign-up, no design skills needed.</p>
+            <ul class="hero-bullets d-none d-md-block">
+                <li><i class="bi bi-lightning-charge-fill"></i>Type it and see it live</li>
+                <li><i class="bi bi-person-check-fill"></i>No account needed to create and download</li>
+                <li><i class="bi bi-phone-fill"></i>Ready for Instagram, Stories, Pinterest and WhatsApp</li>
+            </ul>
         </div>
-        <div class="col-md-10 mx-auto col-lg-5">
-            <div class="blurry-bg"></div>
-            <form class="p-4 p-md-4 border rounded-3 bg-light write-quote-form" action="<?=Router::url(['_name' => 'Studio']);?>" method="GET">
+        <div class="col-md-10 mx-auto col-lg-6">
+            <form class="p-3 p-md-4 border rounded-3 bg-light write-quote-form" action="<?=Router::url(['_name' => 'QuickStudio']);?>" method="GET">
+                <div class="hero-preview" aria-hidden="true">
+                    <div class="hero-preview__text" id="heroPreviewText">The best time to plant a tree was 20 years ago. The second best time is now.</div>
+                    <div class="hero-preview__author" id="heroPreviewAuthor">Chinese Proverb</div>
+                </div>
                 <div class="form-floating">
-                    <textarea class="form-control" placeholder="Enter your quote" name="text" style="height: 100px"></textarea>
-                    <label for="floatingTextarea2">Enter your quote</label>
+                    <textarea class="form-control" id="heroQuoteText" placeholder="Write your quote" name="text" maxlength="300" style="height: 90px"></textarea>
+                    <label for="heroQuoteText">Write your quote</label>
                 </div>
                 <div class="form-floating mb-3 mt-2">
-                    <input type="phone" class="form-control" id="phone" placeholder="Author (optional)" name="author">
-                    <label for="floatingInput">Author (optional)</label>
+                    <input type="text" class="form-control" id="heroQuoteAuthor" placeholder="Author (optional)" name="author" maxlength="40">
+                    <label for="heroQuoteAuthor">Author (optional)</label>
                 </div>
-
-                <button class="w-100 btn btn-lg btn-brand" onclick="sendMessage()" type="submit">Create Quote</button>
-                <!-- <hr class="my-4">
-                <small class="text-muted">Quote text and author can be modified later</small> -->
+                <input type="hidden" name="ref" value="home_hero">
+                <button class="w-100 btn btn-lg btn-brand" type="submit">Create my quote image &rarr;</button>
+                <small class="d-block text-center text-muted mt-2">Free &middot; No sign-up &middot; Change the design in the next step</small>
             </form>
         </div>
     </div>
 </div>
+<script>
+    (function () {
+        var text = document.getElementById('heroQuoteText');
+        var author = document.getElementById('heroQuoteAuthor');
+        var previewText = document.getElementById('heroPreviewText');
+        var previewAuthor = document.getElementById('heroPreviewAuthor');
+        var defaultText = previewText.textContent;
+        var defaultAuthor = previewAuthor.textContent;
+        function sync() {
+            var t = text.value.trim();
+            previewText.textContent = t || defaultText;
+            previewText.style.fontSize = t.length > 160 ? '1.1rem' : (t.length > 80 ? '1.3rem' : '');
+            previewAuthor.textContent = author.value.trim() || (t ? '' : defaultAuthor);
+        }
+        text.addEventListener('input', sync);
+        author.addEventListener('input', sync);
+    })();
+</script>
 <?php $this->end(); ?>
 
 <div class="row justify-content-center py-5">
@@ -166,3 +200,5 @@ section.homeSection {
 <?php $this->start('script_tracking_events'); ?>
 	<script>mixpanel.track("ViewHomepage");</script>
 <?php $this->end(); ?>
+
+<?= $this->element('ui/template-modals'); ?>

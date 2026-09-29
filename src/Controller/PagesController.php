@@ -36,6 +36,8 @@ class PagesController extends AppController
             return $this->redirect('/dashboard');
         }
     	$this->set('recentImages', []);
+        $this->set('title', 'Free Quote Maker - Create Quote Images Online, No Sign-up');
+        $this->set('description', 'Turn any quote into a beautiful image in seconds. Free quote maker with templates for Instagram, Stories, Pinterest and WhatsApp. No account needed.');
         $this->set('templates', TemplatesService::list(null, 1, 8));
         $this->render('home');
     }

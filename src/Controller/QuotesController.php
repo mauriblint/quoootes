@@ -106,10 +106,12 @@ class QuotesController extends AppController
             //     $Session->write('save_anon_design_id', $quote['id']);
             // }
         }
-        $description = '"' . mb_strimwidth($quote->text, 0, 110, '...') . '"' . ($quote->text_footer ? ' - ' . $quote->text_footer : '') . '. Free quote image to download and share, or create your own with our quote maker.';
+        $description = '"' . mb_strimwidth(preg_replace('/^[\s"\'“”]+|[\s"\'“”]+$/u', '', $quote->text), 0, 110, '...') . '"' . ($quote->text_footer ? ' - ' . $quote->text_footer : '') . ' | Free quote image to download and share, or create your own with our quote maker.';
 		$this->set(compact('quote'));
         $this->set('canonical_url', DesignService::url($quote, true));
         $this->set('og_type', 'article');
+        // Only moderated (status 1) designs should be indexed.
+        $this->set('noindex', $quote->status !== 1);
         $this->set('title', $quote->text);
         $this->set('description', $description);
         $this->set('share_image', $quote['image_url']);
