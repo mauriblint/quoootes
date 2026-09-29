@@ -31,6 +31,11 @@ return static function (RouteBuilder $routes) {
     $routes->scope('/', function (RouteBuilder $builder) {
 
         $builder->connect('/', ['controller' => 'Pages', 'action' => 'homepage'], ['_name' => 'Home']);
+        $builder->connect('/sitemap.xml', ['controller' => 'Sitemap', 'action' => 'index']);
+        $builder->connect('/sitemap-pages.xml', ['controller' => 'Sitemap', 'action' => 'pages']);
+        $builder->connect('/sitemap-designs-{page}.xml', ['controller' => 'Sitemap', 'action' => 'designs'])
+            ->setPatterns(['page' => '[0-9]+'])
+            ->setPass(['page']);
         $builder->connect('/login', ['controller' => 'Pages', 'action' => 'login'], ['_name' => 'Login']);
         $builder->connect('/logout', ['controller' => 'Google', 'action' => 'logout'], ['_name' => 'Logout']);
         $builder->connect('/support', ['controller' => 'Pages', 'action' => 'support'], ['_name' => 'Support']);

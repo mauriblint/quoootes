@@ -4,7 +4,7 @@
 ?>
 <div class="col-12 col-md-3">
     <div class="card">
-        <a href="/quote-<?=$quote['id']?>">
+        <a href="<?= \App\Lib\DesignService::url($quote) ?>">
             <div class="card-top">
                 <img class="card-img-top" src="<?= $quote['image_url']; ?>" alt="<?=htmlspecialchars($quote['text'])?>" title="<?=htmlspecialchars($quote['text'])?>" />
             </div>

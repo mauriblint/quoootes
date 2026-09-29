@@ -31,7 +31,7 @@
                 <span class="quote-text"><?=$design['text'];?></span>
             </div>
             <div class="copy">
-                <a target="_blank" href="<?= Router::url('/quote-' . $design['id'], true); ?>" class="stretched-link">Powered by QUOOOTES.COM</a>
+                <a target="_blank" href="<?= \App\Lib\DesignService::url($design, true); ?>" class="stretched-link">Powered by QUOOOTES.COM</a>
             </div>
         </div>
     </div>

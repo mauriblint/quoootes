@@ -68,7 +68,7 @@ class QuotesController extends AppController
     {
         if (is_numeric($id)) {
 		    $quote = DesignService::get($id);
-            if($quote->shortcode) {
+            if ($quote && $quote->shortcode) {
                 return $this->redirect('/p/' . $quote->shortcode, 301);
             }
         } else {
@@ -77,6 +77,10 @@ class QuotesController extends AppController
 
         if (!$quote) {
             return $this->redirect('/', 301);
+        }
+
+        if ($quote->status === DesignService::STATUS_DELETED) {
+            return $this->redirect('/quotes', 301);
         }
 
         if ($quote->status === DesignService::STATUS_PRIVATE && $quote->user_id !== $this->user_id) {
@@ -102,8 +106,10 @@ class QuotesController extends AppController
             //     $Session->write('save_anon_design_id', $quote['id']);
             // }
         }
-        $description = $quote['views'] . ' likes &bull; ' . $quote['downloads'] .' downloads - ' . 'Your daily dose of beautiful quotes, create your own image with text quote.';
+        $description = '"' . mb_strimwidth($quote->text, 0, 110, '...') . '"' . ($quote->text_footer ? ' - ' . $quote->text_footer : '') . '. Free quote image to download and share, or create your own with our quote maker.';
 		$this->set(compact('quote'));
+        $this->set('canonical_url', DesignService::url($quote, true));
+        $this->set('og_type', 'article');
         $this->set('title', $quote->text);
         $this->set('description', $description);
         $this->set('share_image', $quote['image_url']);

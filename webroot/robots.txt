@@ -4,3 +4,4 @@ Disallow: /admins
 
 User-agent: Twitterbot
 Disallow:
+Sitemap: https://quoootes.com/sitemap.xml

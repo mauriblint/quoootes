@@ -358,6 +358,14 @@ class DesignService {
         return $Design;
     }
 
+    /**
+     * Final public URL of a design (avoids the /quote-{id} -> /p/{shortcode} 301 hop).
+     */
+    public static function url($design, $full = false) {
+        $path = !empty($design['shortcode']) ? '/p/' . $design['shortcode'] : '/quote-' . $design['id'];
+        return Router::url($path, $full);
+    }
+
     public static function generateHashId ($length = 20, $prefix = '') {
         $pool = str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 

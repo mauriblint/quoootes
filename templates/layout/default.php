@@ -6,27 +6,25 @@
     $meta_keywords = isset($keywords) ? $keywords : 'Free Quote Maker for Instagram & Pinterest';
     $meta_image = isset($share_image) ? $share_image : Router::url('/img/og-image.jpg', true);
 
-    $canonical_url = null;
-
-    if (isset($_GET['ref']) || isset($_GET['via'])) {
-        $canonical_url = Router::url($this->request->getAttribute("here"), true);
-    }
-
-    $action = $this->request->getParam('action');
-
-    if ($action === 'quickStudio') {
-        $canonical_url = Router::url('/quick-studio', true);
+    // Controllers may set $canonical_url; otherwise use the current path without
+    // query string (keeping ?page=N so paginated listings stay indexable).
+    if (empty($canonical_url)) {
+        $canonical_url = Router::url($this->request->getPath(), true);
+        $canonical_page = (int) $this->request->getQuery('page', 1);
+        if ($canonical_page > 1) {
+            $canonical_url .= '?page=' . $canonical_page;
+        }
     }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Quoootes - <?= $meta_title ?></title>
+    <title>Quoootes - <?= h($meta_title, false) ?></title>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<?= $meta_description ?>">
-    <meta name="keywords" content="<?= $meta_keywords ?>">
-    <?php if ($canonical_url): ?><link rel="canonical" href="<?=$canonical_url?>" /><?php endif; ?>
+    <meta name="description" content="<?= h($meta_description, false) ?>">
+    <meta name="keywords" content="<?= h($meta_keywords, false) ?>">
+    <link rel="canonical" href="<?= h($canonical_url) ?>" />
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="icon"/>
     <link href="/favicon.ico?version=3" type="image/x-icon" rel="shortcut icon"/>
     <meta name="p:domain_verify" content="f0b7d6f5e9bac3d19dc79d01bcaa8826"/>
@@ -41,7 +39,7 @@
     <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/satoshi" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" referrerpolicy="no-referrer" media="print" onload="this.onload=null;this.removeAttribute('media');" />
     <?php echo $this->element('meta/analitycs');  ?>
-    <?php echo $this->element('meta/og', ['title' => $meta_title, 'description' => $meta_description, 'image' => $meta_image]);  ?>
+    <?php echo $this->element('meta/og', ['title' => $meta_title, 'description' => $meta_description, 'image' => $meta_image, 'url' => $canonical_url, 'type' => isset($og_type) ? $og_type : 'website']);  ?>
 </head>
 
 <body class="default">

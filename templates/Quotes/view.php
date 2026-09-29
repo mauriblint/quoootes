@@ -9,7 +9,7 @@ if (!is_null($quote['image_url'])) {
 	$__q_img = Router::url('/___quotes/' . $quote['id'] . '.jpg', true);
 }
 
-$__q_link = Router::url('/quote-' . $quote['id'], true);
+$__q_link = \App\Lib\DesignService::url($quote, true);
 // unset($quote['created']);
 
 $quoteFix = array(
@@ -41,6 +41,19 @@ function getEmbedCode($id, $w, $h) {
 
 ?>
 
+<script type="application/ld+json"><?= json_encode(array_filter([
+	'@context' => 'https://schema.org',
+	'@type' => 'ImageObject',
+	'contentUrl' => $quote['image_url'],
+	'url' => $__q_link,
+	'name' => $quote['text'],
+	'caption' => $quote['text'] . ($quote['text_footer'] ? ' - ' . $quote['text_footer'] : ''),
+	'width' => $quote['width'],
+	'height' => $quote['height'],
+	'datePublished' => $quote['created'] ? $quote['created']->format('c') : null,
+	'publisher' => ['@type' => 'Organization', 'name' => 'Quoootes', 'url' => 'https://quoootes.com'],
+]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) ?></script>
+
 <div class="ooo-view row justify-content-md-center mt-3 mt-md-5">
 
 	<div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-9 justify-content-center">
@@ -61,7 +74,7 @@ function getEmbedCode($id, $w, $h) {
 			<div class="col-md-6 ooo-view__preview">
 				<div class="card mb-0">
 					<div class="card-top">
-						<img class="card-img-top full-radius" src="<?= $quote['image_url']; ?>" alt="Image with text about <?= $quote['text']; ?>" />
+						<img class="card-img-top full-radius" src="<?= $quote['image_url']; ?>" alt="<?= h($quote['text']) ?>" />
 					</div>
 					<div class="card-body d-none">
 						<div class="card-stats ">
@@ -77,7 +90,7 @@ function getEmbedCode($id, $w, $h) {
 			<div class="col-md-5 ooo-view__sidebar mt-3 mt-md-0">
 				<div class="card">
 					<div class="card-body p-0">
-						<h1><?= $quote['text']; ?></h1>
+						<h1><?= h($quote['text']) ?></h1>
 					</div>
 					<div class="card-body">
 					<?php if (isset($quote['tag'])): ?>
@@ -148,7 +161,7 @@ function getEmbedCode($id, $w, $h) {
 <div class="card-columns card-columns-quotes">
 	<?php foreach ($popularQuotes as $quote) { ?>
 		<?php
-		$__q_link = Router::url('/quote-' . $quote['id'], true);
+		$__q_link = \App\Lib\DesignService::url($quote, true);
 		if (!is_null($quote['image_url'])) {
 			$__q_img = $quote['image_url'];
 			$__q_thu = $quote['thumb_url'];
@@ -158,7 +171,7 @@ function getEmbedCode($id, $w, $h) {
 		}
 		?>
 		<div class="card">
-			<a href="/quote-<?= $quote['id'] ?>">
+			<a href="<?= \App\Lib\DesignService::url($quote) ?>">
 				<div class="card-top">
 					<img class="card-img-top full-radius" src="<?= $__q_thu ?>" alt="<?= htmlspecialchars($quote['text']) ?>" title="<?= htmlspecialchars($quote['text']) ?>" />
 				</div>
