@@ -12,7 +12,7 @@ class FraseService {
 
     public static function create ($data) {
 
-        $FrasesTable = TableRegistry::get('Frases');
+        $FrasesTable = TableRegistry::getTableLocator()->get('Frases');
 
         $Frase = $FrasesTable->newEntity();
         $Frase->text = $data['text'];
@@ -32,7 +32,7 @@ class FraseService {
             return self::getRandomList();
         }
 
-        $query = TableRegistry::get('Frases')
+        $query = TableRegistry::getTableLocator()->get('Frases')
             ->find('all')
             ->select(['id', 'text', 'tag_id'])
             ->hydrate(false)
@@ -46,7 +46,7 @@ class FraseService {
 
     public static function getRandomList ($page=1, $count=40) {
 
-        $query = TableRegistry::get('Frases')
+        $query = TableRegistry::getTableLocator()->get('Frases')
             ->find('all')
             ->select(['id', 'text', 'tag_id'])
             ->order(['RAND()'])

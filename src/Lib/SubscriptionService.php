@@ -160,7 +160,7 @@ class SubscriptionService {
             return false;
         }
 
-        $SubscriptionTable = TableRegistry::get('Subscriptions');
+        $SubscriptionTable = TableRegistry::getTableLocator()->get('Subscriptions');
 
         $Subscription->plan_id = $plan_id;
         $Subscription->period_start = null;

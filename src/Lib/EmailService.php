@@ -1,7 +1,6 @@
 <?php
 namespace App\Lib;
 use PHPMailer\PHPMailer\PHPMailer;
-use Cake\Mailer\Email;
 use Cake\Mailer\Mailer;
 use Cake\View\ViewBuilder;
 use Cake\Mailer\TransportFactory;

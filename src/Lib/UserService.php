@@ -146,7 +146,7 @@ class UserService {
 
     public static function getById ($user_id) {
 
-        $query = TableRegistry::get('Users')->get($user_id);
+        $query = TableRegistry::getTableLocator()->get('Users')->get($user_id);
 
         return $query->toArray();
     }
@@ -159,7 +159,7 @@ class UserService {
 
     public static function getByCustomerId ($customer_id) {
 
-        $query = TableRegistry::get('Users')
+        $query = TableRegistry::getTableLocator()->get('Users')
             ->find()
             ->where(['customer_id' => $customer_id])
             ->contain('Subscriptions')
@@ -217,7 +217,7 @@ class UserService {
     }
 
     public static function getBoardList ($user_id) {
-        $query = TableRegistry::get('Boards')->find('all')
+        $query = TableRegistry::getTableLocator()->get('Boards')->find('all')
             ->where(['user_id = ' => $user_id])->toArray();
 
         return [
@@ -227,7 +227,7 @@ class UserService {
     }
 
     public static function findByUsername ($username) {
-        $user = TableRegistry::get('Users')
+        $user = TableRegistry::getTableLocator()->get('Users')
             ->findByUsername($username)
             ->hydrate(false)
             ->first();
@@ -303,7 +303,7 @@ class UserService {
 
     public static function createFromFacebook ($data, $picture=null) {
 
-        $check_username = TableRegistry::get('Users')->exists(['username'=> $data['username']]);
+        $check_username = TableRegistry::getTableLocator()->get('Users')->exists(['username'=> $data['username']]);
 
         if ($check_username) {
             $data['username'] = $data['username'] . rand(100, 999);
@@ -311,11 +311,11 @@ class UserService {
 
         $data['picture'] = $picture;
 
-        $user = TableRegistry::get('Users')->newEntity();
+        $user = TableRegistry::getTableLocator()->get('Users')->newEntity();
 
-        $user = TableRegistry::get('Users')->patchEntity($user, $data);
+        $user = TableRegistry::getTableLocator()->get('Users')->patchEntity($user, $data);
 
-        if (TableRegistry::get('Users')->save($user)) {
+        if (TableRegistry::getTableLocator()->get('Users')->save($user)) {
 
             return ResponseHandler::success([
                 'updated' => true,

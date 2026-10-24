@@ -12,7 +12,7 @@ class PostsService {
 
     public static function getRecentPosts($page=1, $count=12) {
 
-        $PostsTable = TableRegistry::get('Posts');
+        $PostsTable = TableRegistry::getTableLocator()->get('Posts');
 
         $query =$PostsTable->find()
             ->page($page)

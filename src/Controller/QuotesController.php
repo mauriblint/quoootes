@@ -17,7 +17,6 @@ class QuotesController extends AppController
     public function initialize() : void
     {
         parent::initialize();
-        $this->loadComponent('RequestHandler');
     }
 
     public function beforeFilter(EventInterface $event)
@@ -34,7 +33,7 @@ class QuotesController extends AppController
         $category = null;
 
         if( !is_null($category_slug) ) {
-            $category = TableRegistry::get('Tags')->findBySlug($category_slug)->first();
+            $category = TableRegistry::getTableLocator()->get('Tags')->findBySlug($category_slug)->first();
             if( !$category ) {
                 // throw new NotFoundException('Could not find that category');
                 return $this->redirect('/quotes');

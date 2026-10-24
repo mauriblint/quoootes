@@ -50,7 +50,6 @@ class AppController extends Controller
         $this->set('category_list', TagService::getPopularList() );
         $this->set('env', env('ENV', 'DEV') );
 
-        $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Auth', [
             'loginAction' => '/',
